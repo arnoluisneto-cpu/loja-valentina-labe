@@ -6,7 +6,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS Definitivo para o Verde Limão nos Uploads e Tipografia Moderna
+# CSS Definitivo para zerar o branco em setas/dropdowns e padronizar o Verde Limão Neon
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -17,7 +17,7 @@ st.markdown("""
         font-family: 'Inter', sans-serif !important;
     }
     
-    /* Botão Principal e Botões de Upload em Verde Limão Neon com Texto Preto */
+    /* Botões Principais e de Upload em Verde Limão Neon com Texto Preto */
     .stButton>button, div[data-testid="stFileUploader"] button {
         background-color: #00FF66 !important;
         color: #000000 !important;
@@ -54,19 +54,25 @@ st.markdown("""
         margin: 0;
     }
     
-    /* Caixas de input, select e dropdowns */
+    /* Inputs, Selects e Setas em Verde Limão Neon */
     input, select, textarea, div[data-baseweb="select"] > div {
         background-color: #161026 !important;
         color: #ffffff !important;
-        border-color: #8A2BE2 !important;
+        border: 1px solid #00FF66 !important;
+        border-radius: 8px !important;
         font-family: 'Inter', sans-serif !important;
     }
     
     .stTextInput>div>div>input, .stSelectbox>div>div>select {
         background-color: #161026 !important;
         color: #ffffff !important;
-        border: 1px solid #8A2BE2 !important;
+        border: 1px solid #00FF66 !important;
         border-radius: 8px !important;
+    }
+    
+    /* Forçar setas e ícones dos dropdowns em Verde Limão */
+    div[data-baseweb="select"] svg {
+        fill: #00FF66 !important;
     }
     
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
@@ -74,7 +80,7 @@ st.markdown("""
         color: #ffffff !important;
     }
 
-    /* Bloco de Upload com Fundo Escuro e Borda Verde Limão */
+    /* Blocos de Upload com Fundo Escuro e Borda Verde Limão */
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 2px solid #00FF66 !important;
@@ -126,31 +132,39 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 2. SELETORES NO TOPO ABAIXO DA VALENTINA
+# 2. SELETORES NO TOPO COM SETAS E BORDAS EM VERDE LIMÃO
 c_top1, c_top2, c_top3 = st.columns(3)
 with c_top1:
     diretor_skin = st.selectbox("DIRETOR SKIN", ["BOY (Elite Director)", "VALENTINA MASTER"])
 with c_top2:
     proporcao = st.selectbox("PROPORÇÃO", ["9:16 (TikTok / Reels)", "16:9 (YouTube / Wide)", "1:1 (Feed)"])
 with c_top3:
-    estilo_persona = st.selectbox("ESTILO DE VÍDEO (VIRAL TIKTOK)", [
-        "1. POV Acordando na Cama (Morning Routine)",
-        "2. POV Arrumando o Closet / Provador",
-        "3. POV Imersivo (Olhando para Baixo nos Pés)",
-        "4. Corpo Inteiro na Rua (Caminhando no Calçadão)",
-        "5. Frente ao Espelho (Mirror Selfie com Transição)",
-        "6. Giro Dinâmico 360° (Mostrando Caimento)",
-        "7. Close Macro Cirúrgico (Foco Total no Detalhe)",
-        "8. Unboxing Surpresa em Cima da Mesa",
-        "9. Transição Rápida de Looks (Trend Viral)",
-        "10. Vlog de Rotina Diária (Estilo Virgínia)",
-        "11. Review Sincero Boca a Boca (De Perto)",
-        "12. Provador Rápido de Loja Física"
+    estilo_persona = st.selectbox("ESTILO DE VÍDEO (PENTE-FINO TIKTOK)", [
+        "1. POV Acordando na Cama (Morning Routine com o Produto)",
+        "2. POV Arrumando o Closet / Selecionando Peças",
+        "3. POV Imersivo (Olhando para Baixo nos Pés / Calçado)",
+        "4. Corpo Inteiro na Rua (Caminhando no Calçadão com Tráfego)",
+        "5. Frente ao Espelho (Mirror Selfie com Transição Secundária)",
+        "6. Giro Dinâmico 360° (Mostrando Caimento e Balanço do Tecido)",
+        "7. Close Macro Cirúrgico (Foco Total em Costura e Detalhes)",
+        "8. Unboxing Surpresa em Cima da Mesa com Ring Light",
+        "9. Transição Rápida de Looks (Trend de Troca Instantânea)",
+        "10. Vlog de Rotina Diária Estilo Lifestyle (Dia a Dia Corrido)",
+        "11. Review Sincero Boca a Boca (Falando Bem de Perto com a Câmera)",
+        "12. Provador Rápido de Loja Física (Provando na Frente do Espelho da Loja)",
+        "13. Trend do Sofá / Almofada (Apresentação Casual Relaxada)",
+        "14. POV Dirigindo o Carro (Mostrando Acessório no Volante/Pulso)",
+        "15. POV Café da Manhã na Mesa Posta (Estilo Blogueira Chique)",
+        "16. Challenge de Transição: Roupa Simples para Look Completo de Luxo",
+        "17. Unboxing Rasgando Pacote do TikTok Shop de Surpresa",
+        "18. POV Saindo da Academia / Fitness Check com Estilo",
+        "19. Provador em Duas Cores (Mostrando Qual Cor Escolher)",
+        "20. "POV Encontro Noturno / Night Out Look Reveal"
     ])
 
 st.markdown("---")
 
-# 3. ENTRADAS DO PRODUTO E UPLOADS COM BOTÃO VERDE LIMÃO
+# 3. ENTRADAS DO PRODUTO E UPLOADS COM DESTAQUE VERDE LIMÃO
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
