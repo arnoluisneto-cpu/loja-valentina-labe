@@ -6,7 +6,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS Definitivo para zerar o branco em setas/dropdowns e padronizar o Verde Limão Neon
+# CSS Definitivo para exterminar qualquer fundo ou borda branca dos seletores e inputs
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -54,7 +54,7 @@ st.markdown("""
         margin: 0;
     }
     
-    /* Inputs, Selects e Setas em Verde Limão Neon */
+    /* Forçar Inputs, Selects, Dropdowns e Setas em Verde Limão Neon e fundo roxo escuro */
     input, select, textarea, div[data-baseweb="select"] > div {
         background-color: #161026 !important;
         color: #ffffff !important;
@@ -78,6 +78,7 @@ st.markdown("""
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
         background-color: #161026 !important;
         color: #ffffff !important;
+        border: 1px solid #00FF66 !important;
     }
 
     /* Blocos de Upload com Fundo Escuro e Borda Verde Limão */
@@ -132,34 +133,34 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 2. SELETORES NO TOPO COM SETAS E BORDAS EM VERDE LIMÃO
+# 2. SELETORES NO TOPO COM BORDAS E DETALHES EM VERDE LIMÃO
 c_top1, c_top2, c_top3 = st.columns(3)
 with c_top1:
     diretor_skin = st.selectbox("DIRETOR SKIN", ["BOY (Elite Director)", "VALENTINA MASTER"])
 with c_top2:
     proporcao = st.selectbox("PROPORÇÃO", ["9:16 (TikTok / Reels)", "16:9 (YouTube / Wide)", "1:1 (Feed)"])
 with c_top3:
-    estilo_persona = st.selectbox("ESTILO DE VÍDEO (PENTE-FINO TIKTOK)", [
-        "1. POV Acordando na Cama (Morning Routine com o Produto)",
-        "2. POV Arrumando o Closet / Selecionando Peças",
-        "3. POV Imersivo (Olhando para Baixo nos Pés / Calçado)",
-        "4. Corpo Inteiro na Rua (Caminhando no Calçadão com Tráfego)",
-        "5. Frente ao Espelho (Mirror Selfie com Transição Secundária)",
-        "6. Giro Dinâmico 360° (Mostrando Caimento e Balanço do Tecido)",
-        "7. Close Macro Cirúrgico (Foco Total em Costura e Detalhes)",
-        "8. Unboxing Surpresa em Cima da Mesa com Ring Light",
-        "9. Transição Rápida de Looks (Trend de Troca Instantânea)",
-        "10. Vlog de Rotina Diária Estilo Lifestyle (Dia a Dia Corrido)",
-        "11. Review Sincero Boca a Boca (Falando Bem de Perto com a Câmera)",
-        "12. Provador Rápido de Loja Física (Provando na Frente do Espelho da Loja)",
-        "13. Trend do Sofá / Almofada (Apresentação Casual Relaxada)",
-        "14. POV Dirigindo o Carro (Mostrando Acessório no Volante/Pulso)",
-        "15. POV Café da Manhã na Mesa Posta (Estilo Blogueira Chique)",
-        "16. Challenge de Transição: Roupa Simples para Look Completo de Luxo",
-        "17. Unboxing Rasgando Pacote do TikTok Shop de Surpresa",
-        "18. POV Saindo da Academia / Fitness Check com Estilo",
-        "19. Provador em Duas Cores (Mostrando Qual Cor Escolher)",
-        '20. POV Encontro Noturno / Night Out Look Reveal'
+    estilo_persona = st.selectbox("ESTILO DE VÍDEO", [
+        "1. Caminhão e Van do TikTok Shop Chegando de Ré na Casa com Caixas",
+        "2. POV Acordando na Cama (Morning Routine com o Produto)",
+        "3. POV Arrumando o Closet / Selecionando Peças",
+        "4. POV Imersivo (Olhando para Baixo nos Pés / Calçado)",
+        "5. Corpo Inteiro na Rua (Caminhando no Calçadão com Tráfego)",
+        "6. Frente ao Espelho (Mirror Selfie com Transição Secundária)",
+        "7. Giro Dinâmico 360° (Mostrando Caimento e Balanço do Tecido)",
+        "8. Close Macro Cirúrgico (Foco Total em Costura e Detalhes)",
+        "9. Unboxing Surpresa em Cima da Mesa com Ring Light",
+        "10. Transição Rápida de Looks (Trend de Troca Instantânea)",
+        "11. Vlog de Rotina Diária Estilo Lifestyle (Dia a Dia Corrido)",
+        "12. Review Sincero Boca a Boca (Falando Bem de Perto com a Câmera)",
+        "13. Provador Rápido de Loja Física (Provando na Frente do Espelho)",
+        "14. Trend do Sofá / Almofada (Apresentação Casual Relaxada)",
+        "15. POV Dirigindo o Carro (Mostrando Acessório no Volante/Pulso)",
+        "16. POV Café da Manhã na Mesa Posta (Estilo Blogueira Chique)",
+        "17. Challenge de Transição: Roupa Simples para Look Completo de Luxo",
+        "18. Unboxing Rasgando Pacote do TikTok Shop de Surpresa",
+        "19. POV Saindo da Academia / Fitness Check com Estilo",
+        "20. POV Encontro Noturno / Night Out Look Reveal"
     ])
 
 st.markdown("---")
@@ -205,7 +206,9 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        if "Calçado" in tipo_produto:
+        if "Caminhão" in estilo_persona:
+            foco_cam = f"Cinematic hyper-realistic shot of a large delivery truck backing up to the front gate, back doors opening to reveal countless stacked TikTok Shop boxes for '{produto_nome}'. Strict 1:1 product match."
+        elif "Calçado" in tipo_produto:
             foco_cam = f"Camera pans smoothly down from the model's face to a macro close-up of the exact footwear '{produto_nome}' from the uploaded reference image, showing precise texture, straps, and heel. Strict 1:1 product match."
         elif "Pulso" in tipo_produto:
             foco_cam = f"Camera focuses precisely on the model's wrist and hand displaying the exact accessory '{produto_nome}' from the reference image, smooth macro tracking shot."
@@ -223,7 +226,7 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 1: {estilo_persona}</span>
-                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt para o Flow ({proporcao}):</b> Vertical {proporcao} photorealistic UGC video, first-person POV looking down. {foco_cam} Maintaining exact model face and reference product identity without generic changes. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}A): "Meninas, vocês vivem me perguntando onde eu acho peças que unem estilo e durabilidade. Olha esse detalhe de perto! Disponível na Loja da Valentina, clica no carrinho laranja aqui embaixo."</p>
+                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt para o Flow ({proporcao}):</b> Vertical {proporcao} photorealistic UGC video, cinematic opening. {foco_cam} Maintaining exact model face and reference product identity without generic changes. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}A): "Meninas, olha o tanto de caixas que acabou de chegar do TikTok Shop! Olha esse detalhe de perto! Disponível na Loja da Valentina, clica no carrinho laranja aqui embaixo."</p>
                 </div>
                 """, unsafe_allow_html=True)
 
