@@ -6,20 +6,25 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- ESTILIZAÇÃO NEON PRO (Baseada no layout aprovado) ---
+# --- ESTILIZAÇÃO NEON DARK TOTAL (Forçando fundo roxo escuro em todos os elementos) ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap');
 
-    /* Fundo Principal Escuro Profundo */
+    /* Fundo Principal do App Inteiro */
     .stApp {
-        background: radial-gradient(circle at top, #181035 0%, #090714 60%, #05040a 100%);
-        color: #ffffff;
+        background: radial-gradient(circle at top, #181035 0%, #090714 60%, #05040a 100%) !important;
+        color: #ffffff !important;
     }
 
-    /* Banner Superior VALENTINA com Fonte Grossa e Brilho Neon */
+    /* Forçar fundo escuro em blocos e containers brancos do Streamlit */
+    div[data-testid="stVerticalBlock"] > div {
+        color: #ffffff !important;
+    }
+
+    /* Banner Superior VALENTINA */
     .valentina-banner {
-        background: linear-gradient(180deg, rgba(30, 16, 68, 0.8) 0%, rgba(12, 9, 26, 0.9) 100%);
+        background: linear-gradient(180deg, rgba(30, 16, 68, 0.9) 0%, rgba(12, 9, 26, 0.95) 100%);
         border: 2px solid #a855f7;
         box-shadow: 0 0 25px rgba(168, 85, 247, 0.5), inset 0 0 15px rgba(56, 189, 248, 0.2);
         border-radius: 14px;
@@ -29,7 +34,7 @@ st.markdown("""
     }
     .valentina-title {
         font-family: 'Montserrat', sans-serif !important;
-        font-size: 4rem !important;
+        font-size: 3.8rem !important;
         font-weight: 900 !important;
         letter-spacing: 4px;
         color: #ffffff !important;
@@ -51,30 +56,47 @@ st.markdown("""
         text-transform: uppercase;
     }
 
-    /* Textos e Rótulos */
-    h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown {
+    /* Textos, Labels e Títulos em Branco Nítido */
+    h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown, div[data-baseweb="select"] span {
         color: #f8fafc !important;
     }
 
-    /* Inputs e Textareas Compactos com Bordas Neon Verde/Ciano */
-    .stTextInput input, .stTextArea textarea, .stSelectbox [data-baseweb="select"], [data-testid="stFileUploader"] {
+    /* Inputs, Textareas e Uploaders com Fundo Roxo Escuro e Borda Neon */
+    .stTextInput input, .stTextArea textarea, .stSelectbox [data-baseweb="select"] {
         background-color: #0d0b1e !important;
         color: #ffffff !important;
-        border: 1.5px solid #2dd4bf !important;
+        border: 1.5px solid #a855f7 !important;
         border-radius: 8px !important;
         padding: 8px 12px !important;
         font-size: 14px !important;
-        box-shadow: 0 0 10px rgba(45, 212, 191, 0.25);
-        transition: all 0.2s ease;
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
+    }
+    
+    /* Caixa de Uploader (Eliminando o fundo branco nativo) */
+    [data-testid="stFileUploader"] {
+        background-color: #0d0b1e !important;
+        border: 1.5px dashed #a855f7 !important;
+        border-radius: 8px !important;
+        padding: 10px !important;
+        color: #ffffff !important;
+    }
+    [data-testid="stFileUploader"] section {
+        background-color: #120e26 !important;
+        border-radius: 6px !important;
+    }
+    [data-testid="stFileUploader"] button {
+        background-color: #7c3aed !important;
+        color: #ffffff !important;
+        border: none !important;
     }
 
-    /* Realce ao clicar no campo */
+    /* Foco nos Campos */
     .stTextInput input:focus, .stTextArea textarea:focus {
         border-color: #4ade80 !important;
         box-shadow: 0 0 16px rgba(74, 222, 128, 0.6) !important;
     }
 
-    /* Botão Principal Vibrante */
+    /* Botão Principal Estilo Neon */
     .stButton>button {
         width: 100%;
         background: linear-gradient(90deg, #7c3aed 0%, #2563eb 50%, #10b981 100%) !important;
@@ -96,7 +118,7 @@ st.markdown("""
 
     /* Sidebar Escura */
     [data-testid="stSidebar"] {
-        background-color: #080612;
+        background-color: #080612 !important;
         border-right: 1px solid #3b0764;
     }
     </style>
