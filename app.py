@@ -7,53 +7,75 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilização CSS unindo o Fundo Roxo com os Detalhes em Verde Limão Neon
+# Estilização CSS rigorosa para forçar o tema roxo profundo + detalhes verde limão (Estética Exata da sua Foto)
 st.markdown("""
     <style>
-    .main {
-        background-color: #0b0914;
-        color: #ffffff;
+    /* Força o fundo escuro global do Streamlit */
+    .stApp {
+        background-color: #0b0914 !important;
+        color: #ffffff !important;
     }
+    .main {
+        background-color: #0b0914 !important;
+    }
+    
+    /* Botões principais em Verde Limão Neon */
     .stButton>button {
-        background-color: #00FF66;
-        color: #000000;
-        font-weight: bold;
-        border-radius: 8px;
-        border: none;
-        padding: 12px 24px;
-        font-size: 16px;
-        width: 100%;
+        background-color: #00FF66 !important;
+        color: #000000 !important;
+        font-weight: bold !important;
+        border-radius: 8px !important;
+        border: none !important;
+        padding: 12px 24px !important;
+        font-size: 16px !important;
+        width: 100% !important;
     }
     .stButton>button:hover {
-        background-color: #00cc52;
-        color: #ffffff;
+        background-color: #00cc52 !important;
+        color: #ffffff !important;
     }
+    
+    /* Banner Principal Roxo (Estilo Nubank) */
     .hero-banner {
-        background: linear-gradient(135deg, #171426 0%, #1f1b36 100%);
-        border: 2px solid #00FF66;
+        background: linear-gradient(135deg, #1e1333 0%, #2a1b4e 100%);
+        border: 2px solid #8A2BE2;
         padding: 30px;
         border-radius: 16px;
         text-align: center;
         margin-bottom: 25px;
-        box-shadow: 0px 0px 20px rgba(0, 255, 102, 0.2);
+        box-shadow: 0px 0px 25px rgba(138, 43, 226, 0.4);
     }
+    
+    /* Cartões de Métricas e Blocos */
     .metric-card {
-        background-color: #171426;
-        border: 1px solid #00FF66;
+        background-color: #161026 !important;
+        border: 1px solid #8A2BE2 !important;
         padding: 20px;
         border-radius: 12px;
         margin-bottom: 15px;
     }
+    
+    /* Tags de Estilo */
     .tag-estilo {
-        background-color: #00FF66;
-        color: #000000;
+        background-color: #00FF66 !important;
+        color: #000000 !important;
         padding: 4px 10px;
         border-radius: 4px;
         font-weight: bold;
         font-size: 12px;
     }
-    h1, h2, h3 {
-        color: #00FF66 !important;
+    
+    /* Cores de Títulos */
+    h1, h2, h3, label, .stMarkdown {
+        color: #ffffff !important;
+    }
+    
+    /* Inputs e Caixas de Seleção com Estética Roxa */
+    .stTextInput>div>div>input, .stSelectbox>div>div>select {
+        background-color: #161026 !important;
+        color: #ffffff !important;
+        border: 1px solid #8A2BE2 !important;
+        border-radius: 8px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -72,10 +94,10 @@ with col_top3:
 
 st.markdown("---")
 
-# Banner Central "VALENTINA" com a estética roxa e contorno/destaque verde limão
+# Banner Central com a identidade visual roxa da sua foto
 st.markdown("""
     <div class="hero-banner">
-        <h1 style="letter-spacing: 4px; margin-bottom: 5px; color: #00FF66;">VALENTINA</h1>
+        <h1 style="letter-spacing: 4px; margin-bottom: 5px; color: #00FF66 !important;">VALENTINA</h1>
         <p style="color: #b0bec5; font-size: 14px; margin: 0;">LOJA DA VALENTINA • TIKTOK SHOP VIRAL LAB • PARÂMETROS DE VÍDEO</p>
     </div>
 """, unsafe_allow_html=True)
@@ -138,14 +160,14 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 1: POV Imersivo</span>
-                    <p style='margin-top:10px;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, first-person POV looking down. {foco_cam} Maintaining exact model face and reference product identity without generic changes. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}A): "Meninas, vocês vivem me perguntando onde eu acho peças que unem estilo e durabilidade. Olha esse detalhe de perto! Disponível na Loja da Valentina, clica no carrinho laranja aqui embaixo."</p>
+                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, first-person POV looking down. {foco_cam} Maintaining exact model face and reference product identity without generic changes. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}A): "Meninas, vocês vivem me perguntando onde eu acho peças que unem estilo e durabilidade. Olha esse detalhe de perto! Disponível na Loja da Valentina, clica no carrinho laranja aqui embaixo."</p>
                 </div>
                 """, unsafe_allow_html=True)
 
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 3: Girando / Movimento Fluido</span>
-                    <p style='margin-top:10px;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, dynamic camera spinning around the model showing full outfit and rotating down. {foco_cam} Strict 1:1 match to uploaded model and product photos. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}C): "Olha o caimento disso! Perfeito para qualquer ocasião do dia a dia ou evento. Corre na Loja da Valentina, clica no carrinho laranja e garante o seu."</p>
+                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, dynamic camera spinning around the model showing full outfit and rotating down. {foco_cam} Strict 1:1 match to uploaded model and product photos. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}C): "Olha o caimento disso! Perfeito para qualquer ocasião do dia a dia ou evento. Corre na Loja da Valentina, clica no carrinho laranja e garante o seu."</p>
                 </div>
                 """, unsafe_allow_html=True)
 
@@ -153,14 +175,14 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 2: Corpo Inteiro na Rua</span>
-                    <p style='margin-top:10px;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, full-body outdoor daylight tracking shot walking. {foco_cam} Exact facial features and product features preserved. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}B): "Gente, testei e estou simplesmente apaixonada por essa novidade. Olha como veste bem no corpo! Clica no carrinho laranja na Loja da Valentina e aproveita."</p>
+                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, full-body outdoor daylight tracking shot walking. {foco_cam} Exact facial features and product features preserved. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}B): "Gente, testei e estou simplesmente apaixonada por essa novidade. Olha como veste bem no corpo! Clica no carrinho laranja na Loja da Valentina e aproveita."</p>
                 </div>
                 """, unsafe_allow_html=True)
 
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 4: Frente ao Espelho (Review)</span>
-                    <p style='margin-top:10px;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, mirror selfie reflection view in a modern aesthetic room. {foco_cam} Absolute fidelity to user's uploaded model and item. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}D): "Chegou reposição e eu não podia deixar de mostrar para vocês o quanto isso aqui é diferenciado. Clica no carrinho laranja da Loja da Valentina agora!"</p>
+                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, mirror selfie reflection view in a modern aesthetic room. {foco_cam} Absolute fidelity to user's uploaded model and item. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}D): "Chegou reposição e eu não podia deixar de mostrar para vocês o quanto isso aqui é diferenciado. Clica no carrinho laranja da Loja da Valentina agora!"</p>
                 </div>
                 """, unsafe_allow_html=True)
             
