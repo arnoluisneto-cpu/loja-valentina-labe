@@ -1,39 +1,57 @@
 import streamlit as st
+
 st.set_page_config(
-page_title="Loja da Valentina - TikTok Shop Viral Lab",
-page_icon="",
-layout="wide"
+    page_title="Loja da Valentina - TikTok Shop Viral Lab",
+    page_icon="",
+    layout="wide"
 )
 
-# Estilização visual sofisticada (Dark/Luxury ASMR Theme)
+# Estilização visual Dark/Luxury com campos compactos e legíveis
 st.markdown("""
     <style>
-    .main {
+    /* Fundo geral escuro e elegante */
+    .stApp {
         background-color: #0b0b0b;
-        color: #f5f5f7;
-        font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+        color: #ffffff;
     }
+    /* Textos nítidos */
+    h1, h2, h3, h4, h5, h6, p, span, label {
+        color: #ffffff !important;
+    }
+    /* Barra lateral */
+    [data-testid="stSidebar"] {
+        background-color: #141416;
+        border-right: 1px solid #26262a;
+    }
+    [data-testid="stSidebar"] label, [data-testid="stSidebar"] span {
+        color: #f5f5f7 !important;
+    }
+    /* Botões elegantes e menores */
     .stButton>button {
         background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
         color: white;
         border: none;
-        border-radius: 8px;
+        border-radius: 6px;
         font-weight: 600;
-        padding: 0.6rem 1.2rem;
-        box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+        padding: 0.4rem 1rem;
+        font-size: 14px;
+        box-shadow: 0 4px 10px rgba(212, 175, 55, 0.2);
     }
     .stButton>button:hover {
         background: linear-gradient(135deg, #e5c158 0%, #bb882d 100%);
     }
+    /* Caixas de texto e inputs compactos (não ficam grandões) */
     .stTextInput>div>div>input, .stTextArea>div>div>textarea {
-        background-color: #161618;
-        color: #ffffff;
-        border: 1px solid #333336;
+        background-color: #161618 !important;
+        color: #ffffff !important;
+        border: 1px solid #2c2c30 !important;
         border-radius: 6px;
+        padding: 6px 10px !important;
+        font-size: 14px !important;
     }
-    h1, h2, h3 {
-        color: #f5f5f7;
-        font-weight: 700;
+    /* Ajuste de altura para inputs de texto ficarem discretos */
+    div[data-baseweb="input"] {
+        min-height: 36px !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -55,13 +73,13 @@ with tab1:
     col_ref1, col_ref2 = st.columns(2)
     with col_ref1:
         img_modelo = st.file_uploader("Foto de Referência da Modelo (Face/Corpo)", type=["png", "jpg", "jpeg"])
-        roupa = st.text_input("Peça de Roupa / Parte de cima ou Baixo", placeholder="Ex: Calça Pantalona Alfaiataria, Cropped...")
+        roupa = st.text_input("Peça de Roupa / Parte de cima ou Baixo", placeholder="Ex: Calça Pantalona Alfaiataria...")
         calcado = st.text_input("Calçado no Pé da Modelo", placeholder="Ex: Sandália Preta de Salto Baixo")
         
     with col_ref2:
         img_look = st.file_uploader("Foto de Referência do Look / Peça", type=["png", "jpg", "jpeg"])
-        acessorio = st.text_input("Acessório em Destaque", placeholder="Ex: Relógio dourado minimalista, óculos de sol...")
-        beneficio = st.text_input("Principal Benefício / Argumento de Venda", placeholder="Ex: Não marca, tecido fresco, confortável...")
+        acessorio = st.text_input("Acessório em Destaque", placeholder="Ex: Relógio dourado minimalista...")
+        beneficio = st.text_input("Principal Benefício / Argumento de Venda", placeholder="Ex: Não marca, tecido fresco...")
 
     if st.button("Gerar Roteiro e Prompts (PT-BR + EN)"):
         st.success("Roteiro estruturado com sucesso no padrão Loja da Valentina!")
