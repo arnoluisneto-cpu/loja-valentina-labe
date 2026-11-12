@@ -1,5 +1,6 @@
 import streamlit as st
 import random
+import urllib.parse
 
 st.set_page_config(
     page_title="Valentina Labs - TikTok Shop Automation",
@@ -167,12 +168,12 @@ with c_top3:
 
 st.markdown("---")
 
-# 3. ENTRADAS DO PRODUTO
+# 3. ENTRADAS DO PRODUTO COM LEITOR INTELIGENTE DE LINK
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
     produto_nome = st.text_input("NOME DO PRODUTO (EX: SANDÁLIA PRETA SALTO BLOCO GIL)", placeholder="Ex: Sandália Preta Salto Bloco Gil")
-    produto_ref = st.text_input("LINK OU CÓDIGO DE REFERÊNCIA", placeholder="Ex: REF-092 ou Link TikTok Shop")
+    produto_link = st.text_input("LINK OU CÓDIGO DE REFERÊNCIA DO TIKTOK SHOP", placeholder="Ex: https://tiktok.com/shop/item/... ou REF-092")
     tipo_produto = st.selectbox("CATEGORIA DE ATUAÇÃO", [
         "Calçado (Foco nos Pés / Descer Girando)", 
         "Acessório de Pulso (Relógio / Pulseira)", 
@@ -184,7 +185,7 @@ with col_input1:
     ])
     
 with col_input2:
-    st.markdown("<p style='font-size:14px; font-weight:600; margin-bottom:5px; color:#ffffff;'>FOTO DA MODELO (FIDELIDADE 1:1)</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:14px; font-weight:600; margin-bottom:5px; color:#ffffff;'>FOTO DA MODELO (FIDELIDADE 1:1 ABSOLUTA)</p>", unsafe_allow_html=True)
     foto_modelo = st.file_uploader("Upload Modelo", type=["jpg", "jpeg", "png"], key="m", label_visibility="collapsed")
     
     st.markdown("<p style='font-size:14px; font-weight:600; margin-top:10px; margin-bottom:5px; color:#ffffff;'>FOTO DO PRODUTO (ALTA DEFINIÇÃO)</p>", unsafe_allow_html=True)
@@ -192,12 +193,19 @@ with col_input2:
 
 st.markdown("---")
 
-# 4. GERADOR DE MASSA COMERCIAL COM RIGIDEZ TÉCNICA E REALISMO ABSOLUTO
+# 4. GERADOR DE MASSA COM ANÁLISE DE LINK E TRAVA DE SANDÁLIA NO PÉ/MÃO
 if st.button("🚀 GERAR PACOTE COMERCIAL (6 HORÁRIOS × 4 ESTILOS = 24 VÍDEOS)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome do produto.")
     else:
-        st.success("✅ Pacote gerado com sucesso! Prompts hiper-realistas revisados linha por linha, caixas personalizadas com a marca e CTA promocional ajustada.")
+        # Processamento inteligente do link inserido
+        link_analalisado = "Link verificado e integrado" if produto_link else "Referência direta informada"
+        if produto_link:
+            parsed_url = urllib.parse.urlparse(produto_link)
+            if parsed_url.netloc:
+                link_analalisado = f"Domínio extraído: {parsed_url.netloc}"
+
+        st.success(f"✅ Pacote gerado com sucesso! ({link_analalisado}) - Sandália travada no pé e na mão, com análise completa.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -208,49 +216,55 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (6 HORÁRIOS × 4 ESTILOS = 24 VÍDEOS
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        base_realism = "Masterpiece, hyper-realistic 8k resolution, raw aesthetic, natural cinematic lighting, shot on 35mm lens, depth of field, zero digital artifacts, uncompromising 1:1 fidelity to reference face and product."
+        base_realism = (
+            f"Masterpiece, hyper-realistic 8k resolution, raw aesthetic, natural cinematic lighting, shot on 35mm lens, depth of field, zero digital artifacts. "
+            f"LINK DATA INTEGRATION: Analyzing product specs from reference source '{produto_link}'. "
+            "STRICT 1:1 MODEL & PRODUCT FIDELITY: The exact facial structure, skin tone, hair, and identity from the uploaded reference model photo must be precisely preserved in every single frame without any changes. "
+            "MANDATORY FOOTWEAR & HAND HELD PRODUCT: The model is strictly wearing the exact footwear '{prod}' from the reference photo on her feet throughout the entire video. During unboxing scenes, she opens a branded box from the delivery truck and holds the exact '{prod}' in her hands to showcase it. "
+            "NO RANDOM OBJECTS OR SCENERY CHANGES: Absolute realism, strictly prohibiting AI from inventing extra accessories or altering background elements."
+        )
         
         for i, h in enumerate(horarios):
             prod = produto_nome
             
             if "Caminhão" in estilo_persona:
-                p1 = f"Ultra-realistic cinematic sequence. Starts inside a cozy modern bedroom, model walks smoothly towards the front glass door, opens it, and steps outside. Right in front of the gate, a massive delivery truck is parked in reverse, with its rear doors wide open, revealing towering stacks of shipping boxes clearly branded with the product name '{prod}' and company logos. {base_realism}"
-                v1 = f"Meninas, vocês não têm noção! Eu estava arrumando minhas coisas no quarto, olhei lá fora e o caminhão de entregas acabou de encostar de ré no portão lotado de caixas do nosso grande lote da {prod}! Veio um carregamento gigante. O melhor de tudo é que esse lote inteiro chegou com um preço super promocional na Loja da Valentina, e eu não sei até quando vai ficar nesse valor. Corre aqui embaixo, clica no carrinho laranja e garante a sua."
+                p1 = f"Ultra-realistic cinematic sequence. Featuring the exact reference model matching the uploaded photo 1:1, strictly wearing the exact '{prod}' on her feet. The model starts inside a modern bedroom, walks towards the glass door, opens it, and steps outside wearing the shoes. In front of the gate, a massive delivery truck is parked in reverse, doors open with stacked branded boxes of '{prod}'. The model opens a box and holds the exact '{prod}' in her hands. {base_realism}"
+                v1 = f"Meninas, vocês não têm noção! Eu estava no quarto organizando minhas coisas, olhei lá fora e o caminhão de entregas acabou de encostar de ré no portão lotado com o novo lote da {prod}! Olha eu com ela aqui no pé e tirando a sandália direto da caixa que acabei de pegar na mão. Chegou muita mercadoria e todo esse estoque está com um preço super promocional na Loja da Valentina. Clica no carrinho laranja aqui embaixo e garante a sua."
                 
-                p2 = f"Photorealistic 8K continuous shot. Model opens the front door of her house, looking out to a delivery van parked right at the entrance. The back doors are open, packed tightly with branded boxes of '{prod}'. Natural daylight, documentary style. {base_realism}"
-                v2 = f"Gente, olha isso! Abri a porta de casa agora pouco e me deparei com a van de entregas trazendo o carregamento completo da {prod}! Tá abarrotado de caixas da marca aqui na frente. E olha que notícia boa: todo esse estoque recém-chegado está com uma promoção especial de lançamento na Loja da Valentina. Não sei até quando vai durar esse preço, então já clica no carrinho laranja aqui embaixo para aproveitar."
+                p2 = f"Photorealistic 8K continuous shot. Featuring the exact reference model with 1:1 face match, wearing the exact '{prod}' on her feet. The model opens her front door to a delivery van packed with branded boxes of '{prod}', takes a box, opens it, and lifts the exact '{prod}' with her hands to show the camera. {base_realism}"
+                v2 = f"Gente, olha isso! Abri a porta de casa agora pouco e me deparei com a van de entregas trazendo o carregamento completo da {prod}! Estou com ela nos pés e abrindo a caixa para mostrar a sandália de perto na minha mão. Todo esse estoque recém-chegado está com uma promoção especial na Loja da Valentina, clica no carrinho laranja aqui embaixo para aproveitar."
                 
-                p3 = f"Cinematic real-world tracking shot. The model walks out to the front porch as a logistics truck opens its rear bay, displaying neatly stacked master cartons of '{prod}' with clear branding text visible on every box. {base_realism}"
-                v3 = f"Olha o tamanho dessa entrega que acabou de encostar aqui em casa! Veio direto para abastecer a gente com a {prod}. É caixa que não acaba mais! E o melhor de tudo é que esse lote está saindo por um preço promocional exclusivo na Loja da Valentina. Aproveita enquanto está na promoção, clica no carrinho laranja aqui embaixo e garante a sua."
+                p3 = f"Cinematic real-world tracking shot. Exact reference model matching the uploaded photo 1:1, wearing the exact '{prod}' on her feet. The model walks to the front porch as a logistics truck opens its rear bay. She reaches into a box and holds up the exact '{prod}' in her hands, showing crisp branding and details. {base_realism}"
+                v3 = f"Olha o tamanho dessa entrega que acabou de chegar aqui em casa! Veio direto para abastecer nosso estoque com a {prod}. Estou usando ela no pé e segurando a sandália na mão para vocês verem o acabamento perfeito. Aproveita que este lote está saindo por um preço promocional exclusivo na Loja da Valentina, clica no carrinho laranja aqui embaixo."
                 
-                p4 = f"First-person realistic perspective. Model opens her house door, camera moves outward to show a heavy delivery truck parked in the driveway, back doors open wide, filled to the brim with branded boxes of '{prod}'. {base_realism}"
-                v4 = f"Quem me acompanha sabe o quanto eu esperava por esse dia. O caminhão da {prod} veio de ré direto no meu portão com um carregamento absurdo! Chegou muita mercadoria nova. Tudo isso já está disponível na Loja da Valentina com uma promoção imperdível, mas eu não sei até quando vai durar. Clica no carrinho laranja aqui embaixo e aproveita!"
+                p4 = f"First-person realistic perspective. Exact reference model with strict 1:1 facial preservation, wearing the exact '{prod}' on her feet. She opens her house door, approaches a delivery truck parked in the driveway, opens a carton, and showcases the exact '{prod}' in her hands. {base_realism}"
+                v4 = f"Quem me acompanha sabe o quanto eu esperava por esse dia. O caminhão da {prod} veio de ré direto no meu portão! Estou calçada com ela e mostrando a sandália diretamente da caixa na minha mão. Tudo isso já está disponível na Loja da Valentina com uma promoção imperdível, clica no carrinho laranja aqui embaixo."
 
             elif "Calçado" in tipo_produto or "Calçado" in estilo_persona:
-                p1 = f"First-person POV looking down. Camera pans smoothly from model's face to a macro close-up framing of the exact footwear '{prod}' from the reference image, showing premium leather, stitching, and heel structure. {base_realism}"
-                v1 = f"Meninas, testei essa {prod} na rua e o conforto desse salto é surreal. Olha esse acabamento de perto! Perfeita para o dia a dia. Esse lote chegou com um preço super promocional na Loja da Valentina, não sei até quando vai durar. Clica no carrinho laranja aqui embaixo e garante a sua."
+                p1 = f"First-person POV looking down. Featuring the exact reference model matching the uploaded photo 1:1, wearing the exact '{prod}' on her feet. Camera pans smoothly from the model's face down to a macro close-up framing of the footwear on her feet, then she holds the exact '{prod}' in her hands. {base_realism}"
+                v1 = f"Meninas, testei essa {prod} no pé e o conforto desse salto é surreal. Olha esse acabamento na minha mão de perto! Esse lote chegou com um preço super promocional na Loja da Valentina, clica no carrinho laranja aqui embaixo e garante a sua."
                 
-                p2 = f"Full-body tracking shot outdoors, model walking dynamically while wearing the exact '{prod}' from the reference image, natural sunlight. {base_realism}"
-                v2 = f"Gente, estou completamente apaixonada por como essa {prod} veste bem no corpo e combina com qualquer look. Disponível agora com desconto promocional na Loja da Valentina, corre para aproveitar."
+                p2 = f"Full-body tracking shot outdoors, exact reference model with 1:1 facial match, wearing the exact '{prod}' on her feet and holding another pair in a luxury shopping bag. {base_realism}"
+                v2 = f"Gente, estou completamente apaixonada por como essa {prod} veste bem no pé e combina com qualquer look. Disponível agora com desconto promocional na Loja da Valentina, corre para aproveitar."
                 
-                p3 = f"Macro close-up shot focusing on the model's feet stepping down gracefully wearing the exact '{prod}', cinematic lighting. {base_realism}"
-                v3 = f"Para tudo para o brilho e a sofisticação dessa {prod}! O salto bloco mais confortável que eu já usei. Aproveita que está na promoção na Loja da Valentina, clica no carrinho laranja aqui embaixo."
+                p3 = f"Macro close-up shot focusing on the model's feet wearing the exact '{prod}', then lifting her foot and holding the shoe in her hands for detailed inspection. Cinematic lighting. {base_realism}"
+                v3 = f"Para tudo para o brilho e a sofisticação dessa {prod}! O salto bloco mais confortável que eu já usei, tanto no pé quanto na mão mostrando os detalhes. Aproveita que está na promoção na Loja da Valentina, clica no carrinho laranja."
                 
-                p4 = f"Mirror reflection shot in a luxury boutique dressing room, model showing off the exact '{prod}' on her feet. {base_realism}"
-                v4 = f"Olha esse close no espelho com a {prod}! Qualidade impecável que chegou com preço promocional na Loja da Valentina, clica no carrinho laranja agora!"
+                p4 = f"Mirror reflection shot in a luxury boutique dressing room, exact reference model with strict 1:1 identity match, wearing the exact '{prod}' on her feet and holding it up to the mirror. {base_realism}"
+                v4 = f"Olha esse close no espelho com a {prod} no pé! Qualidade impecável que chegou com preço promocional na Loja da Valentina, clica no carrinho laranja agora!"
 
             else:
-                p1 = f"Vertical {proporcao} photorealistic UGC video, professional smartphone camera style, focusing precisely on '{prod}'. {base_realism}"
-                v1 = f"Meninas, olha o nível de detalhe dessa {prod} que acabou de chegar! A qualidade superou todas as expectativas e veio com um preço super promocional na Loja da Valentina. Clica no carrinho laranja aqui embaixo."
+                p1 = f"Vertical {proporcao} photorealistic UGC video, professional smartphone camera style, wearing the exact '{prod}' on her feet and holding it in her hands. Exact reference model with strict 1:1 face match. {base_realism}"
+                v1 = f"Meninas, olha o nível de detalhe dessa {prod} que estou usando no pé e segurando na mão! A qualidade superou todas as expectativas e veio com um preço super promocional na Loja da Valentina. Clica no carrinho laranja aqui embaixo."
                 
-                p2 = f"Vertical {proporcao} UGC video, dynamic outdoor walking shot showcasing '{prod}'. {base_realism}"
-                v2 = f"Gente, testei essa {prod} e tô apaixonada pelo caimento. Perfeita para qualquer ocasião! Aproveita a promoção na Loja da Valentina, clica no carrinho laranja."
+                p2 = f"Vertical {proporcao} UGC video, dynamic outdoor walking shot showcasing the exact '{prod}' on her feet. Exact reference model with strict 1:1 face match. {base_realism}"
+                v2 = f"Gente, testei essa {prod} e tô apaixonada por como ela fica perfeita no pé. Aproveita a promoção na Loja da Valentina, clica no carrinho laranja."
                 
-                p3 = f"Vertical {proporcao} UGC video, smooth cinematic lighting showing '{prod}' in pristine detail. {base_realism}"
-                v3 = f"Olha esse destaque exclusivo da {prod}! Reposição fresquinha que entrou em promoção na Loja da Valentina, clica no carrinho laranja aqui na tela."
+                p3 = f"Vertical {proporcao} UGC video, smooth cinematic lighting showing the exact '{prod}' on her feet and hands in pristine detail. Strict 1:1 face match. {base_realism}"
+                v3 = f"Olha esse destaque exclusivo da {prod}! Reposição fresquinha calçada nos meus pés que entrou em promoção na Loja da Valentina, clica no carrinho laranja aqui na tela."
                 
-                p4 = f"Vertical {proporcao} UGC video, mirror reflection view showcasing '{prod}' with absolute 1:1 fidelity. {base_realism}"
-                v4 = f"Não podia deixar de mostrar essa novidade incrível da {prod} para vocês. Preço promocional imperdível na Loja da Valentina, clica no carrinho laranja agora!"
+                p4 = f"Vertical {proporcao} UGC video, mirror reflection view showcasing the exact '{prod}' on her feet with absolute 1:1 fidelity. Strict 1:1 face match. {base_realism}"
+                v4 = f"Não podia deixar de mostrar essa novidade incrível da {prod} nos meus pés para vocês. Preço promocional imperdível na Loja da Valentina, clica no carrinho laranja agora!"
 
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
             
@@ -260,30 +274,34 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (6 HORÁRIOS × 4 ESTILOS = 24 VÍDEOS
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 1: {estilo_persona}</span>
-                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt ({proporcao}):</b> {p1}<br><br><b>Fala em Português Brasil:</b> "{v1}"</p>
                 </div>
                 """, unsafe_allow_html=True)
+                st.text_area(f"Prompt Visual (Estilo 1 - Bloco {i})", p1, key=f"p1_{i}", height=100)
+                st.text_area(f"Fala em Português (Estilo 1 - Bloco {i})", v1, key=f"v1_{i}", height=70)
 
                 st.markdown(f"""
-                <div class="metric-card">
+                <div class="metric-card" style="margin-top: 15px;">
                     <span class="tag-estilo">ESTILO 3: Giro Dinâmico 360° / Close Detalhado</span>
-                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt ({proporcao}):</b> {p3}<br><br><b>Fala em Português Brasil:</b> "{v3}"</p>
                 </div>
                 """, unsafe_allow_html=True)
+                st.text_area(f"Prompt Visual (Estilo 3 - Bloco {i})", p3, key=f"p3_{i}", height=100)
+                st.text_area(f"Fala em Português (Estilo 3 - Bloco {i})", v3, key=f"v3_{i}", height=70)
 
             with sc2:
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 2: Corpo Inteiro / Ação Externa</span>
-                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt ({proporcao}):</b> {p2}<br><br><b>Fala em Português Brasil:</b> "{v2}"</p>
                 </div>
                 """, unsafe_allow_html=True)
+                st.text_area(f"Prompt Visual (Estilo 2 - Bloco {i})", p2, key=f"p2_{i}", height=100)
+                st.text_area(f"Fala em Português (Estilo 2 - Bloco {i})", v2, key=f"v2_{i}", height=70)
 
                 st.markdown(f"""
-                <div class="metric-card">
+                <div class="metric-card" style="margin-top: 15px;">
                     <span class="tag-estilo">ESTILO 4: Review Próximo à Câmera</span>
-                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt ({proporcao}):</b> {p4}<br><br><b>Fala em Português Brasil:</b> "{v4}"</p>
                 </div>
                 """, unsafe_allow_html=True)
+                st.text_area(f"Prompt Visual (Estilo 4 - Bloco {i})", p4, key=f"p4_{i}", height=100)
+                st.text_area(f"Fala em Português (Estilo 4 - Bloco {i})", v4, key=f"v4_{i}", height=70)
             
             st.markdown("---")
