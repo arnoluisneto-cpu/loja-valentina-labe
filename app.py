@@ -1,13 +1,12 @@
 import streamlit as st
 
-# Configuração da Página
 st.set_page_config(
     page_title="Loja da Valentina - TikTok Shop",
     page_icon="💜",
     layout="wide"
 )
 
-# Estilização CSS personalizada (Estética Roxa Nubank + Verde Limão Neon + Campos Compactos e Limpos)
+# CSS Totalmente Forçado para sobrepor os padrões do Streamlit
 st.markdown("""
     <style>
     .stApp {
@@ -18,7 +17,7 @@ st.markdown("""
         background-color: #0b0914 !important;
     }
     
-    /* Botão Principal em Verde Limão Neon */
+    /* Botões em Verde Limão Neon */
     .stButton>button {
         background-color: #00FF66 !important;
         color: #000000 !important;
@@ -34,31 +33,54 @@ st.markdown("""
         color: #ffffff !important;
     }
     
-    /* Banner Principal Valentina Estilo Nubank com Sombra Neon */
+    /* Banner Principal Valentina */
     .hero-banner {
         background: linear-gradient(135deg, #161026 0%, #22153b 100%);
         border: 2px solid #8A2BE2;
-        padding: 18px;
-        border-radius: 14px;
+        padding: 16px;
+        border-radius: 12px;
         text-align: center;
-        margin-bottom: 20px;
+        margin-bottom: 15px;
         box-shadow: 0px 0px 20px rgba(138, 43, 226, 0.3);
     }
     .hero-title {
-        font-size: 34px;
+        font-size: 32px;
         font-weight: 900;
-        letter-spacing: 6px;
+        letter-spacing: 5px;
         color: #00FF66 !important;
-        text-shadow: 0 0 12px rgba(0, 255, 102, 0.5);
+        text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
         margin: 0;
     }
     
-    /* Blocos de Upload Compactos com Borda Verde Limão */
+    /* Forçar uploads a ficarem escuros com borda verde limão */
     div[data-testid="stFileUploader"] {
-        border: 1px solid #00FF66 !important;
-        border-radius: 10px !important;
-        padding: 8px !important;
         background-color: #161026 !important;
+        border: 2px solid #00FF66 !important;
+        border-radius: 10px !important;
+        padding: 10px !important;
+    }
+    div[data-testid="stFileUploader"] section {
+        background-color: #161026 !important;
+    }
+    div[data-testid="stFileUploader"] span, div[data-testid="stFileUploader"] small, div[data-testid="stFileUploader"] p {
+        color: #ffffff !important;
+    }
+    
+    /* Caixas de input e select compactas e escuras */
+    .stTextInput>div>div>input, .stSelectbox>div>div>select {
+        background-color: #161026 !important;
+        color: #ffffff !important;
+        border: 1px solid #8A2BE2 !important;
+        border-radius: 8px !important;
+    }
+    
+    input, select {
+        color: #ffffff !important;
+    }
+    
+    ::placeholder {
+        color: #b0bec5 !important;
+        opacity: 1 !important;
     }
     
     /* Cartões de Resultados */
@@ -70,7 +92,6 @@ st.markdown("""
         margin-bottom: 15px;
     }
     
-    /* Tags de Estilo */
     .tag-estilo {
         background-color: #00FF66 !important;
         color: #000000 !important;
@@ -80,39 +101,21 @@ st.markdown("""
         font-size: 12px;
     }
     
-    /* Textos, Labels e Inputs legíveis com placeholders claros */
     h1, h2, h3, label, .stMarkdown {
         color: #ffffff !important;
-    }
-    
-    .stTextInput>div>div>input, .stSelectbox>div>div>select {
-        background-color: #161026 !important;
-        color: #ffffff !important;
-        border: 1px solid #8A2BE2 !important;
-        border-radius: 8px !important;
-    }
-    
-    input, select, textarea {
-        color: #ffffff !important;
-    }
-    
-    /* Forçar cor clara para os placeholders de exemplo */
-    ::placeholder {
-        color: #a0a0a0 !important;
-        opacity: 1 !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# 1. BANNER PRINCIPAL DA VALENTINA NO TOPO
+# 1. VALENTINA NO TOPO
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">VALENTINA</h1>
-        <p style="color: #b0bec5; font-size: 12px; margin-top: 4px; margin-bottom: 0; letter-spacing: 1px;">LOJA DA VALENTINA • TIKTOK SHOP</p>
+        <p style="color: #b0bec5; font-size: 11px; margin-top: 3px; margin-bottom: 0; letter-spacing: 1px;">LOJA DA VALENTINA • TIKTOK SHOP</p>
     </div>
 """, unsafe_allow_html=True)
 
-# 2. SELETORES COMPACTOS ABAIXO (Skin, Proporção, Estilo com 10+ opções)
+# 2. SELETORES LOGO ABAIXO EM CAIXAS COMPACTAS
 c_top1, c_top2, c_top3 = st.columns(3)
 with c_top1:
     diretor_skin = st.selectbox("Diretor Skin", ["BOY (Elite Director)", "VALENTINA MASTER"])
@@ -134,7 +137,7 @@ with c_top3:
 
 st.markdown("---")
 
-# 3. ENTRADAS COMPACTAS E ORGANIZADAS EM DUAS COLUNAS
+# 3. ENTRADAS DO PRODUTO E UPLOADS COM UMA LARGURA MAIS COMPACTA
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
@@ -151,8 +154,11 @@ with col_input1:
     ])
     
 with col_input2:
-    foto_modelo = st.file_uploader("Foto Modelo", type=["jpg", "jpeg", "png"])
-    foto_peca = st.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"])
+    st.markdown("<p style='font-size:14px; font-weight:600; margin-bottom:5px;'>Foto Modelo</p>", unsafe_allow_html=True)
+    foto_modelo = st.file_uploader("Upload Modelo", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
+    
+    st.markdown("<p style='font-size:14px; font-weight:600; margin-top:10px; margin-bottom:5px;'>Foto Produto</p>", unsafe_allow_html=True)
+    foto_peca = st.file_uploader("Upload Produto", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
 
 st.markdown("---")
 
@@ -163,7 +169,6 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
     else:
         st.success("✅ Pacote gerado com sucesso! Grade de 6 horários e fidelidade 1:1 aplicadas.")
         
-        # Os 6 Horários Estratégicos Oficiais
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
             "12:00 - Almoço (Pico de Engajamento)",
@@ -173,7 +178,6 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        # Direcionamento ótico rigoroso da câmera por categoria
         if "Calçado" in tipo_produto:
             foco_cam = f"Camera pans smoothly down from the model's face to a macro close-up of the exact footwear '{produto_nome}' from the uploaded reference image, showing precise texture, straps, and heel. Strict 1:1 product match."
         elif "Pulso" in tipo_produto:
@@ -183,7 +187,6 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
         else:
             foco_cam = f"Full-body head-to-toe tracking shot showing the exact clothing piece '{produto_nome}' and outfit details matching the reference image."
 
-        # Loop gerando os 6 horários com identidades únicas para cada bloco
         for i, h in enumerate(horarios):
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
             
