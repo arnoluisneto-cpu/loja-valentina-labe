@@ -2,7 +2,7 @@ import streamlit as st
 import random
 
 st.set_page_config(
-    page_title="Val AI Engine - TikTok Shop Automation",
+    page_title="Valentina Labs - TikTok Shop Automation",
     page_icon="💜",
     layout="wide"
 )
@@ -126,10 +126,10 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 1. TOPO COMERCIAL
+# 1. TOPO COMERCIAL COM NOME NOVO
 st.markdown("""
     <div class="hero-banner">
-        <h1 class="hero-title">VAL AI ENGINE</h1>
+        <h1 class="hero-title">VALENTINA LABS</h1>
         <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">MÁQUINA DE VÍDEOS EM MASSA • TIKTOK SHOP AUTOMATION</p>
     </div>
 """, unsafe_allow_html=True)
