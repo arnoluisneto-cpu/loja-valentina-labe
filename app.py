@@ -6,25 +6,20 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- ESTILIZAÇÃO NEON DARK TOTAL (Forçando fundo roxo escuro em todos os elementos) ---
+# --- ESTILIZAÇÃO NEON PRO COM MÁXIMA LEGIDIBILIDADE ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap');
 
-    /* Fundo Principal do App Inteiro */
+    /* Fundo Principal do App */
     .stApp {
-        background: radial-gradient(circle at top, #181035 0%, #090714 60%, #05040a 100%) !important;
-        color: #ffffff !important;
-    }
-
-    /* Forçar fundo escuro em blocos e containers brancos do Streamlit */
-    div[data-testid="stVerticalBlock"] > div {
+        background: radial-gradient(circle at top, #1a103c 0%, #0c091d 60%, #06040c 100%) !important;
         color: #ffffff !important;
     }
 
     /* Banner Superior VALENTINA */
     .valentina-banner {
-        background: linear-gradient(180deg, rgba(30, 16, 68, 0.9) 0%, rgba(12, 9, 26, 0.95) 100%);
+        background: linear-gradient(180deg, rgba(35, 18, 77, 0.95) 0%, rgba(14, 10, 32, 0.98) 100%);
         border: 2px solid #a855f7;
         box-shadow: 0 0 25px rgba(168, 85, 247, 0.5), inset 0 0 15px rgba(56, 189, 248, 0.2);
         border-radius: 14px;
@@ -48,7 +43,7 @@ st.markdown("""
     }
     .valentina-subtitle {
         font-family: 'Montserrat', sans-serif !important;
-        color: #e2e8f0 !important;
+        color: #f1f5f9 !important;
         font-size: 13px !important;
         font-weight: 700 !important;
         letter-spacing: 1.5px;
@@ -56,41 +51,47 @@ st.markdown("""
         text-transform: uppercase;
     }
 
-    /* Textos, Labels e Títulos em Branco Nítido */
-    h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown, div[data-baseweb="select"] span {
+    /* Rótulos (Labels) dos inputs bem claros e visíveis */
+    .stTextInput label, .stTextArea label, .stSelectbox label, .stFileUploader label {
         color: #f8fafc !important;
+        font-weight: 600 !important;
+        font-size: 14px !important;
     }
 
-    /* Inputs, Textareas e Uploaders com Fundo Roxo Escuro e Borda Neon */
+    /* Inputs, Textareas e Selectboxes com fundo mais claro e texto 100% branco */
     .stTextInput input, .stTextArea textarea, .stSelectbox [data-baseweb="select"] {
-        background-color: #0d0b1e !important;
+        background-color: #17122e !important;
         color: #ffffff !important;
         border: 1.5px solid #a855f7 !important;
         border-radius: 8px !important;
         padding: 8px 12px !important;
         font-size: 14px !important;
-        box-shadow: 0 0 10px rgba(168, 85, 247, 0.25);
+        box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
     }
-    
-    /* Caixa de Uploader (Eliminando o fundo branco nativo) */
+
+    /* Deixar o texto digitado e o placeholder (exemplo) bem claros e legíveis */
+    .stTextInput input::placeholder, .stTextArea textarea::placeholder {
+        color: #94a3b8 !important;
+        opacity: 1 !important;
+    }
+
+    /* Caixa de Uploader */
     [data-testid="stFileUploader"] {
-        background-color: #0d0b1e !important;
+        background-color: #17122e !important;
         border: 1.5px dashed #a855f7 !important;
         border-radius: 8px !important;
         padding: 10px !important;
         color: #ffffff !important;
     }
     [data-testid="stFileUploader"] section {
-        background-color: #120e26 !important;
+        background-color: #1f173d !important;
         border-radius: 6px !important;
     }
-    [data-testid="stFileUploader"] button {
-        background-color: #7c3aed !important;
-        color: #ffffff !important;
-        border: none !important;
+    [data-testid="stFileUploader"] span, [data-testid="stFileUploader"] small {
+        color: #cbd5e1 !important;
     }
 
-    /* Foco nos Campos */
+    /* Foco nos Campos (Verde Neon) */
     .stTextInput input:focus, .stTextArea textarea:focus {
         border-color: #4ade80 !important;
         box-shadow: 0 0 16px rgba(74, 222, 128, 0.6) !important;
@@ -118,8 +119,11 @@ st.markdown("""
 
     /* Sidebar Escura */
     [data-testid="stSidebar"] {
-        background-color: #080612 !important;
+        background-color: #0b0817 !important;
         border-right: 1px solid #3b0764;
+    }
+    [data-testid="stSidebar"] label, [data-testid="stSidebar"] span, [data-testid="stSidebar"] h2 {
+        color: #f8fafc !important;
     }
     </style>
 """, unsafe_allow_html=True)
