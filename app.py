@@ -159,7 +159,7 @@ with c_top3:
         "17. Unboxing Rasgando Pacote do TikTok Shop de Surpresa",
         "18. POV Saindo da Academia / Fitness Check com Estilo",
         "19. Provador em Duas Cores (Mostrando Qual Cor Escolher)",
-        "20. "POV Encontro Noturno / Night Out Look Reveal"
+        '20. POV Encontro Noturno / Night Out Look Reveal'
     ])
 
 st.markdown("---")
