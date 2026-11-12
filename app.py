@@ -6,7 +6,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- ESTILIZAÇÃO COM UPLOADERS EM VERDE NEON ---
+# --- ESTILIZAÇÃO COM UPLOADERS EM VERDE LIMÃO NEON ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap');
@@ -75,42 +75,42 @@ st.markdown("""
         opacity: 1 !important;
     }
 
-    /* --- BOTÕES DE UPLOAD EM VERDE NEON --- */
+    /* --- BOTÕES DE UPLOAD EM VERDE LIMÃO NEON --- */
     [data-testid="stFileUploader"] {
         background-color: #17122e !important;
-        border: 2px dashed #4ade80 !important; /* Borda tracejada Verde Neon */
+        border: 2px dashed #a3e635 !important; /* Borda tracejada Verde Limão Neon */
         border-radius: 8px !important;
         padding: 10px !important;
-        box-shadow: 0 0 12px rgba(74, 222, 128, 0.25);
+        box-shadow: 0 0 15px rgba(163, 230, 53, 0.35);
     }
     [data-testid="stFileUploader"] section {
-        background-color: #122018 !important; /* Fundo esverdeado escuro sutil */
+        background-color: #1a2412 !important; /* Fundo verde limão bem escuro */
         border-radius: 6px !important;
     }
-    /* Botão interno do uploader em Verde Neon vibrante */
+    /* Botão interno do uploader em Verde Limão vibrante */
     [data-testid="stFileUploader"] button {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
-        color: #ffffff !important;
-        border: 1px solid #4ade80 !important;
-        font-weight: 700 !important;
-        box-shadow: 0 0 15px rgba(74, 222, 128, 0.5) !important;
+        background: linear-gradient(135deg, #bef264 0%, #84cc16 100%) !important;
+        color: #090d04 !important; /* Texto escuro para máximo contraste no verde limão */
+        border: 1px solid #ecfccb !important;
+        font-weight: 800 !important;
+        box-shadow: 0 0 18px rgba(163, 230, 53, 0.65) !important;
     }
     [data-testid="stFileUploader"] span, [data-testid="stFileUploader"] small {
-        color: #e2e8f0 !important;
+        color: #ecfccb !important;
     }
 
-    /* Foco nos Campos de Texto (Verde Neon) */
+    /* Foco nos Campos de Texto (Verde Limão) */
     .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #4ade80 !important;
-        box-shadow: 0 0 16px rgba(74, 222, 128, 0.6) !important;
+        border-color: #a3e635 !important;
+        box-shadow: 0 0 16px rgba(163, 230, 53, 0.6) !important;
     }
 
     /* Botão Principal Estilo Neon */
     .stButton>button {
         width: 100%;
-        background: linear-gradient(90deg, #7c3aed 0%, #2563eb 50%, #10b981 100%) !important;
+        background: linear-gradient(90deg, #7c3aed 0%, #2563eb 50%, #84cc16 100%) !important;
         color: #ffffff !important;
-        border: 1.5px solid #4ade80 !important;
+        border: 1.5px solid #a3e635 !important;
         border-radius: 8px !important;
         font-weight: 800 !important;
         padding: 0.7rem 1.5rem !important;
@@ -121,7 +121,7 @@ st.markdown("""
         transition: all 0.3s ease;
     }
     .stButton>button:hover {
-        box-shadow: 0 0 30px rgba(74, 222, 128, 0.8);
+        box-shadow: 0 0 30px rgba(163, 230, 53, 0.85);
         transform: scale(1.01);
     }
 
