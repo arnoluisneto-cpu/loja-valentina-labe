@@ -2,15 +2,14 @@ import streamlit as st
 
 # Configuração da Página
 st.set_page_config(
-    page_title="Loja da Valentina - TikTok Shop Viral Lab",
+    page_title="Loja da Valentina - TikTok Shop",
     page_icon="💜",
     layout="wide"
 )
 
-# Estilização CSS rigorosa para forçar o tema roxo profundo + detalhes verde limão (Estética Exata da sua Foto)
+# Estilização CSS personalizada (Estética Roxa Nubank + Verde Limão Neon + Campos Limpios)
 st.markdown("""
     <style>
-    /* Força o fundo escuro global do Streamlit */
     .stApp {
         background-color: #0b0914 !important;
         color: #ffffff !important;
@@ -35,22 +34,30 @@ st.markdown("""
         color: #ffffff !important;
     }
     
-    /* Banner Principal Roxo (Estilo Nubank) */
+    /* Banner Principal Valentina Estilo Nubank com Sombra e Letra Forte */
     .hero-banner {
-        background: linear-gradient(135deg, #1e1333 0%, #2a1b4e 100%);
+        background: linear-gradient(135deg, #161026 0%, #22153b 100%);
         border: 2px solid #8A2BE2;
-        padding: 30px;
+        padding: 25px;
         border-radius: 16px;
         text-align: center;
-        margin-bottom: 25px;
-        box-shadow: 0px 0px 25px rgba(138, 43, 226, 0.4);
+        margin-bottom: 20px;
+        box-shadow: 0px 0px 25px rgba(138, 43, 226, 0.3);
+    }
+    .hero-title {
+        font-size: 38px;
+        font-weight: 900;
+        letter-spacing: 6px;
+        color: #00FF66 !important;
+        text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+        margin: 0;
     }
     
-    /* Cartões de Métricas e Blocos */
+    /* Cartões e Blocos */
     .metric-card {
         background-color: #161026 !important;
         border: 1px solid #8A2BE2 !important;
-        padding: 20px;
+        padding: 18px;
         border-radius: 12px;
         margin-bottom: 15px;
     }
@@ -65,70 +72,69 @@ st.markdown("""
         font-size: 12px;
     }
     
-    /* Cores de Títulos */
+    /* Textos, Labels e Inputs legíveis com fundo escuro correto */
     h1, h2, h3, label, .stMarkdown {
         color: #ffffff !important;
     }
     
-    /* Inputs e Caixas de Seleção com Estética Roxa */
     .stTextInput>div>div>input, .stSelectbox>div>div>select {
         background-color: #161026 !important;
         color: #ffffff !important;
         border: 1px solid #8A2BE2 !important;
         border-radius: 8px !important;
     }
+    
+    /* Ajuste de visibilidade do texto digitado nos inputs */
+    input {
+        color: #ffffff !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# Topo: Seletores (Diretor Skin, Proporção e Estilo) idênticos à sua referência
-col_top1, col_top2, col_top3 = st.columns(3)
-
-with col_top1:
-    diretor_skin = st.selectbox("⚡ Diretor Skin", ["BOY (Elite Director)", "VALENTINA MASTER"])
-
-with col_top2:
-    proporcao = st.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)", "16:9 (YouTube)"])
-
-with col_top3:
-    estilo_persona = st.selectbox("Estilo de Vídeo", ["Pietra (Tendência & Lifestyle)", "UGC Fotorrealista 1:1"])
+# Topo: Seletores compactos (Skin, Proporção e Estilo)
+c1, c2, c3 = st.columns(3)
+with c1:
+    diretor_skin = st.selectbox("Diretor Skin", ["BOY (Elite Director)", "VALENTINA MASTER"])
+with c2:
+    proporcao = st.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"])
+with c3:
+    estilo_persona = st.selectbox("Estilo de Vídeo", ["Pietra (Tendência & Lifestyle)", "UGC Fotorrealista"])
 
 st.markdown("---")
 
-# Banner Central com a identidade visual roxa da sua foto
+# Banner Central Valentina estilizado e compacto
 st.markdown("""
     <div class="hero-banner">
-        <h1 style="letter-spacing: 4px; margin-bottom: 5px; color: #00FF66 !important;">VALENTINA</h1>
-        <p style="color: #b0bec5; font-size: 14px; margin: 0;">LOJA DA VALENTINA • TIKTOK SHOP VIRAL LAB • PARÂMETROS DE VÍDEO</p>
+        <h1 class="hero-title">VALENTINA</h1>
+        <p style="color: #b0bec5; font-size: 13px; margin-top: 5px; margin-bottom: 0; letter-spacing: 1px;">LOJA DA VALENTINA • TIKTOK SHOP</p>
     </div>
 """, unsafe_allow_html=True)
 
-# Layout de Entradas (Parâmetros e Uploads)
+# Layout de Entradas Diretas e Limpas (Sem excesso de títulos gigantes)
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
-    st.markdown("### 🎯 Parâmetros do Produto")
-    produto_nome = st.text_input("Produto / Peça Principal", placeholder="Ex: Sandália Preta Salto Bloco...")
-    produto_ref = st.text_input("Link ou Código de Referência", placeholder="Ex: REF-092 ou Link do TikTok Shop")
-    tipo_produto = st.selectbox("Categoria de Foco da Câmera", [
+    produto_nome = st.text_input("Produto", placeholder="Ex: Sandália Preta Salto Bloco")
+    produto_ref = st.text_input("Link ou Código de Referência", placeholder="Ex: REF-092 ou Link")
+    tipo_produto = st.selectbox("Categoria", [
         "Calçado (Foco nos Pés / Descer Girando)", 
-        "Acessório de Pulso/Mão (Relógio, Pulseira)", 
+        "Acessório de Pulso (Relógio / Pulseira)", 
         "Acessório de Rosto (Óculos)", 
         "Vestuário / Corpo Inteiro"
     ])
     
 with col_input2:
-    st.markdown("### 📸 Fidelidade Absoluta (Upload Obrigatório)")
-    foto_modelo = st.file_uploader("Foto de Referência da Modelo", type=["jpg", "jpeg", "png"])
-    foto_peca = st.file_uploader("Foto Exata do Produto (Proibido gerar genérico)", type=["jpg", "jpeg", "png"])
+    foto_modelo = st.file_uploader("Foto da Modelo", type=["jpg", "jpeg", "png"])
+    foto_peca = st.file_uploader("Foto do Produto", type=["jpg", "jpeg", "png"])
 
 st.markdown("---")
 
-# Botão de Execução em Massa
+# Botão de Execução em Massa (6 Horários x 4 Estilos)
 if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
     if not produto_nome:
-        st.warning("⚠️ Por favor, informe o nome do produto principal.")
+        st.warning("⚠️ Por favor, informe o nome do produto.")
     else:
-        st.success("✅ Pacote gerado com sucesso! Fidelidade 1:1 e distribuição em 6 horários aplicadas.")
+        st.success("✅ Pacote gerado com sucesso! Grade de 6 horários e fidelidade 1:1 aplicadas.")
         
         # Os 6 Horários Estratégicos Oficiais
         horarios = [
@@ -154,9 +160,9 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
         for i, h in enumerate(horarios):
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
             
-            c1, c2 = st.columns(2)
+            sc1, sc2 = st.columns(2)
             
-            with c1:
+            with sc1:
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 1: POV Imersivo</span>
@@ -171,7 +177,7 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
                 </div>
                 """, unsafe_allow_html=True)
 
-            with c2:
+            with sc2:
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 2: Corpo Inteiro na Rua</span>
