@@ -6,7 +6,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS Definitivo para exterminar qualquer fundo ou borda branca dos seletores e inputs
+# CSS Ultra-Agressivo para forçar cor verde limão em absolutamente tudo (incluindo setas e selects)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -54,11 +54,11 @@ st.markdown("""
         margin: 0;
     }
     
-    /* Forçar Inputs, Selects, Dropdowns e Setas em Verde Limão Neon e fundo roxo escuro */
+    /* Forçar Inputs, Selects e Dropdowns com fundo roxo escuro e borda/detalhes em Verde Limão */
     input, select, textarea, div[data-baseweb="select"] > div {
         background-color: #161026 !important;
         color: #ffffff !important;
-        border: 1px solid #00FF66 !important;
+        border: 1.5px solid #00FF66 !important;
         border-radius: 8px !important;
         font-family: 'Inter', sans-serif !important;
     }
@@ -66,19 +66,21 @@ st.markdown("""
     .stTextInput>div>div>input, .stSelectbox>div>div>select {
         background-color: #161026 !important;
         color: #ffffff !important;
-        border: 1px solid #00FF66 !important;
+        border: 1.5px solid #00FF66 !important;
         border-radius: 8px !important;
     }
     
-    /* Forçar setas e ícones dos dropdowns em Verde Limão */
-    div[data-baseweb="select"] svg {
+    /* Forçar setas e ícones dos dropdowns em Verde Limão Neon absoluto */
+    div[data-baseweb="select"] svg, span[data-baseweb="icon"] svg {
         fill: #00FF66 !important;
+        color: #00FF66 !important;
     }
     
+    /* Caixas de opções suspensas dos selects */
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
         background-color: #161026 !important;
         color: #ffffff !important;
-        border: 1px solid #00FF66 !important;
+        border: 1.5px solid #00FF66 !important;
     }
 
     /* Blocos de Upload com Fundo Escuro e Borda Verde Limão */
