@@ -1,4 +1,3 @@
-
 import streamlit as st
 
 # Configuração da Página com Estética Dark Neon e Verde Limão
@@ -8,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# Estilização CSS personalizada (Neon & Dark Mode)
+# Estilização CSS personalizada (Estética Original Dark Neon / Verde Limão)
 st.markdown("""
     <style>
     .main {
@@ -38,31 +37,39 @@ st.markdown("""
     .tag-estilo {
         background-color: #00FF66;
         color: #000000;
-        padding: 3px 8px;
+        padding: 4px 10px;
         border-radius: 4px;
         font-weight: bold;
         font-size: 12px;
     }
+    h1, h2, h3 {
+        color: #00FF66 !important;
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# Cabeçalho Principal
-st.markdown("<h1 style='text-align: center; color: #00FF66;'>⚡ LOJA DA VALENTINA • MÃOS, PÉS & PRODUTO RIGOROSO ⚡</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #888888;'>Geração em Massa com Fidelidade 1:1 (Modelo + Produto Real) e 6 Horários Estratégicos</p>", unsafe_allow_html=True)
+# Cabeçalho Principal com a Identidade Visual da Loja
+st.markdown("<h1 style='text-align: center;'>⚡ LOJA DA VALENTINA • TIKTOK SHOP VIRAL LAB ⚡</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #888888;'>Painel de Produção em Massa • Fidelidade 1:1 Absoluta (Modelo + Produto Real) • 6 Horários</p>", unsafe_allow_html=True)
 st.markdown("---")
 
-# Layout de Entradas
+# Layout de Entradas em Colunas
 col1, col2 = st.columns(2)
 
 with col1:
     st.markdown("### 🎯 Parâmetros do Produto")
-    produto_nome = st.text_input("Nome do Produto / Peça Principal", placeholder="Ex: Sandália Preta Salto Bloco / Relógio Dourado / Óculos")
+    produto_nome = st.text_input("Nome do Produto / Peça Principal", placeholder="Ex: Sandália Preta Salto Bloco")
     produto_ref = st.text_input("Link ou Código de Referência", placeholder="Ex: REF-092 ou Link do TikTok Shop")
-    tipo_produto = st.selectbox("Categoria de Foco da Câmera", ["Calçado (Foco nos Pés / Descer Girando)", "Acessório de Pulso/Mão (Relógio, Pulseira)", "Acessório de Rosto (Óculos)", "Vestuário / Corpo Inteiro"])
+    tipo_produto = st.selectbox("Categoria de Foco da Câmera", [
+        "Calçado (Foco nos Pés / Descer Girando)", 
+        "Acessório de Pulso/Mão (Relógio, Pulseira)", 
+        "Acessório de Rosto (Óculos)", 
+        "Vestuário / Corpo Inteiro"
+    ])
     
 with col2:
     st.markdown("### 📸 Fidelidade Absoluta (Upload Obrigatório)")
-    foto_modelo = st.file_uploader("Foto de Referência da Modelo (Rosto/Traço exato)", type=["jpg", "jpeg", "png"])
+    foto_modelo = st.file_uploader("Foto de Referência da Modelo", type=["jpg", "jpeg", "png"])
     foto_peca = st.file_uploader("Foto Exata do Produto (Proibido gerar genérico)", type=["jpg", "jpeg", "png"])
 
 st.markdown("---")
@@ -72,9 +79,9 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome do produto principal.")
     else:
-        st.success("✅ Sistema blindado gerado com sucesso! Fidelidade 1:1 aplicada a todas as copys e prompts.")
+        st.success("✅ Pacote gerado com sucesso! Estética preservada e fidelidade 1:1 rigorosa aplicada aos prompts.")
         
-        # Os 6 Horários Estratégicos
+        # Os 6 Horários Estratégicos Oficiais
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
             "12:00 - Almoço (Pico de Engajamento)",
@@ -84,7 +91,7 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        # Mapeamento do foco da câmera baseado na categoria
+        # Direcionamento ótico da câmera por categoria
         if "Calçado" in tipo_produto:
             foco_cam = "Camera pans smoothly down from the model's face to a macro close-up of the exact feet wearing the reference footwear, showing precise texture, straps, and heel."
         elif "Pulso" in tipo_produto:
@@ -94,7 +101,7 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
         else:
             foco_cam = "Full-body head-to-toe tracking shot showing the exact clothing piece and outfit details matching the reference image."
 
-        # Loop gerando os 6 horários com identidades únicas
+        # Loop gerando os 6 horários com identidades únicas para cada bloco
         for i, h in enumerate(horarios):
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
             
