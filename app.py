@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS Comercial / Padrão Multinacional Gringa
+# CSS Comercial Limpo e Direto / Padrão Multinacional Gringa
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -134,7 +134,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 2. SELETORES COM DESCRIÇÃO COMERCIAL DIRETA
+# 2. SELETORES NO TOPO (LIMPOS E SEM TEXTOS EXTRAS)
 c_top1, c_top2, c_top3 = st.columns(3)
 with c_top1:
     diretor_skin = st.selectbox(
@@ -144,17 +144,10 @@ with c_top1:
             "UGC LIFESTYLE (Influencer & Conversão)"
         ]
     )
-    if "DIRECTOR PRO" in diretor_skin:
-        st.markdown("<p style='font-size: 11px; color: #00FF66; margin-top: -10px;'>💡 Foco em lentes profissionais, alta nitidez e rigidez técnica.</p>", unsafe_allow_html=True)
-    else:
-        st.markdown("<p style='font-size: 11px; color: #00FF66; margin-top: -10px;'>💡 Foco em conexão humana, unboxing e tom de influenciadora.</p>", unsafe_allow_html=True)
-
 with c_top2:
     proporcao = st.selectbox("FORMATO DE VÍDEO", ["9:16 (TikTok / Reels)", "16:9 (YouTube / Wide)", "1:1 (Feed)"])
-    st.markdown("<p style='font-size: 11px; color: #b0bec5; margin-top: -10px;'>💡 Otimizado para a plataforma escolhida.</p>", unsafe_allow_html=True)
-
 with c_top3:
-    estilo_persona = st.selectbox("ESTILO DE CONTEÚDO (NARRATIVA)", [
+    estilo_persona = st.selectbox("ESTILO DE CONTEÚDO", [
         "1. Caminhão e Van do TikTok Shop Chegando de Ré na Casa com Caixas",
         "2. POV Acordando na Cama (Morning Routine com o Produto)",
         "3. POV Arrumando o Closet / Selecionando Peças",
@@ -176,11 +169,10 @@ with c_top3:
         "19. POV Saindo da Academia / Fitness Check com Estilo",
         "20. POV Encontro Noturno / Night Out Look Reveal"
     ])
-    st.markdown("<p style='font-size: 11px; color: #b0bec5; margin-top: -10px;'>💡 Formato viral extraído das maiores tendências.</p>", unsafe_allow_html=True)
 
 st.markdown("---")
 
-# 3. ENTRADAS DO PRODUTO E UPLOADS COM FOCO COMERCIAL
+# 3. ENTRADAS DO PRODUTO E UPLOADS
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
