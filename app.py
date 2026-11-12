@@ -6,7 +6,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# --- ESTILIZAÇÃO NEON PRO COM MÁXIMA LEGIDIBILIDADE ---
+# --- ESTILIZAÇÃO COM UPLOADERS EM VERDE NEON ---
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap');
@@ -51,14 +51,14 @@ st.markdown("""
         text-transform: uppercase;
     }
 
-    /* Rótulos (Labels) dos inputs bem claros e visíveis */
+    /* Rótulos (Labels) dos inputs */
     .stTextInput label, .stTextArea label, .stSelectbox label, .stFileUploader label {
         color: #f8fafc !important;
         font-weight: 600 !important;
         font-size: 14px !important;
     }
 
-    /* Inputs, Textareas e Selectboxes com fundo mais claro e texto 100% branco */
+    /* Inputs, Textareas e Selectboxes */
     .stTextInput input, .stTextArea textarea, .stSelectbox [data-baseweb="select"] {
         background-color: #17122e !important;
         color: #ffffff !important;
@@ -69,29 +69,37 @@ st.markdown("""
         box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
     }
 
-    /* Deixar o texto digitado e o placeholder (exemplo) bem claros e legíveis */
+    /* Textos de exemplo (placeholder) legíveis */
     .stTextInput input::placeholder, .stTextArea textarea::placeholder {
         color: #94a3b8 !important;
         opacity: 1 !important;
     }
 
-    /* Caixa de Uploader */
+    /* --- BOTÕES DE UPLOAD EM VERDE NEON --- */
     [data-testid="stFileUploader"] {
         background-color: #17122e !important;
-        border: 1.5px dashed #a855f7 !important;
+        border: 2px dashed #4ade80 !important; /* Borda tracejada Verde Neon */
         border-radius: 8px !important;
         padding: 10px !important;
-        color: #ffffff !important;
+        box-shadow: 0 0 12px rgba(74, 222, 128, 0.25);
     }
     [data-testid="stFileUploader"] section {
-        background-color: #1f173d !important;
+        background-color: #122018 !important; /* Fundo esverdeado escuro sutil */
         border-radius: 6px !important;
     }
+    /* Botão interno do uploader em Verde Neon vibrante */
+    [data-testid="stFileUploader"] button {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%) !important;
+        color: #ffffff !important;
+        border: 1px solid #4ade80 !important;
+        font-weight: 700 !important;
+        box-shadow: 0 0 15px rgba(74, 222, 128, 0.5) !important;
+    }
     [data-testid="stFileUploader"] span, [data-testid="stFileUploader"] small {
-        color: #cbd5e1 !important;
+        color: #e2e8f0 !important;
     }
 
-    /* Foco nos Campos (Verde Neon) */
+    /* Foco nos Campos de Texto (Verde Neon) */
     .stTextInput input:focus, .stTextArea textarea:focus {
         border-color: #4ade80 !important;
         box-shadow: 0 0 16px rgba(74, 222, 128, 0.6) !important;
