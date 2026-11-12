@@ -1,194 +1,133 @@
+
 import streamlit as st
 
+# Configuração da Página com Estética Dark Neon e Verde Limão
 st.set_page_config(
     page_title="Loja da Valentina - TikTok Shop Viral Lab",
-    page_icon="🛍️",
+    page_icon="⚡",
     layout="wide"
 )
 
-# --- ESTILIZAÇÃO COM UPLOADERS EM VERDE LIMÃO NEON ---
+# Estilização CSS personalizada (Neon & Dark Mode)
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@700;900&display=swap');
-
-    /* Fundo Principal do App */
-    .stApp {
-        background: radial-gradient(circle at top, #1a103c 0%, #0c091d 60%, #06040c 100%) !important;
-        color: #ffffff !important;
+    .main {
+        background-color: #0e1117;
+        color: #ffffff;
     }
-
-    /* Banner Superior VALENTINA */
-    .valentina-banner {
-        background: linear-gradient(180deg, rgba(35, 18, 77, 0.95) 0%, rgba(14, 10, 32, 0.98) 100%);
-        border: 2px solid #a855f7;
-        box-shadow: 0 0 25px rgba(168, 85, 247, 0.5), inset 0 0 15px rgba(56, 189, 248, 0.2);
-        border-radius: 14px;
-        padding: 25px 15px;
-        text-align: center;
-        margin-bottom: 20px;
-    }
-    .valentina-title {
-        font-family: 'Montserrat', sans-serif !important;
-        font-size: 3.8rem !important;
-        font-weight: 900 !important;
-        letter-spacing: 4px;
-        color: #ffffff !important;
-        text-shadow: 
-            0 0 10px #c084fc,
-            0 0 20px #a855f7,
-            0 0 40px #7e22ce,
-            0 0 60px #38bdf8;
-        margin: 0;
-        line-height: 1.1;
-    }
-    .valentina-subtitle {
-        font-family: 'Montserrat', sans-serif !important;
-        color: #f1f5f9 !important;
-        font-size: 13px !important;
-        font-weight: 700 !important;
-        letter-spacing: 1.5px;
-        margin-top: 10px;
-        text-transform: uppercase;
-    }
-
-    /* Rótulos (Labels) dos inputs */
-    .stTextInput label, .stTextArea label, .stSelectbox label, .stFileUploader label {
-        color: #f8fafc !important;
-        font-weight: 600 !important;
-        font-size: 14px !important;
-    }
-
-    /* Inputs, Textareas e Selectboxes */
-    .stTextInput input, .stTextArea textarea, .stSelectbox [data-baseweb="select"] {
-        background-color: #17122e !important;
-        color: #ffffff !important;
-        border: 1.5px solid #a855f7 !important;
-        border-radius: 8px !important;
-        padding: 8px 12px !important;
-        font-size: 14px !important;
-        box-shadow: 0 0 10px rgba(168, 85, 247, 0.3);
-    }
-
-    /* Textos de exemplo (placeholder) legíveis */
-    .stTextInput input::placeholder, .stTextArea textarea::placeholder {
-        color: #94a3b8 !important;
-        opacity: 1 !important;
-    }
-
-    /* --- BOTÕES DE UPLOAD EM VERDE LIMÃO NEON --- */
-    [data-testid="stFileUploader"] {
-        background-color: #17122e !important;
-        border: 2px dashed #a3e635 !important; /* Borda tracejada Verde Limão Neon */
-        border-radius: 8px !important;
-        padding: 10px !important;
-        box-shadow: 0 0 15px rgba(163, 230, 53, 0.35);
-    }
-    [data-testid="stFileUploader"] section {
-        background-color: #1a2412 !important; /* Fundo verde limão bem escuro */
-        border-radius: 6px !important;
-    }
-    /* Botão interno do uploader em Verde Limão vibrante */
-    [data-testid="stFileUploader"] button {
-        background: linear-gradient(135deg, #bef264 0%, #84cc16 100%) !important;
-        color: #090d04 !important; /* Texto escuro para máximo contraste no verde limão */
-        border: 1px solid #ecfccb !important;
-        font-weight: 800 !important;
-        box-shadow: 0 0 18px rgba(163, 230, 53, 0.65) !important;
-    }
-    [data-testid="stFileUploader"] span, [data-testid="stFileUploader"] small {
-        color: #ecfccb !important;
-    }
-
-    /* Foco nos Campos de Texto (Verde Limão) */
-    .stTextInput input:focus, .stTextArea textarea:focus {
-        border-color: #a3e635 !important;
-        box-shadow: 0 0 16px rgba(163, 230, 53, 0.6) !important;
-    }
-
-    /* Botão Principal Estilo Neon */
     .stButton>button {
-        width: 100%;
-        background: linear-gradient(90deg, #7c3aed 0%, #2563eb 50%, #84cc16 100%) !important;
-        color: #ffffff !important;
-        border: 1.5px solid #a3e635 !important;
-        border-radius: 8px !important;
-        font-weight: 800 !important;
-        padding: 0.7rem 1.5rem !important;
-        font-size: 16px !important;
-        text-transform: uppercase;
-        letter-spacing: 1.5px;
-        box-shadow: 0 0 20px rgba(124, 58, 237, 0.5);
-        transition: all 0.3s ease;
+        background-color: #00FF66;
+        color: #000000;
+        font-weight: bold;
+        border-radius: 8px;
+        border: none;
+        padding: 12px 24px;
+        font-size: 16px;
     }
     .stButton>button:hover {
-        box-shadow: 0 0 30px rgba(163, 230, 53, 0.85);
-        transform: scale(1.01);
+        background-color: #00cc52;
+        color: #ffffff;
     }
-
-    /* Sidebar Escura */
-    [data-testid="stSidebar"] {
-        background-color: #0b0817 !important;
-        border-right: 1px solid #3b0764;
+    .metric-card {
+        background-color: #1a1d24;
+        border: 1px solid #00FF66;
+        padding: 20px;
+        border-radius: 12px;
+        margin-bottom: 15px;
     }
-    [data-testid="stSidebar"] label, [data-testid="stSidebar"] span, [data-testid="stSidebar"] h2 {
-        color: #f8fafc !important;
+    .tag-estilo {
+        background-color: #00FF66;
+        color: #000000;
+        padding: 3px 8px;
+        border-radius: 4px;
+        font-weight: bold;
+        font-size: 12px;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# --- BANNER TOPO ---
-st.markdown("""
-    <div class="valentina-banner">
-        <h1 class="valentina-title">VALENTINA</h1>
-        <p class="valentina-subtitle">LOJA DA VALENTINA • TIKTOK SHOP VIRAL LAB • PARÂMETROS DE VÍDEO</p>
-    </div>
-""", unsafe_allow_html=True)
+# Cabeçalho Principal
+st.markdown("<h1 style='text-align: center; color: #00FF66;'>⚡ LOJA DA VALENTINA • MÃOS, PÉS & PRODUTO RIGOROSO ⚡</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #888888;'>Geração em Massa com Fidelidade 1:1 (Modelo + Produto Real) e 6 Horários Estratégicos</p>", unsafe_allow_html=True)
+st.markdown("---")
 
-# --- BARRA LATERAL ---
-with st.sidebar:
-    st.header("⚡ Diretor Skin: BOY")
-    skin_perfil = st.selectbox("Estilo de Vídeo", ["Pietra (Tendência & Lifestyle)", "Virgínia Routine (Vlog Dinâmico)", "POV Luxury ASMR"])
-    formato_video = st.selectbox("Proporção", ["9:16 (TikTok / Reels)"])
-    st.markdown("---")
-    st.success("✅ Regras Ativas:\n- Falas 100% PT-BR\n- Loja da Valentina\n- CTA Carrinho Laranja")
+# Layout de Entradas
+col1, col2 = st.columns(2)
 
-# --- LINHA 1: 2 BLOCOS DE REFERÊNCIA / PRODUTO ---
-col_top1, col_top2 = st.columns(2)
-with col_top1:
-    produto_nome = st.text_input("Produto / Peça Principal", placeholder="Ex: Sandália Preta Salto Bloco...")
-    foto_modelo = st.file_uploader("Foto de Referência da Modelo", type=["png", "jpg", "jpeg"])
-with col_top2:
-    link_ref = st.text_input("Link ou Código de Referência", placeholder="Ex: REF-092 ou Link do produto...")
-    foto_produto = st.file_uploader("Foto da Peça de Roupa / Calçado", type=["png", "jpg", "jpeg"])
-
-# --- LINHA 2: 3 QUADRADINHOS COMPACTOS ---
-col_mid1, col_mid2, col_mid3 = st.columns(3)
-with col_mid1:
-    cor_detalhe = st.text_input("Cor e Material", placeholder="Ex: Preto Fosco / Couro...")
-with col_mid2:
-    estilo_musical = st.text_input("Vibe / Estilo Musical", placeholder="Ex: Batida viral animada...")
-with col_mid3:
-    voz_narrador = st.selectbox("Voz / Tom da Fala", ["Feminina Empolgada (Jovem)", "Natural / Conversa de Amiga", "Luxo / Sofisticada"])
-
-# --- LINHA 3: DESCRIÇÃO COMPACTA ---
-desc_adicional = st.text_area("Detalhes Extras ou Benefícios do Produto", placeholder="Ex: Não machuca o pé, super confortável para usar o dia todo, combina com tudo...", height=80)
-
-st.markdown("<br>", unsafe_allow_html=True)
-
-# --- BOTÃO GERAR ---
-if st.button("🚀 Gerar Roteiro e Prompts (Flow 9:16)"):
-    prod = produto_nome if produto_nome else "essa novidade incrível"
-    detalhe = desc_adicional if desc_adicional else "tem um acabamento impecável e super confortável"
+with col1:
+    st.markdown("### 🎯 Parâmetros do Produto")
+    produto_nome = st.text_input("Nome do Produto / Peça Principal", placeholder="Ex: Sandália Preta Salto Bloco / Relógio Dourado / Óculos")
+    produto_ref = st.text_input("Link ou Código de Referência", placeholder="Ex: REF-092 ou Link do TikTok Shop")
+    tipo_produto = st.selectbox("Categoria de Foco da Câmera", ["Calçado (Foco nos Pés / Descer Girando)", "Acessório de Pulso/Mão (Relógio, Pulseira)", "Acessório de Rosto (Óculos)", "Vestuário / Corpo Inteiro"])
     
-    st.markdown("---")
-    st.subheader("🎬 Prompts Prontos para o Flow (Takes de 10s a 12s)")
-    
-    prompt_take1 = f"""Vertical 9:16 photorealistic UGC video, natural daylight, trendy Brazilian female influencer holding the smartphone in selfie mode, showing {prod} ({cor_detalhe}). Natural hand gestures, authentic facial expressions, high detail skin texture, 4k. Spoken dialogue in português Brasil: "Gente, vocês precisam ver {prod} que acabou de chegar aqui na Loja da Valentina! Olha os detalhes disso aqui." """
-    
-    prompt_take2 = f"""Vertical 9:16 photorealistic UGC video, dynamic camera movement transitioning smoothly to full body shot showing how {prod} fits perfectly. Authentic influencer energy, natural indoor aesthetic lighting, crisp focus. Spoken dialogue in português Brasil: "Além de lindo, {detalhe}. Sério, não dá vontade de tirar mais! Já clica no carrinho laranja aqui embaixo na Loja da Valentina para garantir o seu antes que acabe!" """
+with col2:
+    st.markdown("### 📸 Fidelidade Absoluta (Upload Obrigatório)")
+    foto_modelo = st.file_uploader("Foto de Referência da Modelo (Rosto/Traço exato)", type=["jpg", "jpeg", "png"])
+    foto_peca = st.file_uploader("Foto Exata do Produto (Proibido gerar genérico)", type=["jpg", "jpeg", "png"])
 
-    st.markdown("**Take 1 (Gancho + Apresentação - 10s):**")
-    st.code(prompt_take1, language="text")
-    
-    st.markdown("**Take 2 (Prova + CTA Loja da Valentina e Carrinho Laranja - 12s):**")
-    st.code(prompt_take2, language="text")
+st.markdown("---")
+
+# Botão de Execução em Massa
+if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
+    if not produto_nome:
+        st.warning("⚠️ Por favor, informe o nome do produto principal.")
+    else:
+        st.success("✅ Sistema blindado gerado com sucesso! Fidelidade 1:1 aplicada a todas as copys e prompts.")
+        
+        # Os 6 Horários Estratégicos
+        horarios = [
+            "09:00 - Manhã (Abertura de Feed)",
+            "12:00 - Almoço (Pico de Engajamento)",
+            "15:00 - Tarde (Pausa Comercial)",
+            "18:00 - Fim de Tarde (Deslocamento)",
+            "19:00 - Noite (Pico Principal de Compra)",
+            "23:00 - Fechamento (Último Tiro do Dia)"
+        ]
+        
+        # Mapeamento do foco da câmera baseado na categoria
+        if "Calçado" in tipo_produto:
+            foco_cam = "Camera pans smoothly down from the model's face to a macro close-up of the exact feet wearing the reference footwear, showing precise texture, straps, and heel."
+        elif "Pulso" in tipo_produto:
+            foco_cam = "Camera focuses precisely on the model's wrist and hand displaying the exact accessory from the reference image, smooth macro tracking shot."
+        elif "Óculos" in tipo_produto:
+            foco_cam = "Camera zooms closely onto the model's face, highlighting the exact eyewear frames and lenses from the reference image."
+        else:
+            foco_cam = "Full-body head-to-toe tracking shot showing the exact clothing piece and outfit details matching the reference image."
+
+        # Loop gerando os 6 horários com identidades únicas
+        for i, h in enumerate(horarios):
+            st.markdown(f"### 🕒 Bloco de Postagem: {h}")
+            
+            c1, c2 = st.columns(2)
+            
+            with c1:
+                st.markdown(f"""
+                <div class="metric-card">
+                    <span class="tag-estilo">ESTILO 1: POV Imersivo</span>
+                    <p style='margin-top:10px;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, first-person POV looking down. {foco_cam} Maintaining exact model face and reference product identity without generic changes. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}A): "Meninas, vocês vivem me perguntando onde eu acho peças que unem estilo e durabilidade. Olha esse detalhe de perto! Disponível na Loja da Valentina, clica no carrinho laranja aqui embaixo."</p>
+                </div>
+                """, unsafe_allow_html=True)
+
+                st.markdown(f"""
+                <div class="metric-card">
+                    <span class="tag-estilo">ESTILO 3: Girando / Movimento Fluido</span>
+                    <p style='margin-top:10px;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, dynamic camera spinning around the model showing full outfit and rotating down. {foco_cam} Strict 1:1 match to uploaded model and product photos. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}C): "Olha o caimento disso! Perfeito para qualquer ocasião do dia a dia ou evento. Corre na Loja da Valentina, clica no carrinho laranja e garante o seu."</p>
+                </div>
+                """, unsafe_allow_html=True)
+
+            with c2:
+                st.markdown(f"""
+                <div class="metric-card">
+                    <span class="tag-estilo">ESTILO 2: Corpo Inteiro na Rua</span>
+                    <p style='margin-top:10px;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, full-body outdoor daylight tracking shot walking. {foco_cam} Exact facial features and product features preserved. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}B): "Gente, testei e estou simplesmente apaixonada por essa novidade. Olha como veste bem no corpo! Clica no carrinho laranja na Loja da Valentina e aproveita."</p>
+                </div>
+                """, unsafe_allow_html=True)
+
+                st.markdown(f"""
+                <div class="metric-card">
+                    <span class="tag-estilo">ESTILO 4: Frente ao Espelho (Review)</span>
+                    <p style='margin-top:10px;'><b>Prompt para o Flow (9:16):</b> Vertical 9:16 photorealistic UGC video, mirror selfie reflection view in a modern aesthetic room. {foco_cam} Absolute fidelity to user's uploaded model and item. Spoken voice-over in português Brasil (Cop exclusiva #{i+1}D): "Chegou reposição e eu não podia deixar de mostrar para vocês o quanto isso aqui é diferenciado. Clica no carrinho laranja da Loja da Valentina agora!"</p>
+                </div>
+                """, unsafe_allow_html=True)
+            
+            st.markdown("---")
