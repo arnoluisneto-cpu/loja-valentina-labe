@@ -1,22 +1,22 @@
 import streamlit as st
 
-# Configuração da Página com Estética Dark Neon e Verde Limão
+# Configuração da Página com a Estética Roxa Exclusiva (Nubank Style)
 st.set_page_config(
     page_title="Loja da Valentina - TikTok Shop Viral Lab",
-    page_icon="⚡",
+    page_icon="💜",
     layout="wide"
 )
 
-# Estilização CSS personalizada (Estética Original Dark Neon / Verde Limão)
+# Estilização CSS personalizada (Estética Roxa / Dark Violet & Neon Accent)
 st.markdown("""
     <style>
     .main {
-        background-color: #0e1117;
+        background-color: #0b0914;
         color: #ffffff;
     }
     .stButton>button {
-        background-color: #00FF66;
-        color: #000000;
+        background-color: #8A2BE2;
+        color: #ffffff;
         font-weight: bold;
         border-radius: 8px;
         border: none;
@@ -24,33 +24,33 @@ st.markdown("""
         font-size: 16px;
     }
     .stButton>button:hover {
-        background-color: #00cc52;
+        background-color: #7b1fa2;
         color: #ffffff;
     }
     .metric-card {
-        background-color: #1a1d24;
-        border: 1px solid #00FF66;
+        background-color: #171426;
+        border: 1px solid #8A2BE2;
         padding: 20px;
         border-radius: 12px;
         margin-bottom: 15px;
     }
     .tag-estilo {
-        background-color: #00FF66;
-        color: #000000;
+        background-color: #8A2BE2;
+        color: #ffffff;
         padding: 4px 10px;
         border-radius: 4px;
         font-weight: bold;
         font-size: 12px;
     }
     h1, h2, h3 {
-        color: #00FF66 !important;
+        color: #b388ff !important;
     }
     </style>
 """, unsafe_allow_html=True)
 
-# Cabeçalho Principal com a Identidade Visual da Loja
-st.markdown("<h1 style='text-align: center;'>⚡ LOJA DA VALENTINA • TIKTOK SHOP VIRAL LAB ⚡</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: #888888;'>Painel de Produção em Massa • Fidelidade 1:1 Absoluta (Modelo + Produto Real) • 6 Horários</p>", unsafe_allow_html=True)
+# Cabeçalho Principal com a Identidade Visual Roxa
+st.markdown("<h1 style='text-align: center;'>💜 LOJA DA VALENTINA • TIKTOK SHOP VIRAL LAB 💜</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: #b0bec5;'>Painel de Produção em Massa • Fidelidade 1:1 Absoluta (Modelo + Produto Real) • 6 Horários</p>", unsafe_allow_html=True)
 st.markdown("---")
 
 # Layout de Entradas em Colunas
@@ -79,7 +79,7 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome do produto principal.")
     else:
-        st.success("✅ Pacote gerado com sucesso! Estética preservada e fidelidade 1:1 rigorosa aplicada aos prompts.")
+        st.success("✅ Pacote gerado com sucesso! Estética roxa preservada e fidelidade 1:1 rigorosa aplicada aos prompts.")
         
         # Os 6 Horários Estratégicos Oficiais
         horarios = [
