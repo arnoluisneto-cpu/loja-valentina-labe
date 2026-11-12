@@ -6,18 +6,16 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS Totalmente Forçado para sobrepor os padrões do Streamlit
+# CSS Definitivo e Agressivo para exterminar qualquer fundo branco nativo do Streamlit
 st.markdown("""
     <style>
-    .stApp {
+    /* Fundo geral da aplicação */
+    .stApp, .main, div[data-testid="stVerticalBlock"] {
         background-color: #0b0914 !important;
         color: #ffffff !important;
     }
-    .main {
-        background-color: #0b0914 !important;
-    }
     
-    /* Botões em Verde Limão Neon */
+    /* Botão Principal em Verde Limão Neon */
     .stButton>button {
         background-color: #00FF66 !important;
         color: #000000 !important;
@@ -52,7 +50,32 @@ st.markdown("""
         margin: 0;
     }
     
-    /* Forçar uploads a ficarem escuros com borda verde limão */
+    /* Forçar Inputs, Selects e Dropdowns a ficarem Roxos com texto Branco */
+    input, select, textarea, div[data-baseweb="select"] > div {
+        background-color: #161026 !important;
+        color: #ffffff !important;
+        border-color: #8A2BE2 !important;
+    }
+    
+    .stTextInput>div>div>input, .stSelectbox>div>div>select {
+        background-color: #161026 !important;
+        color: #ffffff !important;
+        border: 1px solid #8A2BE2 !important;
+        border-radius: 8px !important;
+    }
+    
+    /* Forçar cor dos selects e dropdowns nativos do Streamlit */
+    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
+        background-color: #161026 !important;
+        color: #ffffff !important;
+    }
+    
+    span[data-baseweb="tag"] {
+        background-color: #8A2BE2 !important;
+        color: #ffffff !important;
+    }
+
+    /* Uploads com fundo escuro e borda em Verde Limão Neon */
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 2px solid #00FF66 !important;
@@ -63,18 +86,6 @@ st.markdown("""
         background-color: #161026 !important;
     }
     div[data-testid="stFileUploader"] span, div[data-testid="stFileUploader"] small, div[data-testid="stFileUploader"] p {
-        color: #ffffff !important;
-    }
-    
-    /* Caixas de input e select compactas e escuras */
-    .stTextInput>div>div>input, .stSelectbox>div>div>select {
-        background-color: #161026 !important;
-        color: #ffffff !important;
-        border: 1px solid #8A2BE2 !important;
-        border-radius: 8px !important;
-    }
-    
-    input, select {
         color: #ffffff !important;
     }
     
@@ -115,29 +126,31 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 2. SELETORES LOGO ABAIXO EM CAIXAS COMPACTAS
+# 2. SELETORES LOGO ABAIXO EM CAIXAS COMPACTAS (Estilo Roxo Nubank com letras brancas)
 c_top1, c_top2, c_top3 = st.columns(3)
 with c_top1:
     diretor_skin = st.selectbox("Diretor Skin", ["BOY (Elite Director)", "VALENTINA MASTER"])
 with c_top2:
     proporcao = st.selectbox("Proporção", ["9:16 (TikTok / Reels)", "16:9 (YouTube / Wide)", "1:1 (Feed)"])
 with c_top3:
-    estilo_persona = st.selectbox("Estilo de Vídeo", [
-        "1. POV Imersivo (Olhando para Baixo)",
-        "2. Corpo Inteiro na Rua (Caminhando)",
-        "3. Frente ao Espelho (Mirror Selfie)",
-        "4. Giro Dinâmico 360° (Mostrando Look)",
-        "5. Close Macro Cirúrgico (Foco no Detalhe)",
-        "6. Provador de Loja (Review Rápido)",
-        "7. Unboxing & Revelação de Surpresa",
-        "8. Transição Rápida de Looks (Trend)",
-        "9. Rotina do Dia a Dia (Lifestyle)",
-        "10. Review Sincero (Boca a Boca)"
+    estilo_persona = st.selectbox("Estilo de Vídeo (Viral TikTok)", [
+        "1. POV Acordando na Cama (Morning Routine)",
+        "2. POV Arrumando o Closet / Provador",
+        "3. POV Imersivo (Olhando para Baixo nos Pés)",
+        "4. Corpo Inteiro na Rua (Caminhando no Calçadão)",
+        "5. Frente ao Espelho (Mirror Selfie com Transição)",
+        "6. Giro Dinâmico 360° (Mostrando Caimento)",
+        "7. Close Macro Cirúrgico (Foco Total no Detalhe)",
+        "8. Unboxing Surpresa em Cima da Mesa",
+        "9. Transição Rápida de Looks (Trend Viral)",
+        "10. Vlog de Rotina Diária (Estilo Virgínia)",
+        "11. Review Sincero Boca a Boca (De Perto)",
+        "12. Provador Rápido de Loja Física"
     ])
 
 st.markdown("---")
 
-# 3. ENTRADAS DO PRODUTO E UPLOADS COM UMA LARGURA MAIS COMPACTA
+# 3. ENTRADAS DO PRODUTO E UPLOADS COM BORDA VERDE LIMÃO
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
@@ -154,10 +167,10 @@ with col_input1:
     ])
     
 with col_input2:
-    st.markdown("<p style='font-size:14px; font-weight:600; margin-bottom:5px;'>Foto Modelo</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:14px; font-weight:600; margin-bottom:5px; color:#ffffff;'>Foto Modelo</p>", unsafe_allow_html=True)
     foto_modelo = st.file_uploader("Upload Modelo", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
     
-    st.markdown("<p style='font-size:14px; font-weight:600; margin-top:10px; margin-bottom:5px;'>Foto Produto</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:14px; font-weight:600; margin-top:10px; margin-bottom:5px; color:#ffffff;'>Foto Produto</p>", unsafe_allow_html=True)
     foto_peca = st.file_uploader("Upload Produto", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
 
 st.markdown("---")
