@@ -6,29 +6,33 @@ st.set_page_config(
     layout="wide"
 )
 
-# CSS Definitivo e Agressivo para exterminar qualquer fundo branco nativo do Streamlit
+# CSS Definitivo para o Verde Limão nos Uploads e Tipografia Moderna
 st.markdown("""
     <style>
-    /* Fundo geral da aplicação */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+    
     .stApp, .main, div[data-testid="stVerticalBlock"] {
         background-color: #0b0914 !important;
         color: #ffffff !important;
+        font-family: 'Inter', sans-serif !important;
     }
     
-    /* Botão Principal em Verde Limão Neon */
-    .stButton>button {
+    /* Botão Principal e Botões de Upload em Verde Limão Neon com Texto Preto */
+    .stButton>button, div[data-testid="stFileUploader"] button {
         background-color: #00FF66 !important;
         color: #000000 !important;
-        font-weight: bold !important;
+        font-weight: 700 !important;
         border-radius: 8px !important;
         border: none !important;
-        padding: 12px 24px !important;
-        font-size: 16px !important;
-        width: 100% !important;
+        padding: 10px 20px !important;
+        font-size: 15px !important;
     }
-    .stButton>button:hover {
+    .stButton>button:hover, div[data-testid="stFileUploader"] button:hover {
         background-color: #00cc52 !important;
         color: #ffffff !important;
+    }
+    .stButton>button {
+        width: 100% !important;
     }
     
     /* Banner Principal Valentina */
@@ -50,11 +54,12 @@ st.markdown("""
         margin: 0;
     }
     
-    /* Forçar Inputs, Selects e Dropdowns a ficarem Roxos com texto Branco */
+    /* Caixas de input, select e dropdowns */
     input, select, textarea, div[data-baseweb="select"] > div {
         background-color: #161026 !important;
         color: #ffffff !important;
         border-color: #8A2BE2 !important;
+        font-family: 'Inter', sans-serif !important;
     }
     
     .stTextInput>div>div>input, .stSelectbox>div>div>select {
@@ -64,23 +69,17 @@ st.markdown("""
         border-radius: 8px !important;
     }
     
-    /* Forçar cor dos selects e dropdowns nativos do Streamlit */
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
         background-color: #161026 !important;
         color: #ffffff !important;
     }
-    
-    span[data-baseweb="tag"] {
-        background-color: #8A2BE2 !important;
-        color: #ffffff !important;
-    }
 
-    /* Uploads com fundo escuro e borda em Verde Limão Neon */
+    /* Bloco de Upload com Fundo Escuro e Borda Verde Limão */
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 2px solid #00FF66 !important;
         border-radius: 10px !important;
-        padding: 10px !important;
+        padding: 12px !important;
     }
     div[data-testid="stFileUploader"] section {
         background-color: #161026 !important;
@@ -114,6 +113,7 @@ st.markdown("""
     
     h1, h2, h3, label, .stMarkdown {
         color: #ffffff !important;
+        font-family: 'Inter', sans-serif !important;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -126,14 +126,14 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 2. SELETORES LOGO ABAIXO EM CAIXAS COMPACTAS (Estilo Roxo Nubank com letras brancas)
+# 2. SELETORES NO TOPO ABAIXO DA VALENTINA
 c_top1, c_top2, c_top3 = st.columns(3)
 with c_top1:
-    diretor_skin = st.selectbox("Diretor Skin", ["BOY (Elite Director)", "VALENTINA MASTER"])
+    diretor_skin = st.selectbox("DIRETOR SKIN", ["BOY (Elite Director)", "VALENTINA MASTER"])
 with c_top2:
-    proporcao = st.selectbox("Proporção", ["9:16 (TikTok / Reels)", "16:9 (YouTube / Wide)", "1:1 (Feed)"])
+    proporcao = st.selectbox("PROPORÇÃO", ["9:16 (TikTok / Reels)", "16:9 (YouTube / Wide)", "1:1 (Feed)"])
 with c_top3:
-    estilo_persona = st.selectbox("Estilo de Vídeo (Viral TikTok)", [
+    estilo_persona = st.selectbox("ESTILO DE VÍDEO (VIRAL TIKTOK)", [
         "1. POV Acordando na Cama (Morning Routine)",
         "2. POV Arrumando o Closet / Provador",
         "3. POV Imersivo (Olhando para Baixo nos Pés)",
@@ -150,13 +150,13 @@ with c_top3:
 
 st.markdown("---")
 
-# 3. ENTRADAS DO PRODUTO E UPLOADS COM BORDA VERDE LIMÃO
+# 3. ENTRADAS DO PRODUTO E UPLOADS COM BOTÃO VERDE LIMÃO
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
-    produto_nome = st.text_input("Produto", placeholder="Ex: Sandália Preta Salto Bloco")
-    produto_ref = st.text_input("Link ou Código de Referência", placeholder="Ex: REF-092 ou Link TikTok Shop")
-    tipo_produto = st.selectbox("Categoria", [
+    produto_nome = st.text_input("PRODUTO", placeholder="Ex: Sandália Preta Salto Bloco")
+    produto_ref = st.text_input("LINK OU CÓDIGO DE REFERÊNCIA", placeholder="Ex: REF-092 ou Link TikTok Shop")
+    tipo_produto = st.selectbox("CATEGORIA", [
         "Calçado (Foco nos Pés / Descer Girando)", 
         "Acessório de Pulso (Relógio / Pulseira)", 
         "Acessório de Rosto (Óculos)", 
@@ -167,11 +167,11 @@ with col_input1:
     ])
     
 with col_input2:
-    st.markdown("<p style='font-size:14px; font-weight:600; margin-bottom:5px; color:#ffffff;'>Foto Modelo</p>", unsafe_allow_html=True)
-    foto_modelo = st.file_uploader("Upload Modelo", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
+    st.markdown("<p style='font-size:14px; font-weight:600; margin-bottom:5px; color:#ffffff;'>FOTO MODELO</p>", unsafe_allow_html=True)
+    foto_modelo = st.file_uploader("Upload Modelo", type=["jpg", "jpeg", "png"], key="m", label_visibility="collapsed")
     
-    st.markdown("<p style='font-size:14px; font-weight:600; margin-top:10px; margin-bottom:5px; color:#ffffff;'>Foto Produto</p>", unsafe_allow_html=True)
-    foto_peca = st.file_uploader("Upload Produto", type=["jpg", "jpeg", "png"], label_visibility="collapsed")
+    st.markdown("<p style='font-size:14px; font-weight:600; margin-top:10px; margin-bottom:5px; color:#ffffff;'>FOTO PRODUTO</p>", unsafe_allow_html=True)
+    foto_peca = st.file_uploader("Upload Produto", type=["jpg", "jpeg", "png"], key="p", label_visibility="collapsed")
 
 st.markdown("---")
 
