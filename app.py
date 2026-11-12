@@ -2,12 +2,12 @@ import streamlit as st
 import random
 
 st.set_page_config(
-    page_title="Loja da Valentina - TikTok Shop",
+    page_title="Val AI Engine - TikTok Shop Automation",
     page_icon="💜",
     layout="wide"
 )
 
-# CSS Definitivo para o padrão Nubank / Verde Limão Neon com Layout Limpo
+# CSS Comercial / Padrão Multinacional Gringa
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -25,8 +25,8 @@ st.markdown("""
         font-weight: 700 !important;
         border-radius: 8px !important;
         border: none !important;
-        padding: 10px 20px !important;
-        font-size: 15px !important;
+        padding: 12px 20px !important;
+        font-size: 16px !important;
     }
     .stButton>button:hover, div[data-testid="stFileUploader"] button:hover {
         background-color: #00cc52 !important;
@@ -36,26 +36,26 @@ st.markdown("""
         width: 100% !important;
     }
     
-    /* Banner Principal Valentina */
+    /* Banner Principal Comercial */
     .hero-banner {
         background: linear-gradient(135deg, #161026 0%, #22153b 100%);
         border: 2px solid #8A2BE2;
-        padding: 16px;
+        padding: 20px;
         border-radius: 12px;
         text-align: center;
-        margin-bottom: 15px;
-        box-shadow: 0px 0px 20px rgba(138, 43, 226, 0.3);
+        margin-bottom: 20px;
+        box-shadow: 0px 0px 25px rgba(138, 43, 226, 0.4);
     }
     .hero-title {
-        font-size: 32px;
+        font-size: 34px;
         font-weight: 900;
-        letter-spacing: 5px;
+        letter-spacing: 4px;
         color: #00FF66 !important;
-        text-shadow: 0 0 10px rgba(0, 255, 102, 0.4);
+        text-shadow: 0 0 12px rgba(0, 255, 102, 0.5);
         margin: 0;
     }
     
-    /* Inputs, Selects e Dropdowns com fundo roxo escuro e borda/detalhes em Verde Limão */
+    /* Inputs, Selects e Dropdowns com fundo roxo escuro e borda em Verde Limão */
     input, select, textarea, div[data-baseweb="select"] > div {
         background-color: #161026 !important;
         color: #ffffff !important;
@@ -71,20 +71,18 @@ st.markdown("""
         border-radius: 8px !important;
     }
     
-    /* Forçar setas e ícones dos dropdowns em Verde Limão Neon absoluto */
     div[data-baseweb="select"] svg, span[data-baseweb="icon"] svg {
         fill: #00FF66 !important;
         color: #00FF66 !important;
     }
     
-    /* Caixas de opções suspensas dos selects */
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
         background-color: #161026 !important;
         color: #ffffff !important;
         border: 1.5px solid #00FF66 !important;
     }
 
-    /* Blocos de Upload com Fundo Escuro e Borda Verde Limão */
+    /* Blocos de Upload */
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 2px solid #00FF66 !important;
@@ -128,22 +126,35 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 1. VALENTINA NO TOPO
+# 1. TOPO COMERCIAL
 st.markdown("""
     <div class="hero-banner">
-        <h1 class="hero-title">VALENTINA</h1>
-        <p style="color: #b0bec5; font-size: 11px; margin-top: 3px; margin-bottom: 0; letter-spacing: 1px;">LOJA DA VALENTINA • TIKTOK SHOP</p>
+        <h1 class="hero-title">VAL AI ENGINE</h1>
+        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">MÁQUINA DE VÍDEOS EM MASSA • TIKTOK SHOP AUTOMATION</p>
     </div>
 """, unsafe_allow_html=True)
 
-# 2. SELETORES NO TOPO COM BORDAS E DETALHES EM VERDE LIMÃO
+# 2. SELETORES COM DESCRIÇÃO COMERCIAL DIRETA
 c_top1, c_top2, c_top3 = st.columns(3)
 with c_top1:
-    diretor_skin = st.selectbox("DIRETOR SKIN", ["BOY (Elite Director)", "VALENTINA MASTER"])
+    diretor_skin = st.selectbox(
+        "MOTOR DE INTELIGÊNCIA (SKIN)", 
+        [
+            "DIRECTOR PRO (Cinematográfico & 1:1)", 
+            "UGC LIFESTYLE (Influencer & Conversão)"
+        ]
+    )
+    if "DIRECTOR PRO" in diretor_skin:
+        st.markdown("<p style='font-size: 11px; color: #00FF66; margin-top: -10px;'>💡 Foco em lentes profissionais, alta nitidez e rigidez técnica.</p>", unsafe_allow_html=True)
+    else:
+        st.markdown("<p style='font-size: 11px; color: #00FF66; margin-top: -10px;'>💡 Foco em conexão humana, unboxing e tom de influenciadora.</p>", unsafe_allow_html=True)
+
 with c_top2:
-    proporcao = st.selectbox("PROPORÇÃO", ["9:16 (TikTok / Reels)", "16:9 (YouTube / Wide)", "1:1 (Feed)"])
+    proporcao = st.selectbox("FORMATO DE VÍDEO", ["9:16 (TikTok / Reels)", "16:9 (YouTube / Wide)", "1:1 (Feed)"])
+    st.markdown("<p style='font-size: 11px; color: #b0bec5; margin-top: -10px;'>💡 Otimizado para a plataforma escolhida.</p>", unsafe_allow_html=True)
+
 with c_top3:
-    estilo_persona = st.selectbox("ESTILO DE VÍDEO", [
+    estilo_persona = st.selectbox("ESTILO DE CONTEÚDO (NARRATIVA)", [
         "1. Caminhão e Van do TikTok Shop Chegando de Ré na Casa com Caixas",
         "2. POV Acordando na Cama (Morning Routine com o Produto)",
         "3. POV Arrumando o Closet / Selecionando Peças",
@@ -165,16 +176,17 @@ with c_top3:
         "19. POV Saindo da Academia / Fitness Check com Estilo",
         "20. POV Encontro Noturno / Night Out Look Reveal"
     ])
+    st.markdown("<p style='font-size: 11px; color: #b0bec5; margin-top: -10px;'>💡 Formato viral extraído das maiores tendências.</p>", unsafe_allow_html=True)
 
 st.markdown("---")
 
-# 3. ENTRADAS DO PRODUTO E UPLOADS COM DESTAQUE VERDE LIMÃO
+# 3. ENTRADAS DO PRODUTO E UPLOADS COM FOCO COMERCIAL
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
-    produto_nome = st.text_input("PRODUTO", placeholder="Ex: Sandália Preta Salto Bloco")
+    produto_nome = st.text_input("NOME DO PRODUTO", placeholder="Ex: Sandália Preta Salto Bloco")
     produto_ref = st.text_input("LINK OU CÓDIGO DE REFERÊNCIA", placeholder="Ex: REF-092 ou Link TikTok Shop")
-    tipo_produto = st.selectbox("CATEGORIA", [
+    tipo_produto = st.selectbox("CATEGORIA DE ATUAÇÃO", [
         "Calçado (Foco nos Pés / Descer Girando)", 
         "Acessório de Pulso (Relógio / Pulseira)", 
         "Acessório de Rosto (Óculos)", 
@@ -185,15 +197,15 @@ with col_input1:
     ])
     
 with col_input2:
-    st.markdown("<p style='font-size:14px; font-weight:600; margin-bottom:5px; color:#ffffff;'>FOTO MODELO</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:14px; font-weight:600; margin-bottom:5px; color:#ffffff;'>FOTO DA MODELO (FIDELIDADE 1:1)</p>", unsafe_allow_html=True)
     foto_modelo = st.file_uploader("Upload Modelo", type=["jpg", "jpeg", "png"], key="m", label_visibility="collapsed")
     
-    st.markdown("<p style='font-size:14px; font-weight:600; margin-top:10px; margin-bottom:5px; color:#ffffff;'>FOTO PRODUTO</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:14px; font-weight:600; margin-top:10px; margin-bottom:5px; color:#ffffff;'>FOTO DO PRODUTO (ALTA DEFINIÇÃO)</p>", unsafe_allow_html=True)
     foto_peca = st.file_uploader("Upload Produto", type=["jpg", "jpeg", "png"], key="p", label_visibility="collapsed")
 
 st.markdown("---")
 
-# 4. BANCO DE VARIAÇÕES HUMANIZADAS (ANTI-DETECÇÃO DE ROBÔ / PADRÃO GRINGA)
+# 4. BANCO DE VARIAÇÕES HUMANIZADAS (ANTI-DETECÇÃO DE ROBÔ)
 hooks_abertura = [
     "Meninas, vocês não têm noção da quantidade de mensagens perguntando sobre essa peça.",
     "Gente, eu juro que tô chocada com a qualidade disso aqui, sério.",
@@ -213,11 +225,11 @@ ctas_fechamento = [
 ]
 
 # 5. BOTÃO DE EXECUÇÃO EM MASSA (6 Horários x 4 Estilos = 24 Vídeos Únicos)
-if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA UNIVERSAL)"):
+if st.button("🚀 GERAR PACOTE COMERCIAL (6 HORÁRIOS × 4 ESTILOS = 24 VÍDEOS)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome do produto.")
     else:
-        st.success("✅ Pacote internacional gerado com sucesso! 24 prompts com realismo total 1:1 e variações orgânicas aplicadas.")
+        st.success("✅ Pacote comercial gerado com sucesso! 24 prompts com realismo total e ganchos anti-bloqueio aplicados.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -228,7 +240,6 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA UNIVERSAL)"
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        # Engenharia de Prompt Ultra-Realista (Padrão Gringa Multinacional)
         base_realism = "Masterpiece, hyper-realistic 8k resolution, raw aesthetic, natural cinematic lighting, shot on 35mm lens, depth of field, zero digital artifacts, uncompromising 1:1 fidelity to reference face and product."
         
         if "Caminhão" in estilo_persona:
@@ -242,13 +253,11 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA UNIVERSAL)"
         else:
             foco_cam = f"Full-body head-to-toe dynamic tracking shot showing the exact clothing piece '{produto_nome}' and outfit details matching the reference image perfectly, authentic lighting. {base_realism}"
 
-        # Loop gerando os 6 blocos com 4 variações orgânicas e exclusivas cada
         for i, h in enumerate(horarios):
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
             
             sc1, sc2 = st.columns(2)
             
-            # Sorteio inteligente e estritamente rotativo para evitar repetição mecânica
             hook_1 = hooks_abertura[(i * 2) % len(hooks_abertura)]
             cta_1 = ctas_fechamento[(i * 2) % len(ctas_fechamento)]
             
@@ -265,29 +274,29 @@ if st.button("🚀 GERAR 6 HORÁRIOS × 4 ESTILOS (MÁQUINA EM MASSA UNIVERSAL)"
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 1: {estilo_persona}</span>
-                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt para o Flow ({proporcao}):</b> Vertical {proporcao} UGC video, professional smartphone camera style. {foco_cam} Strict preservation of original model facial structure and item details. Spoken voice-over in português Brasil (Variação orgânica #{i+1}A): "{hook_1} Olha esse detalhe de perto! {cta_1}"</p>
+                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt ({proporcao}):</b> Vertical {proporcao} UGC video, professional smartphone camera style. {foco_cam} Strict preservation of original model facial structure and item details. Spoken voice-over in português Brasil (Variação #{i+1}A): "{hook_1} Olha esse detalhe de perto! {cta_1}"</p>
                 </div>
                 """, unsafe_allow_html=True)
 
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 3: Giro Dinâmico 360°</span>
-                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt para o Flow ({proporcao}):</b> Vertical {proporcao} UGC video, smooth 360-degree orbital camera rotation around the model. {foco_cam} Absolute 1:1 match to uploaded model and reference asset. Spoken voice-over in português Brasil (Variação orgânica #{i+1}C): "{hook_3} O caimento disso aqui no corpo é impecável. {cta_3}"</p>
+                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt ({proporcao}):</b> Vertical {proporcao} UGC video, smooth 360-degree orbital camera rotation around the model. {foco_cam} Absolute 1:1 match to uploaded model and reference asset. Spoken voice-over in português Brasil (Variação #{i+1}C): "{hook_3} O caimento disso aqui no corpo é impecável. {cta_3}"</p>
                 </div>
                 """, unsafe_allow_html=True)
 
             with sc2:
                 st.markdown(f"""
-                <div class="nsetric-card" style="background-color: #161026; border: 1px solid #8A2BE2; padding: 16px; border-radius: 10px; margin-bottom: 15px;">
+                <div class="metric-card">
                     <span class="tag-estilo">ESTILO 2: Corpo Inteiro na Rua</span>
-                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt para o Flow ({proporcao}):</b> Vertical {proporcao} UGC video, dynamic daylight outdoor walking shot. {foco_cam} Zero facial morphing, perfect clothing fidelity. Spoken voice-over in português Brasil (Variação orgânica #{i+1}B): "{hook_2} Testei na rua e tô simplesmente apaixonada pelo resultado. {cta_2}"</p>
+                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt ({proporcao}):</b> Vertical {proporcao} UGC video, dynamic daylight outdoor walking shot. {foco_cam} Zero facial morphing, perfect clothing fidelity. Spoken voice-over in português Brasil (Variação #{i+1}B): "{hook_2} Testei na rua e tô simplesmente apaixonada pelo resultado. {cta_2}"</p>
                 </div>
                 """, unsafe_allow_html=True)
 
                 st.markdown(f"""
                 <div class="metric-card">
                     <span class="tag-estilo">ESTILO 4: Frente ao Espelho (Review)</span>
-                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt para o Flow ({proporcao}):</b> Vertical {proporcao} UGC video, authentic mirror reflection perspective in a luxury bedroom. {foco_cam} Pristine realism, zero visual distortions. Spoken voice-over in português Brasil (Variação orgânica #{i+1}D): "{hook_4} Não podia deixar de mostrar essa novidade pra vocês. {cta_4}"</p>
+                    <p style='margin-top:10px; color: #ffffff;'><b>Prompt ({proporcao}):</b> Vertical {proporcao} UGC video, authentic mirror reflection perspective in a luxury bedroom. {foco_cam} Pristine realism, zero visual distortions. Spoken voice-over in português Brasil (Variação #{i+1}D): "{hook_4} Não podia deixar de mostrar essa novidade pra vocês. {cta_4}"</p>
                 </div>
                 """, unsafe_allow_html=True)
             
