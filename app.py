@@ -208,7 +208,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (ENGINEERING GRADE)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
-        st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUCTO e da foto na descrição para ativar a precisão máxima.")
+        st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
         st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Matriz Latente Blindada.")
@@ -263,7 +263,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (ENGINEERING GRADE)"):
                     f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
                     f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
                     f"{base_negative}"
-                ]
+                )
             ]
 
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
