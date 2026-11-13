@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ESTÉTICA ORIGINAL TRAVADA + BOTÃO DE UPLOAD DO PRODUTO EM VERMELHO NEON EXATO
+# ESTÉTICA ORIGINAL EXATA + UPLOAD DO PRODUTO EM VERMELHO NEON E OS DEMAIS EM VERDE NEON
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -19,7 +19,6 @@ st.markdown("""
         font-family: 'Inter', sans-serif !important;
     }
     
-    /* Botões padrão do sistema (Verde Neon) */
     .stButton>button {
         background-color: #00FF66 !important;
         color: #000000 !important;
@@ -70,7 +69,7 @@ st.markdown("""
         border: 1.5px solid #00FF66 !important;
     }
     
-    /* Uploads Padrão (Verde Neon) */
+    /* UPLOADS PADRÃO (Verde Neon Original) */
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 2px solid #00FF66 !important;
@@ -82,16 +81,17 @@ st.markdown("""
         color: #ffffff !important;
     }
     
-    /* BOTÃO INTERNO DE UPLOAD DO PRODUTO EXCLUSIVAMENTE EM VERMELHO NEON */
-    .upload-vermelho-btn div[data-testid="stFileUploader"] {
+    /* UPLOAD DO PRODUTO (Exclusivamente em Vermelho Neon) */
+    .upload-vermelho-neon div[data-testid="stFileUploader"] {
         border: 2px solid #FF0055 !important;
+        background-color: #161026 !important;
     }
-    .upload-vermelho-btn button {
+    .upload-vermelho-neon button {
         background-color: #FF0055 !important;
         color: #ffffff !important;
         font-weight: 700 !important;
     }
-    .upload-vermelho-btn button:hover {
+    .upload-vermelho-neon button:hover {
         background-color: #cc0044 !important;
     }
     
@@ -165,14 +165,14 @@ with c_top3:
 
 st.markdown("---")
 
-# 3. ENTRADAS DO PRODUTO (COM O BOTÃO DE UPLOAD EM VERMELHO NEON EXATO)
+# 3. ENTRADAS DO PRODUTO (LADO ESQUERDO: VERMELHO NEON | LADO DIREITO: VERDE NEON ORIGINAL)
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
     produto_nome = st.text_input("NOME EXATO DO PRODUTO / SKU", placeholder="Ex: Sandália Vermelha Salto Bloco")
     
     st.markdown("<p style='font-size:13px; font-weight:700; margin-bottom:4px;'>DESCRIÇÃO DO PRODUTO - UPLOAD FOTO</p>", unsafe_allow_html=True)
-    st.markdown('<div class="upload-vermelho-btn">', unsafe_allow_html=True)
+    st.markdown('<div class="upload-vermelho-neon">', unsafe_allow_html=True)
     foto_produto_analise = st.file_uploader("Upload Foto Produto", type=["jpg", "jpeg", "png"], key="prod_upload_vermelho", label_visibility="collapsed")
     st.markdown('</div>', unsafe_allow_html=True)
 
@@ -217,7 +217,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ANÁLISE VISUAL (6 HORÁRIOS)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
-        st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na caixa de upload vermelha para ativar a precisão máxima.")
+        st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na caixa vermelha para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
         st.success(f"✅ Pacote gerado às {agora} | Análise Visual em Vermelho Neon e Travas 1:1 Ativas.")
@@ -255,11 +255,11 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ANÁLISE VISUAL (6 HORÁRIOS)"):
                 ),
                 (
                     "ESTILO 3: Close Macro de Detalhes",
-                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Macro close-up framing focusing tightly on '{produto_nome}' held steady in hands under warm ambient light, revealing precise surface finish, exact buckle dimensions, and exact brand lettering derived from visual analysis. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses): \"{h_hook} Olha bem de perto a textura... e o acabamento da {produto_nome} na minha mão. {h_cta}\". Zero artifacts, perfect fidelity. {base_negative}"
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Macro close-up framing focusing tightly on '{produto_nome}' held steady in hands under warm ambient light, revealing precise surface finish, exact buckle dimensions, and exact brand lettering derived from visual analysis. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses): \"{h_hook} Olha bem de perto a textura... e o acabamento da {produto_nome} na minha mão. {h_cta}\". Zero artifacts, perfect fidelity. {base_negative}"
                 ),
                 (
                     "ESTILO 4: Review no Espelho",
-                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Authentic mirror reflection video in a boutique dressing room. Creator holds smartphone, showcasing '{produto_nome}' clearly in the reflection. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses): \"{h_hook} Não podia deixar de gravar esse close no espelho... com a {produto_nome}. {h_cta}\". Continuous spatial continuity. {base_negative}"
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Authentic mirror reflection video in a boutique dressing room. Creator holds smartphone, showcasing '{produto_nome}' clearly in the reflection. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses): \"{h_hook} Não podia deixar de gravar esse close no espelho... com a {produto_nome}. {h_cta}\". Continuous spatial continuity. {base_negative}"
                 )
             ]
 
