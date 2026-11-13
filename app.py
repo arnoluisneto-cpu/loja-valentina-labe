@@ -113,7 +113,7 @@ st.markdown("""
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">VALENTINA LABS</h1>
-        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (LEAN 1:1 LOCKED)</p>
+        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (NATURAL & SMOOTH)</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -175,25 +175,25 @@ with col_input2:
 
 st.markdown("---")
 
-# 4. BANCO DE ROTEIROS ÚNICOS (13.5 SEGUNDOS COM CTA COMPLETA)
+# 4. BANCO DE ROTEIROS ÚNICOS (13.5 SEGUNDOS COM CTA COMPLETA E RESPIRO FINAL)
 roteiros_unicos = [
-    "Meninas, olha o que acabou de chegar exatamente como eu pedi, estou totalmente apaixonada por cada detalhe, e para garantir o seu com segurança, corre lá na Loja da Valentina e clica no carrinho laranja aqui embaixo na tela.",
-    "Gente, sério, recebi o produto exato da foto, precisava gravar bem de calma para vocês verem a qualidade real, e está com um preço promocional imperdível na Loja da Valentina, então clica no carrinho laranja aí embaixo e aproveita.",
-    "Olha, veio idêntico ao que está cadastrado, acabamento impecável, perfeito para o dia a dia e super confortável, já está disponível com frete rápido direto na Loja da Valentina, corre e clica no carrinho laranja aí na tela.",
-    "Vocês me pediram muito esse modelo exato, e ele chegou perfeito, superando todas as expectativas de acabamento, não perde tempo porque esgota rápido, garante o seu na Loja da Valentina clicando no carrinho laranja.",
-    "Meninas, reposição oficial do produto que vocês tanto queriam, chegou fresquinho para compor os melhores looks, corre para garantir o seu direto na Loja da Valentina, clica no carrinho laranja aqui embaixo e confere.",
-    "Para tudo e presta atenção na fidelidade absoluta desse produto, simplesmente maravilhoso e impecável em tudo, tudo disponível na Loja da Valentina, clica no carrinho laranja e aproveita a promoção especial de hoje."
+    "Meninas, olha o que acabou de chegar... exatamente como eu pedi, estou totalmente apaixonada... corre lá na Loja da Valentina... e clica no carrinho laranja aqui embaixo.",
+    "Gente, sério... recebi o produto exato da foto, precisava gravar com calma para vocês verem... está imperdível na Loja da Valentina... clica no carrinho laranja aí embaixo.",
+    "Olha, veio idêntico ao cadastrado, acabamento impecável, perfeito para o dia a dia... já está disponível na Loja da Valentina... corre e clica no carrinho laranja.",
+    "Vocês me pediram muito esse modelo exato, e ele chegou perfeito, superando expectativas... garante o seu na Loja da Valentina... clicando no carrinho laranja.",
+    "Meninas, reposição oficial do produto que vocês tanto queriam, chegou fresquinho... corre para garantir o seu direto na Loja da Valentina... clica no carrinho laranja.",
+    "Para tudo e presta atenção na fidelidade absoluta desse produto, simplesmente maravilhoso... tudo disponível na Loja da Valentina... clica no carrinho laranja."
 ]
 
-# 5. GERADOR COM PROMPT ENXUTO E TRAVA 1:1 ABSOLUTA
-if st.button("🚀 GERAR PACOTE COMERCIAL (LEAN & 1:1 LOCKED)"):
+# 5. GERADOR COM MOVIMENTO SUAVE, SUPERFÍCIE DE APOIO E FIM FLUIDO
+if st.button("🚀 GERAR PACOTE COMERCIAL (NATURAL & SMOOTH)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Prompt Enxuto 1:1 Ativo.")
+        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Movimento Suave Ativo.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -204,24 +204,26 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (LEAN & 1:1 LOCKED)"):
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        # PROMPT EXTREMAMENTE ENXUTO E FOCADO EM 1:1
+        # PROMPT OTIMIZADO CONTRA MOVIMENTO BRUSCO E CORTE SECO
         for i, h in enumerate(horarios):
             roteiro_completo = roteiros_unicos[i % len(roteiros_unicos)]
 
             prompt_final = (
-                f"Photorealistic 4K UGC video (13.5s, {proporcao.split()[0]}), mobile sensor. ACTIVE STYLE: {estilo_persona}. "
-                f"Strict 1:1 pixel lock: identical reference model face, features and body proportions. "
+                f"Photorealistic 4K UGC video (13.5s duration, {proporcao.split()[0]}), mobile sensor. ACTIVE STYLE: {estilo_persona}. "
+                f"Strict 1:1 pixel lock: identical reference model face and body proportions. "
                 f"Rigid product lock: exact '{produto_nome}' matching reference image with zero substitution. "
-                f"Fixed static background, natural human kinematics, organic hand movement.\n\n"
-                f"LOCUÇÃO: \"{roteiro_completo}\"\n\n"
-                f"Negative Prompt: model swapping, face morphing, product substitution, background shift, CGI, flickering."
+                f"NATURAL KINEMATICS & SMOOTH START: The product begins resting naturally on a soft luxury bed surface. The model's hands enter the frame slowly and smoothly, picking up the box with realistic physical weight and gentle inertia (zero abrupt pop-up). "
+                f"SMOOTH TAIL BUFFER: The action and speech gently slow down towards the final seconds, allowing a natural, unhurried conclusion with zero abrupt audio cuts. "
+                f"Fixed static background, organic human movement.\n\n"
+                f"LOCUÇÃO (Com pausas naturais para respiro): \"{roteiro_completo}\"\n\n"
+                f"Negative Prompt: abrupt appearance, pop-up object, fast jerky movement, harsh audio cut, model swapping, face morphing, background shift, CGI."
             )
 
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
             
             st.markdown(
                 '<div class="metric-card">'
-                '<span class="tag-estilo">Take Único (13.5s) - Enxuto & Travado</span><br>',
+                '<span class="tag-estilo">Take Único (13.5s) - Suave & Natural</span><br>',
                 unsafe_allow_html=True
             )
             
