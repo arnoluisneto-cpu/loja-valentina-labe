@@ -117,15 +117,15 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 2. SELETORES
+# 2. SELETORES (Com correção ativa do Estilo selecionado)
 c_top1, c_top2, c_top3 = st.columns(3)
 with c_top1:
     diretor_skin = st.selectbox("DIRETOR SKIN", ["BOY (Elite Director)", "UGC LIFESTYLE (Influencer & Conversão)"])
 with c_top2:
     proporcao = st.selectbox("PROPORÇÃO", ["9:16 (TikTok / Reels)", "1:1 (Feed)", "16:9 (Wide)"])
 with c_top3:
-    estilo_persona = st.selectbox("ESTILO DE VÍDEO", [
-        "1. Caminhão e Van do TikTok Shop",
+    estilo_persona = st.selectbox("ESTILO DE VÍDEO (CONTEXTO)", [
+        "1. Unboxing e Revelação de Pacote na Mesa",
         "2. POV Acordando na Cama (Morning Routine)",
         "3. POV Arrumando o Closet / Selecionando Peças",
         "4. POV Imersivo (Olhando para Baixo nos Pés)",
@@ -133,18 +133,16 @@ with c_top3:
         "6. Frente ao Espelho (Mirror Selfie)",
         "7. Giro Dinâmico 360° (Mostrando Caimento)",
         "8. Close Macro Cirúrgico (Detalhes e Textura)",
-        "9. Unboxing Surpresa em Cima da Mesa",
-        "10. Transição Rápida de Looks",
-        "11. Vlog de Rotina Diária Estilo Lifestyle",
-        "12. Review Sincero Boca a Boca",
-        "13. Provador Rápido de Loja Física",
-        "14. Trend do Sofá / Almofada",
-        "15. POV Dirigindo o Carro",
-        "16. POV Café da Manhã na Mesa Posta",
-        "17. Challenge de Transição: Look Casual para Luxo",
-        "18. Unboxing Rasgando Pacote do TikTok Shop",
-        "19. POV Fitness / Rotação de Estilo Diário",
-        "20. POV Encontro Noturno / Night Out Look Reveal"
+        "9. Vlog de Rotina Diária Estilo Lifestyle",
+        "10. Review Sincero Boca a Boca (UGC Real)",
+        "11. Provador Rápido de Loja Física",
+        "12. Trend do Sofá / Almofada",
+        "13. POV Dirigindo o Carro",
+        "14. POV Café da Manhã na Mesa Posta",
+        "15. Challenge de Transição: Look Casual para Luxo",
+        "16. Review de Fim de Ano / Festas",
+        "17. POV Fitness / Rotação de Estilo Diário",
+        "18. POV Encontro Noturno / Night Out Look Reveal"
     ])
 
 st.markdown("---")
@@ -153,15 +151,15 @@ st.markdown("---")
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
-    produto_nome = st.text_input("NOME EXATO DO PRODUTO / SKU", placeholder="Ex: Sandália Vermelha Salto Bloco")
+    produto_nome = st.text_input("NOME EXATO DO PRODUTO / SKU", placeholder="Ex: Macacão Elegante de Fim de Ano")
     
     st.markdown("<p style='font-size:13px; font-weight:700; margin-bottom:4px;'>DESCRIÇÃO DO PRODUTO - UPLOAD FOTO</p>", unsafe_allow_html=True)
     foto_produto_analise = st.file_uploader("Upload Foto Produto", type=["jpg", "jpeg", "png"], key="prod_upload_original", label_visibility="collapsed")
 
     tipo_produto = st.selectbox("CATEGORIA", [
+        "Vestuário / Vestido / Macacão / Conjunto",
         "Calçado / Tênis / Sandália", 
         "Acessório de Pulso ou Rosto (Relógio / Óculos)", 
-        "Vestuário / Vestido / Conjunto",
         "Bolsa / Acessório de Mão",
         "Utilidades & Outros"
     ])
@@ -175,22 +173,22 @@ with col_input2:
 
 st.markdown("---")
 
-# 4. BANCO DE ROTEIROS ÚNICOS (FALA 1 E FALA 2)
+# 4. BANCO DE ROTEIROS ÚNICOS (FALA 1 E FALA 2 COM FLUXO NATURAL UGC DOS VÍDEOS)
 roteiros_completos = [
     {
-        "fala1": "Meninas... olha o que acabou de chegar... exatamente como eu pedi, estou totalmente apaixonada por cada detalhe...",
-        "fala2": "e para garantir o seu com segurança, corre lá na Loja da Valentina e clica no carrinho laranja aqui embaixo na tela."
+        "fala1": "Amiga, paguei tão barato nesse modelo que já vou comprar mais... e olha como o caimento e a modelagem são perfeitos...",
+        "fala2": "para você arrasar nas festas de fim de ano sem gastar uma fortuna. Corre no carrinho laranja aqui embaixo na Loja da Valentina e garante o seu."
     },
     {
-        "fala1": "Gente, sério... recebi o produto exato da foto... precisava gravar bem de calma para vocês verem a qualidade real...",
-        "fala2": "está com um preço promocional imperdível na Loja da Valentina, então clica no carrinho laranja aí embaixo e aproveita."
+        "fala1": "Se você ainda não sabe o que usar nas festas de final de ano, olha esse modelo... caimento lindo e super elegante...",
+        "fala2": "você fica pronta sem precisar montar mil combinações. Corre no carrinho laranja na Loja da Valentina e garante o seu."
     },
     {
-        "fala1": "Olha... veio idêntico ao que está cadastrado... acabamento impecável, perfeito para o dia a dia e super confortável...",
-        "fala2": "já está disponível com frete rápido direto na Loja da Valentina, corre e clica no carrinho laranja aí na tela."
+        "fala1": "Gente, sério... recebi o produto exato da foto... acabamento impecável, modelagem perfeita e super confortável no corpo...",
+        "fala2": "disponível agora com frete rápido direto na Loja da Valentina, corre e clica no carrinho laranja aí na tela."
     },
     {
-        "fala1": "Vocês me pediram muito esse modelo exato... e ele chegou perfeito, superando todas as expectativas de acabamento...",
+        "fala1": "Vocês me pediram muito esse modelo exato... e ele chegou perfeito, superando todas as expectativas de qualidade...",
         "fala2": "não perde tempo porque esgota rápido, garante o seu na Loja da Valentina clicando no carrinho laranja."
     },
     {
@@ -203,15 +201,15 @@ roteiros_completos = [
     }
 ]
 
-# 5. GERADOR INDUSTRIAL COM PENTE FINO (BLINDAGEM ENXUTA E DIRETA)
-if st.button("🚀 GERAR PACOTE COMERCIAL LIMPO E BLINDADO (6 HORÁRIOS)"):
+# 5. GERADOR INDUSTRIAL COM ESTILO ATIVO E UNBOXING REALISTA
+if st.button("🚀 GERAR PACOTE COMERCIAL COM ESTILO ATIVO (6 HORÁRIOS)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote gerado às {agora} | Comandos limpos, sem excessos e Travas 1:1 Ativas.")
+        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Travas 1:1 Ativas.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -222,47 +220,25 @@ if st.button("🚀 GERAR PACOTE COMERCIAL LIMPO E BLINDADO (6 HORÁRIOS)"):
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        # Trava enxuta e cirúrgica (zero comandos repetidos)
-        clean_lock = (
-            f"STRICT 1:1 INDUSTRIAL CLONE: "
-            f"1. MODEL LOCK: Exact 1:1 match of reference model face, features, skin tone, and body. Zero model swapping. "
-            f"2. PRODUCT LOCK: Exact 1:1 physical clone of '{produto_nome}' based on reference images. Zero scaling or alterations. "
-            f"3. SCENARIO LOCK: Identical indoor luxury background, lighting, and base clothing. Zero environment shifting."
-        )
-        
-        clean_negative = "Negative Prompt: model swapping, face mutation, outfit change, background shift, wrong product, scaling error, low quality, distortion, watermark."
+        base_negative = "Negative Prompt: model swapping, face mutation, outfit change, background shift, opening box twice, putting item in bag, wrong product, scaling error, low quality, distortion, watermark."
 
         for i, h in enumerate(horarios):
             rot = roteiros_completos[i % len(roteiros_completos)]
 
             takes = [
                 (
-                    "ESTILO 1: Unboxing na Bancada",
-                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {clean_lock}. Medium close-up handheld cinematic tracking. Creator opens package on table, lifting '{produto_nome}' into frame.\n\n\n\n"
+                    f"ESTILO ATIVO: {estilo_persona} - Parte 1",
+                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. STRICT 1:1 INDUSTRIAL CLONE: exact model face, exact product '{produto_nome}', identical environment. "
+                    f"NARRATIVE PART 1 (NATURAL INTRODUCTION & OPENING): Medium close-up handheld cinematic tracking reflecting real UGC video flow. The exact same creator unpacks/presents '{produto_nome}' with organic hand movements, showing premium quality and pointing to details.\n\n\n\n"
                     f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
-                    f"Continuous indoor location. {clean_negative}"
+                    f"Continuous location, natural lighting. {base_negative}"
                 ),
                 (
-                    "ESTILO 2: Movimento Interno Dinâmico",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {clean_lock}. Fluid handheld movement. Reference model wears and showcases '{produto_nome}' with natural fabric physics.\n\n\n\n"
-                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
+                    f"ESTILO ATIVO: {estilo_persona} - Parte 2",
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. STRICT 1:1 INDUSTRIAL CLONE: exact model face, exact product '{produto_nome}', identical environment. "
+                    f"NARRATIVE PART 2 (CONTINUATION & CTA): Fluid handheld movement maintaining perfect spatial and identity continuity with Part 1. The creator showcases the fabric physics, styling, and model fit, concluding smoothly with the conversion call to action.\n\n\n\n"
                     f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
-                    f"Continuous indoor environment. {clean_negative}"
-                ),
-                (
-                    "ESTILO 3: Close Macro de Detalhes",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {clean_lock}. Macro close-up framing focusing tightly on '{produto_nome}' held in hands under warm ambient light.\n\n\n\n"
-                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
-                    f"Zero artifacts, perfect fidelity. {clean_negative}"
-                ),
-                (
-                    "ESTILO 4: Review no Espelho",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {clean_lock}. Authentic mirror reflection video in boutique dressing room. Creator showcases '{produto_nome}' clearly in reflection.\n\n\n\n"
-                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
-                    f"Fixed spatial continuity. {clean_negative}"
+                    f"Continuous environment, identical background. {base_negative}"
                 )
             ]
 
@@ -271,25 +247,23 @@ if st.button("🚀 GERAR PACOTE COMERCIAL LIMPO E BLINDADO (6 HORÁRIOS)"):
             col1, col2 = st.columns(2)
             
             with col1:
-                for idx_take in [0, 2]:
-                    t_title, t_prompt = takes[idx_take]
-                    st.markdown(f"""
-                    <div class="metric-card">
-                        <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Limpo e Otimizado:</b>
-                    """, unsafe_allow_html=True)
-                    st.code(t_prompt, language="text")
-                    st.markdown("</div>", unsafe_allow_html=True)
+                t_title, t_prompt = takes[0]
+                st.markdown(f"""
+                <div class="metric-card">
+                    <span class="tag-estilo">{t_title}</span><br>
+                    <b style="color: #00FF66; font-size: 12px;">Prompt Parte 1 (Início & Apresentação):</b>
+                """, unsafe_allow_html=True)
+                st.code(t_prompt, language="text")
+                st.markdown("</div>", unsafe_allow_html=True)
 
             with col2:
-                for idx_take in [1, 3]:
-                    t_title, t_prompt = takes[idx_take]
-                    st.markdown(f"""
-                    <div class="metric-card">
-                        <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Limpo e Otimizado:</b>
-                    """, unsafe_allow_html=True)
-                    st.code(t_prompt, language="text")
-                    st.markdown("</div>", unsafe_allow_html=True)
+                t_title, t_prompt = takes[1]
+                st.markdown(f"""
+                <div class="metric-card">
+                    <span class="tag-estilo">{t_title}</span><br>
+                    <b style="color: #00FF66; font-size: 12px;">Prompt Parte 2 (Continuação & CTA):</b>
+                """, unsafe_allow_html=True)
+                st.code(t_prompt, language="text")
+                st.markdown("</div>", unsafe_allow_html=True)
 
             st.markdown("---")
