@@ -1,6 +1,5 @@
 import streamlit as st
 from datetime import datetime
-import re
 
 st.set_page_config(
     page_title="Valentina Labs - TikTok Shop Automation",
@@ -8,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ESTÉTICA ORIGINAL CLÁSSICA TRAVADA E BLINDADA (Fundo Escuro Puro, Sem Faixas Brancas, Padrão Verde Neon)
+# ESTÉTICA ORIGINAL CLÁSSICA TRAVADA E BLINDADA (Fundo Escuro, Padrão Verde Neon)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -118,7 +117,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 2. SELETORES ORIGINAIS
+# 2. SELETORES
 c_top1, c_top2, c_top3 = st.columns(3)
 with c_top1:
     diretor_skin = st.selectbox("DIRETOR SKIN", ["BOY (Elite Director)", "UGC LIFESTYLE (Influencer & Conversão)"])
@@ -176,7 +175,7 @@ with col_input2:
 
 st.markdown("---")
 
-# 4. BANCOS DE ROTEIROS ÚNICOS (DIVIDIDOS EM FALA 1 E FALA 2 PARA CONTINUIDADE PERFEITA)
+# 4. BANCO DE ROTEIROS ÚNICOS (FALA 1 E FALA 2)
 roteiros_completos = [
     {
         "fala1": "Meninas... olha o que acabou de chegar... exatamente como eu pedi, estou totalmente apaixonada por cada detalhe...",
@@ -204,15 +203,15 @@ roteiros_completos = [
     }
 ]
 
-# 5. GERADOR INDUSTRIAL COM ROTEIRO ÚNICO SEQUENCIAL (FALA 1 -> FALA 2 COM CTA)
-if st.button("🚀 GERAR PACOTE COMERCIAL COM ROTEIRO SEQUENCIAL (6 HORÁRIOS)"):
+# 5. GERADOR INDUSTRIAL COM PENTE FINO (BLINDAGEM ENXUTA E DIRETA)
+if st.button("🚀 GERAR PACOTE COMERCIAL LIMPO E BLINDADO (6 HORÁRIOS)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote gerado às {agora} | Roteiro sequencial unificado (Fala 1 + Fala 2 com CTA) e Travas 1:1 Ativas.")
+        st.success(f"✅ Pacote gerado às {agora} | Comandos limpos, sem excessos e Travas 1:1 Ativas.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -223,14 +222,15 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ROTEIRO SEQUENCIAL (6 HORÁRIOS)")
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        strict_precision_lock = (
-            f"STRICT 1:1 PIXEL-PERFECT PHYSICAL & BIOMETRIC CLONE: "
-            f"1. MODEL LOCK: Full head-to-toe mapping of the uploaded model reference photo. Exact facial structure, eyes, nose, lips, hair texture, skin tone, and body proportions. Zero face morphing, zero model substitution. "
-            f"2. VISUAL UPLOAD PRODUCT LOCK: Exact 1:1 physical clone of product '{produto_nome}' based on pixel analysis of the uploaded reference images. Exact buckle dimensions, exact strap thickness, exact sole height, exact color tone, exact material finish. STRICTLY PROHIBITED: enlarging items, making the product bigger, altering buckle dimensions, changing strap width, or modifying any physical feature. "
-            f"3. BRAND & LOGO INTEGRITY: Exact lettering and typography of the brand. Zero extra letters, zero added logos, zero alterations."
+        # Trava enxuta e cirúrgica (zero comandos repetidos)
+        clean_lock = (
+            f"STRICT 1:1 INDUSTRIAL CLONE: "
+            f"1. MODEL LOCK: Exact 1:1 match of reference model face, features, skin tone, and body. Zero model swapping. "
+            f"2. PRODUCT LOCK: Exact 1:1 physical clone of '{produto_nome}' based on reference images. Zero scaling or alterations. "
+            f"3. SCENARIO LOCK: Identical indoor luxury background, lighting, and base clothing. Zero environment shifting."
         )
         
-        base_negative = "Negative Prompt: low quality, fast speech, distorted hands, morphing, face distortion, wrong model face, altered brand name, extra letters on logo, enlarged product, scaled-up size, oversized buckle, thicker straps, wrong product color, item substitution, generic substitute item, blurry background, bad anatomy, deformed fingers, text artifacts, watermark, low resolution."
+        clean_negative = "Negative Prompt: model swapping, face mutation, outfit change, background shift, wrong product, scaling error, low quality, distortion, watermark."
 
         for i, h in enumerate(horarios):
             rot = roteiros_completos[i % len(roteiros_completos)]
@@ -238,31 +238,31 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ROTEIRO SEQUENCIAL (6 HORÁRIOS)")
             takes = [
                 (
                     "ESTILO 1: Unboxing na Bancada",
-                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Medium close-up handheld cinematic tracking inside a luxury room. The human creator opens a package on a table, lifting '{produto_nome}' into frame with calm, natural movements.\n\n\n\n"
-                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
-                    f"Continuous indoor location. {base_negative}"
+                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {clean_lock}. Medium close-up handheld cinematic tracking. Creator opens package on table, lifting '{produto_nome}' into frame.\n\n\n\n"
+                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
+                    f"Continuous indoor location. {clean_negative}"
                 ),
                 (
                     "ESTILO 2: Movimento Interno Dinâmico",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Fluid handheld movement in a bright modern space. The exact reference model wears and showcases '{produto_nome}' with natural fabric physics.\n\n\n\n"
-                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
-                    f"Continuous indoor environment. {base_negative}"
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {clean_lock}. Fluid handheld movement. Reference model wears and showcases '{produto_nome}' with natural fabric physics.\n\n\n\n"
+                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
+                    f"Continuous indoor environment. {clean_negative}"
                 ),
                 (
                     "ESTILO 3: Close Macro de Detalhes",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Macro close-up framing focusing tightly on '{produto_nome}' held steady in hands under warm ambient light, revealing precise surface finish, exact buckle dimensions, and exact brand lettering derived from visual analysis.\n\n\n\n"
-                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
-                    f"Zero artifacts, perfect fidelity. {base_negative}"
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {clean_lock}. Macro close-up framing focusing tightly on '{produto_nome}' held in hands under warm ambient light.\n\n\n\n"
+                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
+                    f"Zero artifacts, perfect fidelity. {clean_negative}"
                 ),
                 (
                     "ESTILO 4: Review no Espelho",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Authentic mirror reflection video in a boutique dressing room. Creator holds smartphone, showcasing '{produto_nome}' clearly in the reflection.\n\n\n\n"
-                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
-                    f"Continuous spatial continuity. {base_negative}"
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {clean_lock}. Authentic mirror reflection video in boutique dressing room. Creator showcases '{produto_nome}' clearly in reflection.\n\n\n\n"
+                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
+                    f"Fixed spatial continuity. {clean_negative}"
                 )
             ]
 
@@ -276,7 +276,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ROTEIRO SEQUENCIAL (6 HORÁRIOS)")
                     st.markdown(f"""
                     <div class="metric-card">
                         <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Roteiro Sequencial Único):</b>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Limpo e Otimizado:</b>
                     """, unsafe_allow_html=True)
                     st.code(t_prompt, language="text")
                     st.markdown("</div>", unsafe_allow_html=True)
@@ -287,7 +287,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ROTEIRO SEQUENCIAL (6 HORÁRIOS)")
                     st.markdown(f"""
                     <div class="metric-card">
                         <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Roteiro Sequencial Único):</b>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Limpo e Otimizado:</b>
                     """, unsafe_allow_html=True)
                     st.code(t_prompt, language="text")
                     st.markdown("</div>", unsafe_allow_html=True)
