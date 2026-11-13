@@ -126,7 +126,7 @@ with c_top2:
 
 st.markdown("---")
 
-# 3. SELEÇÃO DE ESTILOS EMBUTIDO (ESTILO SELECTBOX / MULTISELECT DA CATEGORIA)
+# 3. SELEÇÃO DE ESTILOS EMBUTIDO EXATAMENTE COM 20 OPÇÕES ÚNICAS
 lista_estilos_disponiveis = [
     "1. Caminhão e Van do TikTok Shop Chegando",
     "2. POV Acordando na Cama (Morning Routine)",
@@ -151,7 +151,7 @@ lista_estilos_disponiveis = [
 ]
 
 estilos_selecionados = st.multiselect(
-    "🎬 SELECIONE OS ESTILOS / CENÁRIOS DESEJADOS PARA A GRADE",
+    "🎬 SELECIONE OS ESTILOS / CENÁRIOS DESEJADOS PARA A GRADE (20 OPÇÕES DISPONÍVEIS)",
     options=lista_estilos_disponiveis,
     default=[]
 )
