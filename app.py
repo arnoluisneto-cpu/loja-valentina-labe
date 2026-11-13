@@ -113,7 +113,7 @@ st.markdown("""
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">VALENTINA LABS</h1>
-        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (ENVIRONMENT LOCKED)</p>
+        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (LEAN 1:1 LOCKED)</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -141,7 +141,7 @@ with c_top3:
         "14. Trend do Sofá / Almofada",
         "15. POV Dirigindo o Carro",
         "16. POV Café da Manhã na Mesa Posta",
-        "17. Challenge de Transition: Look Casual para Luxo",
+        "17. Challenge de Transição: Look Casual para Luxo",
         "18. Unboxing Rasgando Pacote do TikTok Shop",
         "19. POV Fitness / Rotação de Estilo Diário",
         "20. POV Encontro Noturno / Night Out Look Reveal"
@@ -175,43 +175,25 @@ with col_input2:
 
 st.markdown("---")
 
-# 4. BANCO DE ROTEIROS (FALA 1 E FALA 2 EM BLOCO SEQUENCIAL)
-roteiros_completos = [
-    {
-        "fala1": "Meninas... olha o que acabou de chegar... exatamente como eu pedi, estou totalmente apaixonada por cada detalhe...",
-        "fala2": "e para garantir o seu com segurança, corre lá na Loja da Valentina e clica no carrinho laranja aqui embaixo na tela."
-    },
-    {
-        "fala1": "Gente, sério... recebi o produto exato da foto... precisava gravar bem de calma para vocês verem a qualidade real...",
-        "fala2": "está com um preço promocional imperdível na Loja da Valentina, então clica no carrinho laranja aí embaixo e aproveita."
-    },
-    {
-        "fala1": "Olha... veio idêntico ao que está cadastrado... acabamento impecável, perfeito para o dia a dia e super confortável...",
-        "fala2": "já está disponível com frete rápido direto na Loja da Valentina, corre e clica no carrinho laranja aí na tela."
-    },
-    {
-        "fala1": "Vocês me pediram muito esse modelo exato... e ele chegou perfeito, superando todas as expectativas de acabamento...",
-        "fala2": "não perde tempo porque esgota rápido, garante o seu na Loja da Valentina clicando no carrinho laranja."
-    },
-    {
-        "fala1": "Meninas... reposição oficial do produto que vocês tanto queriam... chegou fresquinho para compor os melhores looks...",
-        "fala2": "corre para garantir o seu direto na Loja da Valentina, clica no carrinho laranja aqui embaixo e confere."
-    },
-    {
-        "fala1": "Para tudo... e presta atenção na fidelidade absoluta desse produto... simplesmente maravilhoso e impecável em tudo...",
-        "fala2": "tudo disponível na Loja da Valentina, clica no carrinho laranja e aproveita a promoção especial de hoje."
-    }
+# 4. BANCO DE ROTEIROS ÚNICOS (13.5 SEGUNDOS COM CTA COMPLETA)
+roteiros_unicos = [
+    "Meninas, olha o que acabou de chegar exatamente como eu pedi, estou totalmente apaixonada por cada detalhe, e para garantir o seu com segurança, corre lá na Loja da Valentina e clica no carrinho laranja aqui embaixo na tela.",
+    "Gente, sério, recebi o produto exato da foto, precisava gravar bem de calma para vocês verem a qualidade real, e está com um preço promocional imperdível na Loja da Valentina, então clica no carrinho laranja aí embaixo e aproveita.",
+    "Olha, veio idêntico ao que está cadastrado, acabamento impecável, perfeito para o dia a dia e super confortável, já está disponível com frete rápido direto na Loja da Valentina, corre e clica no carrinho laranja aí na tela.",
+    "Vocês me pediram muito esse modelo exato, e ele chegou perfeito, superando todas as expectativas de acabamento, não perde tempo porque esgota rápido, garante o seu na Loja da Valentina clicando no carrinho laranja.",
+    "Meninas, reposição oficial do produto que vocês tanto queriam, chegou fresquinho para compor os melhores looks, corre para garantir o seu direto na Loja da Valentina, clica no carrinho laranja aqui embaixo e confere.",
+    "Para tudo e presta atenção na fidelidade absoluta desse produto, simplesmente maravilhoso e impecável em tudo, tudo disponível na Loja da Valentina, clica no carrinho laranja e aproveita a promoção especial de hoje."
 ]
 
-# 5. GERADOR COM TRAVA ABSOLUTA DE CENÁRIO E AMBIENTE
-if st.button("🚀 GERAR PACOTE COMERCIAL (ENVIRONMENT LOCKED)"):
+# 5. GERADOR COM PROMPT ENXUTO E TRAVA 1:1 ABSOLUTA
+if st.button("🚀 GERAR PACOTE COMERCIAL (LEAN & 1:1 LOCKED)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Cenário 100% Travado.")
+        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Prompt Enxuto 1:1 Ativo.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -222,63 +204,28 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (ENVIRONMENT LOCKED)"):
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        # NÚCLEO COM TRAVA ABSOLUTA DE CENÁRIO (Environment Lock)
-        env_locked_core = (
-            f"Photorealistic 4K native UGC video ({proporcao.split()[0]}), captured on professional mobile sensor. ACTIVE STYLE: {estilo_persona}. "
-            f"STRICT ENVIRONMENT & BACKGROUND LOCK: The background, setting, architecture, and lighting must match the reference image exactly. Zero scene shifting, zero changing rooms, zero background mutation. "
-            f"Strict latent space biometric mesh lock: exact 1:1 pixel continuity of reference model face and body proportions, zero morphing, zero model swapping. "
-            f"Rigid product geometry anchor of '{produto_nome}' matching reference images perfectly with zero substitution. "
-            f"True human kinematics, organic weight distribution, natural fluid hand physics."
-        )
-        
-        base_negative = "Negative Prompt: changing background, switching room, scene change, CGI, plastic skin, AI texture artifacts, face morphing, model swapping, robotic movement, product substitution, temporal jitter, flickering."
-
+        # PROMPT EXTREMAMENTE ENXUTO E FOCADO EM 1:1
         for i, h in enumerate(horarios):
-            rot = roteiros_completos[i % len(roteiros_completos)]
+            roteiro_completo = roteiros_unicos[i % len(roteiros_unicos)]
 
-            takes = [
-                (
-                    "ESTILO 1: Apresentação Direta",
-                    f"{env_locked_core} Medium close-up tracking, creator presents '{produto_nome}' with organic human kinematics inside the exact same static environment.\n\n\n\n"
-                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
-                    f"{base_negative}"
-                ),
-                (
-                    "ESTILO 2: Movimento Interno Dinâmico",
-                    f"{env_locked_core} Fluid organic handheld movement, model showcases '{produto_nome}' with natural material physics maintaining identical room background.\n\n\n\n"
-                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
-                    f"{base_negative}"
-                ),
-                (
-                    "ESTILO 3: Close Macro de Detalhes",
-                    f"{env_locked_core} Macro close-up framing focusing tightly on '{produto_nome}' held steady in human hands, preserving exact surface grain and texture within the same fixed setting.\n\n\n\n"
-                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
-                    f"{base_negative}"
-                ),
-                (
-                    "ESTILO 4: Review Estável",
-                    f"{env_locked_core} Consistent framing in the exact same static room, showcasing '{produto_nome}' cleanly with absolute facial and background consistency.\n\n\n\n"
-                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
-                    f"{base_negative}"
-                )
-            ]
+            prompt_final = (
+                f"Photorealistic 4K UGC video (13.5s, {proporcao.split()[0]}), mobile sensor. ACTIVE STYLE: {estilo_persona}. "
+                f"Strict 1:1 pixel lock: identical reference model face, features and body proportions. "
+                f"Rigid product lock: exact '{produto_nome}' matching reference image with zero substitution. "
+                f"Fixed static background, natural human kinematics, organic hand movement.\n\n"
+                f"LOCUÇÃO: \"{roteiro_completo}\"\n\n"
+                f"Negative Prompt: model swapping, face morphing, product substitution, background shift, CGI, flickering."
+            )
 
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
             
             st.markdown(
                 '<div class="metric-card">'
-                '<span class="tag-estilo">Takes do Bloco (Fala 1 & Fala 2 integradas)</span><br>'
-                '<b style="color: #00FF66; font-size: 12px;">Prompts com Environment Lock:</b>',
+                '<span class="tag-estilo">Take Único (13.5s) - Enxuto & Travado</span><br>',
                 unsafe_allow_html=True
             )
             
-            for t_title, t_prompt in takes:
-                st.markdown(f"**{t_title}:**")
-                st.code(t_prompt, language="text")
+            st.code(prompt_final, language="text")
                 
             st.markdown('</div>', unsafe_allow_html=True)
             st.markdown("---")
