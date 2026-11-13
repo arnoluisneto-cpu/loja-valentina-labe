@@ -113,7 +113,7 @@ st.markdown("""
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">VALENTINA LABS</h1>
-        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (ENGINEERING GRADE)</p>
+        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (ENVIRONMENT LOCKED)</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -203,15 +203,15 @@ roteiros_completos = [
     }
 ]
 
-# 5. GERADOR COM ARQUITETURA DE ESPAÇO LATENTE & ESTABILIDADE DE MALHA
-if st.button("🚀 GERAR PACOTE COMERCIAL (ENGINEERING GRADE)"):
+# 5. GERADOR COM TRAVA ABSOLUTA DE CENÁRIO E AMBIENTE
+if st.button("🚀 GERAR PACOTE COMERCIAL (ENVIRONMENT LOCKED)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Matriz Latente Blindada.")
+        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Cenário 100% Travado.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -222,74 +222,63 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (ENGINEERING GRADE)"):
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        # NÚCLEO DE ENGENHARIA DE PROMPT (Latent Space & Mesh Lock)
-        engineering_core_prompt = (
+        # NÚCLEO COM TRAVA ABSOLUTA DE CENÁRIO (Environment Lock)
+        env_locked_core = (
             f"Photorealistic 4K native UGC video ({proporcao.split()[0]}), captured on professional mobile sensor. ACTIVE STYLE: {estilo_persona}. "
+            f"STRICT ENVIRONMENT & BACKGROUND LOCK: The background, setting, architecture, and lighting must match the reference image exactly. Zero scene shifting, zero changing rooms, zero background mutation. "
             f"Strict latent space biometric mesh lock: exact 1:1 pixel continuity of reference model face and body proportions, zero morphing, zero model swapping. "
             f"Rigid product geometry anchor of '{produto_nome}' matching reference images perfectly with zero substitution. "
-            f"True human kinematics, organic weight distribution, natural fluid hand physics, static luxury indoor environment."
+            f"True human kinematics, organic weight distribution, natural fluid hand physics."
         )
         
-        base_negative = "Negative Prompt: CGI, plastic skin, AI texture artifacts, face morphing, model swapping, robotic movement, product substitution, temporal jitter, flickering."
+        base_negative = "Negative Prompt: changing background, switching room, scene change, CGI, plastic skin, AI texture artifacts, face morphing, model swapping, robotic movement, product substitution, temporal jitter, flickering."
 
         for i, h in enumerate(horarios):
             rot = roteiros_completos[i % len(roteiros_completos)]
 
             takes = [
                 (
-                    "ESTILO 1: Unboxing na Bancada",
-                    f"{engineering_core_prompt} Medium close-up tracking, creator unpacks and presents '{produto_nome}' with organic human kinematics.\n\n\n\n"
+                    "ESTILO 1: Apresentação Direta",
+                    f"{env_locked_core} Medium close-up tracking, creator presents '{produto_nome}' with organic human kinematics inside the exact same static environment.\n\n\n\n"
                     f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
                     f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
                     f"{base_negative}"
                 ),
                 (
                     "ESTILO 2: Movimento Interno Dinâmico",
-                    f"{engineering_core_prompt} Fluid organic handheld movement, model showcases '{produto_nome}' with natural material physics.\n\n\n\n"
+                    f"{env_locked_core} Fluid organic handheld movement, model showcases '{produto_nome}' with natural material physics maintaining identical room background.\n\n\n\n"
                     f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
                     f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
                     f"{base_negative}"
                 ),
                 (
                     "ESTILO 3: Close Macro de Detalhes",
-                    f"{engineering_core_prompt} Macro close-up framing focusing tightly on '{produto_nome}' held steady in human hands, preserving exact surface grain and texture.\n\n\n\n"
+                    f"{env_locked_core} Macro close-up framing focusing tightly on '{produto_nome}' held steady in human hands, preserving exact surface grain and texture within the same fixed setting.\n\n\n\n"
                     f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
                     f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
                     f"{base_negative}"
                 ),
                 (
-                    "ESTILO 4: Review no Espelho",
-                    f"{engineering_core_prompt} Authentic mirror reflection video in dressing room, showcasing '{produto_nome}' cleanly with absolute facial consistency.\n\n\n\n"
+                    "ESTILO 4: Review Estável",
+                    f"{env_locked_core} Consistent framing in the exact same static room, showcasing '{produto_nome}' cleanly with absolute facial and background consistency.\n\n\n\n"
                     f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
                     f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
                     f"{base_negative}"
-                )
+                ]
             ]
 
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
 
-            col1, col2 = st.columns(2)
+            st.markdown(f"""
+            <div class="metric-card">
+                <span class="tag-estilo">Take Completo (Fala 1 & Fala 2 no mesmo bloco)</span><br>
+                <b style="color: #00FF66; font-size: 12px;">Prompt com Environment Lock:</b>
+            """, unsafe_allow_html=True)
             
-            with col1:
-                for idx_take in [0, 2]:
-                    t_title, t_prompt = takes[idx_take]
-                    st.markdown(f"""
-                    <div class="metric-card">
-                        <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Engineering Grade:</b>
-                    """, unsafe_allow_html=True)
-                    st.code(t_prompt, language="text")
-                    st.markdown("</div>", unsafe_allow_html=True)
-
-            with col2:
-                for idx_take in [1, 3]:
-                    t_title, t_prompt = takes[idx_take]
-                    st.markdown(f"""
-                    <div class="metric-card">
-                        <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Engineering Grade:</b>
-                    """, unsafe_allow_html=True)
-                    st.code(t_prompt, language="text")
-                    st.markdown("</div>", unsafe_allow_html=True)
-
+            # Exibe os takes de forma organizada e limpa
+            for idx_take, (t_title, t_prompt) in enumerate(takes):
+                st.markdown(f"**{t_title}:**")
+                st.code(t_prompt, language="text")
+                
+            st.markdown("</div>", unsafe_allow_html=True)
             st.markdown("---")
