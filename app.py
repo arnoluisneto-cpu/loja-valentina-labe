@@ -113,7 +113,7 @@ st.markdown("""
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">VALENTINA LABS</h1>
-        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (NATURAL & SMOOTH)</p>
+        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (CLEAN SCREEN & FLUID START)</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -185,15 +185,15 @@ roteiros_unicos = [
     "Para tudo e presta atenção na fidelidade absoluta desse produto, simplesmente maravilhoso... tudo disponível na Loja da Valentina... clica no carrinho laranja."
 ]
 
-# 5. GERADOR COM MOVIMENTO SUAVE, SUPERFÍCIE DE APOIO E FIM FLUIDO
-if st.button("🚀 GERAR PACOTE COMERCIAL (NATURAL & SMOOTH)"):
+# 5. GERADOR COM BLINDAGEM CONTRA GHOSTING E TEXTOS FALSOS
+if st.button("🚀 GERAR PACOTE COMERCIAL (CLEAN & FLUID)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Movimento Suave Ativo.")
+        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Tela Limpa & Início Fluido Ativos.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -204,7 +204,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (NATURAL & SMOOTH)"):
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        # PROMPT OTIMIZADO CONTRA MOVIMENTO BRUSCO E CORTE SECO
+        # PROMPT BLINDADO: REMOVE FANTASMA INICIAL E QUALQUER TEXTO FLUTUANTE
         for i, h in enumerate(horarios):
             roteiro_completo = roteiros_unicos[i % len(roteiros_unicos)]
 
@@ -212,18 +212,19 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (NATURAL & SMOOTH)"):
                 f"Photorealistic 4K UGC video (13.5s duration, {proporcao.split()[0]}), mobile sensor. ACTIVE STYLE: {estilo_persona}. "
                 f"Strict 1:1 pixel lock: identical reference model face and body proportions. "
                 f"Rigid product lock: exact '{produto_nome}' matching reference image with zero substitution. "
-                f"NATURAL KINEMATICS & SMOOTH START: The product begins resting naturally on a soft luxury bed surface. The model's hands enter the frame slowly and smoothly, picking up the box with realistic physical weight and gentle inertia (zero abrupt pop-up). "
-                f"SMOOTH TAIL BUFFER: The action and speech gently slow down towards the final seconds, allowing a natural, unhurried conclusion with zero abrupt audio cuts. "
+                f"IMMEDIATE FLUID START: Absolute zero static frames, zero ghosting, zero overlay transparency at the beginning. The video starts instantly with fluid, organic motion from frame zero. "
+                f"CLEAN SCREEN PROTOCOL: Strictly zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero fake app graphics on screen at any moment. "
+                f"NATURAL KINEMATICS & SMOOTH FINISH: The product starts resting naturally on a soft luxury bed surface. Hands pick it up smoothly with realistic physical weight. Action and speech gently slow down towards the final seconds with zero abrupt audio cuts. "
                 f"Fixed static background, organic human movement.\n\n"
                 f"LOCUÇÃO (Com pausas naturais para respiro): \"{roteiro_completo}\"\n\n"
-                f"Negative Prompt: abrupt appearance, pop-up object, fast jerky movement, harsh audio cut, model swapping, face morphing, background shift, CGI."
+                f"Negative Prompt: static starting frame, ghosting effect, transparent overlay, floating text, subtitles, UI graphics, watermarks, abrupt appearance, pop-up object, fast jerky movement, harsh audio cut, model swapping, face morphing, background shift, CGI."
             )
 
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
             
             st.markdown(
                 '<div class="metric-card">'
-                '<span class="tag-estilo">Take Único (13.5s) - Suave & Natural</span><br>',
+                '<span class="tag-estilo">Take Único (13.5s) - Tela Limpa & Sem Fantasma</span><br>',
                 unsafe_allow_html=True
             )
             
