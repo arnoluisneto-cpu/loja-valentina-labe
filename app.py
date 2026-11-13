@@ -113,7 +113,7 @@ st.markdown("""
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">VALENTINA LABS</h1>
-        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (ZERO MIC & CLEAN COMPLIANCE)</p>
+        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (ULTRA BLINDED ZERO MIC ENGINE)</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -149,13 +149,13 @@ with c_top3:
 
 st.markdown("---")
 
-# 3. ENTRADAS DO PRODUTO (3 UPLOADS EM VERDE NEON)
+# 3. ENTRADAS DO PRODUTO (3 UPLOADS EM VERDE NEON COM ANCORAGEM NEGATIVA INTEGRADA)
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
     produto_nome = st.text_input("NOME EXATO DO PRODUTO / SKU", placeholder="Ex: Calça Pantalona Alfaiataria Luxo")
     
-    st.markdown("<p style='font-size:13px; font-weight:700; margin-bottom:4px;'>DESCRIÇÃO DO PRODUTO - UPLOAD FOTO</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:13px; font-weight:700; margin-bottom:4px;'>DESCRIÇÃO DO PRODUTO - UPLOAD FOTO (CONTEXTO COM TRAVA ANTI-MIC)</p>", unsafe_allow_html=True)
     foto_produto_analise = st.file_uploader("Upload Foto Produto", type=["jpg", "jpeg", "png"], key="prod_upload_original", label_visibility="collapsed")
 
     tipo_produto = st.selectbox("CATEGORIA", [
@@ -167,10 +167,10 @@ with col_input1:
     ])
     
 with col_input2:
-    st.markdown("<p style='font-size:13px; font-weight:700; margin-bottom:4px;'>1. FOTO MODELO (FACE & CORPO INTEIRO 1:1)</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:13px; font-weight:700; margin-bottom:4px;'>1. FOTO MODELO (FACE & CORPO 1:1 + ZERO MIC LOCK)</p>", unsafe_allow_html=True)
     foto_modelo = st.file_uploader("Upload Modelo", type=["jpg", "jpeg", "png"], key="m", label_visibility="collapsed")
     
-    st.markdown("<p style='font-size:13px; font-weight:700; margin-top:10px; margin-bottom:4px;'>2. FOTO REFERÊNCIA PEÇA (CLONAGEM 1:1)</p>", unsafe_allow_html=True)
+    st.markdown("<p style='font-size:13px; font-weight:700; margin-top:10px; margin-bottom:4px;'>2. FOTO REFERÊNCIA PEÇA (ISOLADA + PURA SEM ACESSÓRIOS)</p>", unsafe_allow_html=True)
     foto_peca = st.file_uploader("Upload Produto", type=["jpg", "jpeg", "png"], key="p", label_visibility="collapsed")
 
 st.markdown("---")
@@ -200,15 +200,15 @@ roteiros_21 = [
     "Para fechar com chave de ouro, olha essa pantalona maravilhosa. Tecido nobre, caimento impecável vestida no corpo! Corre na Loja da Valentina e clica no carrinho laranja agora."
 ]
 
-# 5. GERADOR UNIFORME PARA OS 21 PROMPTS (CINEMA 8K RAW + ZERO MIC HARD LOCK)
-if st.button("🚀 GERAR PACOTE COMPLETO (21 PROMPTS • ZERO MIC HARD LOCK)"):
+# 5. GERADOR UNIFORME COM NEGATIVE PROMPT ANCORADO EM TODAS AS REFERÊNCIAS
+if st.button("🚀 GERAR PACOTE COMPLETO (21 PROMPTS • ULTRA BLINDED ZERO MIC)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote de 21 Prompts gerado às {agora} | Duração: 10s | Cinema 8K RAW & Zero Mic Hard Lock Ativo.")
+        st.success(f"✅ Pacote de 21 Prompts gerado às {agora} | Duração: 10s | Cinema 8K RAW & Ultra Blinded Zero Mic Ativo.")
         
         for idx in range(21):
             roteiro_atual = roteiros_21[idx % len(roteiros_21)]
@@ -216,7 +216,7 @@ if st.button("🚀 GERAR PACOTE COMPLETO (21 PROMPTS • ZERO MIC HARD LOCK)"):
 
             prompt_final = (
                 f"Masterpiece 8K UHD viral TikTok Shop UGC video powered by Arri Alexa cinema color science (10-second precise duration, {proporcao.split()[0]}), RAW optical sensor. ACTIVE STYLE: {estilo_persona}. "
-                f"STRICT ZERO MICROPHONE & CLEAN SCREEN PROTOCOL: Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. "
+                f"STRICT MULTI-LAYERED REFERENCE LOCK & ZERO MIC PROTOCOL: Referencing uploaded model structure and isolated product pixels with absolute precision. Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. "
                 f"Cinematic Visual Engineering: hyper-detailed micro-textures on fabric weave, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
                 f"Strict 1:1 pixel lock: identical reference model face and body proportions. "
                 f"Rigid product lock: exact '{produto_nome}' matching reference image with zero substitution. "
@@ -225,14 +225,14 @@ if st.button("🚀 GERAR PACOTE COMPLETO (21 PROMPTS • ZERO MIC HARD LOCK)"):
                 f"SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. "
                 f"Fixed static background, organic human movement.\n\n"
                 f"LOCUÇÃO RÍTMICA (10s com distribuição equilibrada de fala e conversão): \"{roteiro_atual}\"\n\n"
-                f"Negative Prompt: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, staying only holding the item without wearing it, no try-on, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, UI graphics, watermarks, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
+                f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, staying only holding the item without wearing it, no try-on, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, UI graphics, watermarks, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
             )
 
             st.markdown(f"### 🎬 Prompt Comercial #{prompt_numero} de 21")
             
             st.markdown(
                 '<div class="metric-card">'
-                f'<span class="tag-estilo">Take Único #{prompt_numero} (10s) - Zero Mic Hard Lock</span><br>',
+                f'<span class="tag-estilo">Take Único #{prompt_numero} (10s) - Ultra Blinded Zero Mic</span><br>',
                 unsafe_allow_html=True
             )
             
