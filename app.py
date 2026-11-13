@@ -262,7 +262,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL OTIMIZADO (6 HORÁRIOS)"):
                     f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
                     f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
                     f"Fixed spatial continuity. {base_negative}"
-                ]
+                )
             ]
 
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
