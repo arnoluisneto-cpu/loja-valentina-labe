@@ -117,7 +117,7 @@ st.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# 2. SELETORES (Com os 20 estilos originais restaurados e ativos)
+# 2. SELETORES (20 Estilos Restaurados e Ativos)
 c_top1, c_top2, c_top3 = st.columns(3)
 with c_top1:
     diretor_skin = st.selectbox("DIRETOR SKIN", ["BOY (Elite Director)", "UGC LIFESTYLE (Influencer & Conversão)"])
@@ -175,7 +175,7 @@ with col_input2:
 
 st.markdown("---")
 
-# 4. BANCO DE ROTEIROS ÚNICOS (FALA 1 E FALA 2 COM FLUXO NATURAL UGC)
+# 4. BANCO DE ROTEIROS (FALA 1 E FALA 2 EM BLOCO ÚNICO SEQUENCIAL)
 roteiros_completos = [
     {
         "fala1": "Meninas... olha o que acabou de chegar... exatamente como eu pedi, estou totalmente apaixonada por cada detalhe...",
@@ -203,15 +203,15 @@ roteiros_completos = [
     }
 ]
 
-# 5. GERADOR INDUSTRIAL COM ESTILO ATIVO E UNBOXING REALISTA
-if st.button("🚀 GERAR PACOTE COMERCIAL COM ESTILO ATIVO (6 HORÁRIOS)"):
+# 5. GERADOR INDUSTRIAL COM BLINDAGEM 1:1 E BLOCOS UNIFICADOS
+if st.button("🚀 GERAR PACOTE COMERCIAL OTIMIZADO (6 HORÁRIOS)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Travas 1:1 Ativas.")
+        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Sistema 100% Otimizado e Fluido.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -222,6 +222,13 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ESTILO ATIVO (6 HORÁRIOS)"):
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
+        clean_lock = (
+            f"STRICT 1:1 INDUSTRIAL CLONE: "
+            f"1. MODEL LOCK: Exact 1:1 match of reference model face, features, skin tone, and body. Zero model swapping. "
+            f"2. PRODUCT LOCK: Exact 1:1 physical clone of '{produto_nome}' based on reference images. Zero scaling or alterations. "
+            f"3. SCENARIO LOCK: Identical indoor luxury background, lighting, and base clothing. Zero environment shifting."
+        )
+        
         base_negative = "Negative Prompt: model swapping, face mutation, outfit change, background shift, opening box twice, putting item in bag, wrong product, scaling error, low quality, distortion, watermark."
 
         for i, h in enumerate(horarios):
@@ -229,19 +236,33 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ESTILO ATIVO (6 HORÁRIOS)"):
 
             takes = [
                 (
-                    f"ESTILO ATIVO: {estilo_persona} - Parte 1",
-                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. STRICT 1:1 INDUSTRIAL CLONE: exact model face, exact product '{produto_nome}', identical environment. "
-                    f"NARRATIVE PART 1 (NATURAL INTRODUCTION & OPENING): Medium close-up handheld cinematic tracking reflecting real UGC video flow. The exact same creator unpacks/presents '{produto_nome}' with organic hand movements, showing premium quality and pointing to details.\n\n\n\n"
-                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
-                    f"Continuous location, natural lighting. {base_negative}"
+                    "ESTILO 1: Unboxing na Bancada",
+                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. {clean_lock}. Medium close-up handheld cinematic tracking inside a luxury room. The creator opens a package on a table, lifting '{produto_nome}' into frame with calm movements.\n\n\n\n"
+                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
+                    f"Continuous indoor location. {base_negative}"
                 ),
                 (
-                    f"ESTILO ATIVO: {estilo_persona} - Parte 2",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. STRICT 1:1 INDUSTRIAL CLONE: exact model face, exact product '{produto_nome}', identical environment. "
-                    f"NARRATIVE PART 2 (CONTINUATION & CTA): Fluid handheld movement maintaining perfect spatial and identity continuity with Part 1. The creator showcases the fabric physics, styling, and model fit, concluding smoothly with the conversion call to action.\n\n\n\n"
-                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
-                    f"Continuous environment, identical background. {base_negative}"
-                )
+                    "ESTILO 2: Movimento Interno Dinâmico",
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. {clean_lock}. Fluid handheld movement in a bright modern space. The exact reference model wears and showcases '{produto_nome}' with natural fabric physics.\n\n\n\n"
+                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
+                    f"Continuous indoor environment. {base_negative}"
+                ),
+                (
+                    "ESTILO 3: Close Macro de Detalhes",
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. {clean_lock}. Macro close-up framing focusing tightly on '{produto_nome}' held steady in hands under warm ambient light, revealing precise surface finish and exact brand lettering.\n\n\n\n"
+                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
+                    f"Zero artifacts, perfect fidelity. {base_negative}"
+                ),
+                (
+                    "ESTILO 4: Review no Espelho",
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. {clean_lock}. Authentic mirror reflection video in a boutique dressing room. Creator holds smartphone, showcasing '{produto_nome}' clearly in the reflection.\n\n\n\n"
+                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
+                    f"Fixed spatial continuity. {base_negative}"
+                ]
             ]
 
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
@@ -249,23 +270,25 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ESTILO ATIVO (6 HORÁRIOS)"):
             col1, col2 = st.columns(2)
             
             with col1:
-                t_title, t_prompt = takes[0]
-                st.markdown(f"""
-                <div class="metric-card">
-                    <span class="tag-estilo">{t_title}</span><br>
-                    <b style="color: #00FF66; font-size: 12px;">Prompt Parte 1 (Início & Apresentação):</b>
-                """, unsafe_allow_html=True)
-                st.code(t_prompt, language="text")
-                st.markdown("</div>", unsafe_allow_html=True)
+                for idx_take in [0, 2]:
+                    t_title, t_prompt = takes[idx_take]
+                    st.markdown(f"""
+                    <div class="metric-card">
+                        <span class="tag-estilo">{t_title}</span><br>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Fala 1 & Fala 2 no mesmo bloco):</b>
+                    """, unsafe_allow_html=True)
+                    st.code(t_prompt, language="text")
+                    st.markdown("</div>", unsafe_allow_html=True)
 
             with col2:
-                t_title, t_prompt = takes[1]
-                st.markdown(f"""
-                <div class="metric-card">
-                    <span class="tag-estilo">{t_title}</span><br>
-                    <b style="color: #00FF66; font-size: 12px;">Prompt Parte 2 (Continuação & CTA):</b>
-                """, unsafe_allow_html=True)
-                st.code(t_prompt, language="text")
-                st.markdown("</div>", unsafe_allow_html=True)
+                for idx_take in [1, 3]:
+                    t_title, t_prompt = takes[idx_take]
+                    st.markdown(f"""
+                    <div class="metric-card">
+                        <span class="tag-estilo">{t_title}</span><br>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Fala 1 & Fala 2 no mesmo bloco):</b>
+                    """, unsafe_allow_html=True)
+                    st.code(t_prompt, language="text")
+                    st.markdown("</div>", unsafe_allow_html=True)
 
             st.markdown("---")
