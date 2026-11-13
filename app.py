@@ -8,7 +8,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ESTÉTICA ORIGINAL EXATA + UPLOAD DO PRODUTO EM VERMELHO NEON E OS DEMAIS EM VERDE NEON
+# ESTÉTICA ORIGINAL CLÁSSICA TRAVADA E BLINDADA (Fundo Escuro Puro, Sem Faixas Brancas, Padrão Verde Neon)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -19,7 +19,7 @@ st.markdown("""
         font-family: 'Inter', sans-serif !important;
     }
     
-    .stButton>button {
+    .stButton>button, div[data-testid="stFileUploader"] button {
         background-color: #00FF66 !important;
         color: #000000 !important;
         font-weight: 700 !important;
@@ -29,7 +29,7 @@ st.markdown("""
         font-size: 16px !important;
         width: 100% !important;
     }
-    .stButton>button:hover {
+    .stButton>button:hover, div[data-testid="stFileUploader"] button:hover {
         background-color: #00cc52 !important;
         color: #ffffff !important;
     }
@@ -69,7 +69,6 @@ st.markdown("""
         border: 1.5px solid #00FF66 !important;
     }
     
-    /* UPLOADS PADRÃO (Verde Neon Original) */
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 2px solid #00FF66 !important;
@@ -79,20 +78,6 @@ st.markdown("""
     div[data-testid="stFileUploader"] section { background-color: #161026 !important; }
     div[data-testid="stFileUploader"] span, div[data-testid="stFileUploader"] small, div[data-testid="stFileUploader"] p {
         color: #ffffff !important;
-    }
-    
-    /* UPLOAD DO PRODUTO (Exclusivamente em Vermelho Neon) */
-    .upload-vermelho-neon div[data-testid="stFileUploader"] {
-        border: 2px solid #FF0055 !important;
-        background-color: #161026 !important;
-    }
-    .upload-vermelho-neon button {
-        background-color: #FF0055 !important;
-        color: #ffffff !important;
-        font-weight: 700 !important;
-    }
-    .upload-vermelho-neon button:hover {
-        background-color: #cc0044 !important;
     }
     
     ::placeholder { color: #b0bec5 !important; opacity: 1 !important; }
@@ -165,16 +150,14 @@ with c_top3:
 
 st.markdown("---")
 
-# 3. ENTRADAS DO PRODUTO (LADO ESQUERDO: VERMELHO NEON | LADO DIREITO: VERDE NEON ORIGINAL)
+# 3. ENTRADAS DO PRODUTO (PADRÃO ORIGINAL COM 3 UPLOADS EM VERDE NEON)
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
     produto_nome = st.text_input("NOME EXATO DO PRODUTO / SKU", placeholder="Ex: Sandália Vermelha Salto Bloco")
     
     st.markdown("<p style='font-size:13px; font-weight:700; margin-bottom:4px;'>DESCRIÇÃO DO PRODUTO - UPLOAD FOTO</p>", unsafe_allow_html=True)
-    st.markdown('<div class="upload-vermelho-neon">', unsafe_allow_html=True)
-    foto_produto_analise = st.file_uploader("Upload Foto Produto", type=["jpg", "jpeg", "png"], key="prod_upload_vermelho", label_visibility="collapsed")
-    st.markdown('</div>', unsafe_allow_html=True)
+    foto_produto_analise = st.file_uploader("Upload Foto Produto", type=["jpg", "jpeg", "png"], key="prod_upload_original", label_visibility="collapsed")
 
     tipo_produto = st.selectbox("CATEGORIA", [
         "Calçado / Tênis / Sandália", 
@@ -217,10 +200,10 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ANÁLISE VISUAL (6 HORÁRIOS)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
-        st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na caixa vermelha para ativar a precisão máxima.")
+        st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote gerado às {agora} | Análise Visual em Vermelho Neon e Travas 1:1 Ativas.")
+        st.success(f"✅ Pacote gerado às {agora} | Análise Visual e Travas 1:1 Ativas.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -234,7 +217,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ANÁLISE VISUAL (6 HORÁRIOS)"):
         strict_precision_lock = (
             f"STRICT 1:1 PIXEL-PERFECT PHYSICAL & BIOMETRIC CLONE: "
             f"1. MODEL LOCK: Full head-to-toe mapping of the uploaded model reference photo. Exact facial structure, eyes, nose, lips, hair texture, skin tone, and body proportions. Zero face morphing, zero model substitution. "
-            f"2. VISUAL UPLOAD PRODUCT LOCK: Exact 1:1 physical clone of product '{produto_nome}' based on pixel analysis of the uploaded red neon reference image. Exact buckle dimensions, exact strap thickness, exact sole height, exact color tone, exact material finish. STRICTLY PROHIBITED: enlarging items, making the product bigger, altering buckle dimensions, changing strap width, or modifying any physical feature. "
+            f"2. VISUAL UPLOAD PRODUCT LOCK: Exact 1:1 physical clone of product '{produto_nome}' based on pixel analysis of the uploaded reference images. Exact buckle dimensions, exact strap thickness, exact sole height, exact color tone, exact material finish. STRICTLY PROHIBITED: enlarging items, making the product bigger, altering buckle dimensions, changing strap width, or modifying any physical feature. "
             f"3. BRAND & LOGO INTEGRITY: Exact lettering and typography of the brand. Zero extra letters, zero added logos, zero alterations."
         )
         
@@ -273,7 +256,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ANÁLISE VISUAL (6 HORÁRIOS)"):
                     st.markdown(f"""
                     <div class="metric-card">
                         <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Análise Visual Neon + Trava 1:1 + Fala Natural):</b>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Análise Visual + Trava 1:1 + Fala Natural):</b>
                     """, unsafe_allow_html=True)
                     st.code(t_prompt, language="text")
                     st.markdown("</div>", unsafe_allow_html=True)
@@ -284,7 +267,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ANÁLISE VISUAL (6 HORÁRIOS)"):
                     st.markdown(f"""
                     <div class="metric-card">
                         <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Análise Visual Neon + Trava 1:1 + Fala Natural):</b>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Análise Visual + Trava 1:1 + Fala Natural):</b>
                     """, unsafe_allow_html=True)
                     st.code(t_prompt, language="text")
                     st.markdown("</div>", unsafe_allow_html=True)
