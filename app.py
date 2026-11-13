@@ -1,4 +1,3 @@
-
 import streamlit as st
 from datetime import datetime
 
@@ -114,7 +113,7 @@ st.markdown("""
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">VALENTINA LABS</h1>
-        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (21 PROMPTS UNIFORM QUALITY)</p>
+        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (10s PRECISION & 21 PROMPTS)</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -176,64 +175,63 @@ with col_input2:
 
 st.markdown("---")
 
-# 4. BANCO EXPANDIDO COM 21 ROTEIROS ÚNICOS (RITMO CALMO + GANCHO FORTE + CTA VALENTINA / CARRINHO LARANJA)
+# 4. BANCO DE 21 ROTEIROS OTIMIZADOS PARA 10 SEGUNDOS (GANCHO FORTE + CTA VALENTINA / CARRINHO LARANJA)
 roteiros_21 = [
-    "Amiga, para tudo e me escuta... você não tem noção do que acabou de chegar para mim. Exatamente como eu queria... corre lá na Loja da Valentina e clica no carrinho laranja aqui embaixo.",
-    "Gente, sério... eu precisava gravar bem calma para vocês verem isso aqui. É surreal de perfeito... está com preço de lançamento na Loja da Valentina, clica no carrinho laranja aí embaixo.",
-    "Olha... se você estava na dúvida se valia a pena, presta atenção nisso. Veio idêntico ao anúncio, acabamento impecável... já está disponível na Loja da Valentina, corre e clica no carrinho laranja.",
-    "Meninas... vocês me pediram tanto esse modelo exato, e ele chegou superando todas as expectativas. Perfeito demais... garante o seu na Loja da Valentina clicando no carrinho laranja.",
-    "Olha isso aqui... reposição oficial que vocês tanto queriam, chegou fresquinho para compor os melhores looks. Maravilhoso... corre para garantir direto na Loja da Valentina, clica no carrinho laranja.",
-    "Para tudo e olha a fidelidade absoluta desse produto... sério, impecável em cada detalhe. Vale muito a pena... tudo disponível na Loja da Valentina, clica no carrinho laranja e aproveita.",
-    "Meninas do céu, vocês não têm noção da lindeza disso aqui... chegou super rápido e idêntico à foto! Garante o seu na Loja da Valentina clicando no carrinho laranja aqui embaixo.",
-    "Olha esse acabamento, sério... é o tipo de peça que todo mundo elogia na rua. Corre para aproveitar na Loja da Valentina, clica no carrinho laranja aí na tela.",
-    "Gente, eu estava ansiosa demais para esse pacote chegar... e superou tudo! Perfeito para o dia a dia. Já vai direto na Loja da Valentina e clica no carrinho laranja.",
-    "Para quem ama exclusividade e conforto, achou o produto certo. Chegou impecável... corre lá na Loja da Valentina e clica no carrinho laranja aqui embaixo.",
-    "Amiga, se você quer acertar em cheio no look, é isso aqui que você precisa. Qualidade surreal... tudo na Loja da Valentina, clica no carrinho laranja.",
-    "Olha a perfeição desse detalhe, sério, fiquei sem palavras... reposição limitadíssima na Loja da Valentina, clica no carrinho laranja e garante o seu.",
-    "Meninas, chegou o queridinho do momento... exatamente como a gente pediu! Não perde tempo, corre na Loja da Valentina e clica no carrinho laranja.",
-    "Gente, eu testei e aprovei de verdade. Qualidade impecável de verdade... disponível agora na Loja da Valentina, clica no carrinho laranja aí embaixo.",
-    "Olha esse caimento, olha essa cor... simplesmente apaixonada! Corre para garantir o seu direto na Loja da Valentina, clica no carrinho laranja.",
-    "Vocês me mandaram mensagem o dia todo perguntando sobre isso... chegou perfeito! Garante o teu na Loja da Valentina clicando no carrinho laranja.",
-    "Amiga, sério, esse aqui é daquele modelo que esgota em minutos... corre para ver na Loja da Valentina, clica no carrinho laranja aqui embaixo.",
-    "Olha a embalagem, olha o cuidado... e o produto é melhor ainda ao vivo! Tudo na Loja da Valentina, clica no carrinho laranja e aproveita.",
-    "Meninas, fevirei fã número um desse modelo... veio exato como na foto! Corre lá na Loja da Valentina e clica no carrinho laranja.",
-    "Gente, preço justo e qualidade de shopping... achei o achado do mês! Disponível na Loja da Valentina, clica no carrinho laranja aí na tela.",
-    "Para fechar o dia com chave de ouro, olha o que chegou para mim... perfeito demais! Garante o seu na Loja da Valentina clicando no carrinho laranja."
+    "Amiga, para tudo e olha isso... exatamente como eu queria! Corre lá na Loja da Valentina e clica no carrinho laranja.",
+    "Gente, sério... surreal de perfeito! Está com preço de lançamento na Loja da Valentina, clica no carrinho laranja aí embaixo.",
+    "Olha... veio idêntico ao anúncio, acabamento impecável! Já está disponível na Loja da Valentina, corre e clica no carrinho laranja.",
+    "Meninas... superou todas as expectativas. Perfeito demais, garante o seu na Loja da Valentina clicando no carrinho laranja.",
+    "Olha isso aqui... reposição oficial fresquinha! Corre para garantir direto na Loja da Valentina, clica no carrinho laranja.",
+    "Para tudo e olha a fidelidade disso... impecável em cada detalhe. Tudo disponível na Loja da Valentina, clica no carrinho laranja.",
+    "Meninas do céu, chegou super rápido e idêntico à foto! Garante o seu na Loja da Valentina clicando no carrinho laranja.",
+    "Olha esse acabamento, sério... todo mundo elogia. Corre para aproveitar na Loja da Valentina, clica no carrinho laranja.",
+    "Gente, superou tudo! Perfeito para o dia a dia. Já vai direto na Loja da Valentina e clica no carrinho laranja.",
+    "Para quem ama conforto, achou o produto certo. Chegou impecável, corre lá na Loja da Valentina e clica no carrinho laranja.",
+    "Amiga, qualidade surreal! Tudo disponível na Loja da Valentina, clica no carrinho laranja aí embaixo.",
+    "Olha a perfeição desse detalhe... reposição limitadíssima na Loja da Valentina, clica no carrinho laranja e garante o seu.",
+    "Meninas, chegou o queridinho do momento, exatamente como pedimos! Corre na Loja da Valentina e clica no carrinho laranja.",
+    "Gente, aprovei de verdade, qualidade impecável! Disponível agora na Loja da Valentina, clica no carrinho laranja.",
+    "Olha esse caimento, simplesmente apaixonada! Corre para garantir direto na Loja da Valentina, clica no carrinho laranja.",
+    "Vocês me perguntaram muito... chegou perfeito! Garante o teu na Loja da Valentina clicando no carrinho laranja.",
+    "Amiga, modelo que esgota em minutos! Corre para ver na Loja da Valentina, clica no carrinho laranja aqui embaixo.",
+    "Olha a embalagem e o produto ao vivo! Tudo na Loja da Valentina, clica no carrinho laranja e aproveita.",
+    "Meninas, virei fã número um, veio exato como na foto! Corre lá na Loja da Valentina e clica no carrinho laranja.",
+    "Gente, preço justo e qualidade de shopping! Disponível na Loja da Valentina, clica no carrinho laranja aí na tela.",
+    "Para fechar o dia, olha o que chegou para mim, perfeito demais! Garante o seu na Loja da Valentina clicando no carrinho laranja."
 ]
 
-# 5. GERADOR UNIFORME PARA OS 21 PROMPTS
-if st.button("🚀 GERAR PACOTE COMPLETO (21 PROMPTS PADRÃO MÁXIMO)"):
+# 5. GERADOR UNIFORME PARA OS 21 PROMPTS (10 SEGUNDOS)
+if st.button("🚀 GERAR PACOTE COMPLETO (21 PROMPTS • 10s PRECISION)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote de 21 Prompts gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Qualidade Uniforme Máxima Ativa.")
+        st.success(f"✅ Pacote de 21 Prompts gerado às {agora} | Duração: 10 Segundos | Qualidade Uniforme Máxima Ativa.")
         
-        # LOOP RIGOROSO PARA OS 21 PROMPTS COM QUALIDADE IDÊNTICA DO 1 AO 21
         for idx in range(21):
             roteiro_atual = roteiros_21[idx % len(roteiros_21)]
             prompt_numero = idx + 1
 
             prompt_final = (
-                f"Photorealistic 4K UGC video (13.5s duration, {proporcao.split()[0]}), mobile sensor. ACTIVE STYLE: {estilo_persona}. "
+                f"Photorealistic 4K UGC video (10-second precise duration, {proporcao.split()[0]}), mobile sensor. ACTIVE STYLE: {estilo_persona}. "
                 f"Strict 1:1 pixel lock: identical reference model face and body proportions. "
                 f"Rigid product lock: exact '{produto_nome}' matching reference image with zero substitution. "
-                f"MAGNETIC HOOK START (0-2s): The video opens immediately with the creator looking straight into the camera, head slightly tilted, delivering a strong, engaging verbal hook with a calm, conversational, natural human tone. "
-                f"CALM & FLUID MOVEMENT (2-13s): The creator moves slowly, calmly, and unhurriedly. Hands pick up '{produto_nome}' from a soft luxury bed surface with natural physical weight. The pacing is relaxed and confident, with zero rushing. "
+                f"MAGNETIC HOOK START (0-2s): The video opens immediately with the creator looking straight into the camera, head slightly tilted, delivering a strong verbal hook with a calm, conversational human tone. "
+                f"CALM & NATURAL MOVEMENT (2-10s): The creator moves calmly. Hands pick up '{produto_nome}' from a soft luxury bed surface with natural physical weight. "
                 f"IMMEDIATE FLUID START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks. "
-                f"SMOOTH TAIL BUFFER: Action and speech gently taper off towards the final seconds, allowing a natural, unhurried conclusion with zero abrupt audio cuts. "
+                f"SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts. "
                 f"Fixed static background, organic human movement.\n\n"
-                f"LOCUÇÃO (Ritmo calmo, natural e persuasivo): \"{roteiro_atual}\"\n\n"
-                f"Negative Prompt: rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, UI graphics, watermarks, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
+                f"LOCUÇÃO (10s com ritmo calmo e gancho forte): \"{roteiro_atual}\"\n\n"
+                f"Negative Prompt: over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, UI graphics, watermarks, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
             )
 
             st.markdown(f"### 🎬 Prompt Comercial #{prompt_numero} de 21")
             
             st.markdown(
                 '<div class="metric-card">'
-                f'<span class="tag-estilo">Take Único #{prompt_numero} (13.5s) - Padrão Rigoroso Valentina Labs</span><br>',
+                f'<span class="tag-estilo">Take Único #{prompt_numero} (10s) - Padrão Rigoroso Valentina Labs</span><br>',
                 unsafe_allow_html=True
             )
             
