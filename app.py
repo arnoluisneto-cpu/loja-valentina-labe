@@ -150,7 +150,7 @@ with c_top3:
 
 st.markdown("---")
 
-# 3. ENTRADAS DO PRODUTO (PADRÃO ORIGINAL COM 3 UPLOADS EM VERDE NEON)
+# 3. ENTRADAS DO PRODUTO (3 UPLOADS EM VERDE NEON)
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
@@ -176,34 +176,43 @@ with col_input2:
 
 st.markdown("---")
 
-# 4. BANCOS DE GANCHOS E CTAS COM RITMO NATURAL E PAUSAS TRANQÜILAS
-hooks_abertura = [
-    "Meninas... olha o que acabou de chegar... exatamente como eu pedi, estou apaixonada...",
-    "Gente, sério... recebi o produto exato da foto... precisava gravar bem de calma para vocês verem.",
-    "Olha... veio idêntico ao que está cadastrado... qualidade impecável.",
-    "Vocês me pediram muito esse modelo exato... e ele chegou perfeito...",
-    "Meninas... reposição oficial do produto que vocês tanto queriam...",
-    "Para tudo... e presta atenção na fidelidade absoluta desse produto que chegou para mim..."
+# 4. BANCOS DE GANCHOS E CTAS COM RITMO NATURAL E DIVIDIDOS EM 2 PARTES DENTRO DO MESMO BLOCO
+blocos_fala = [
+    {
+        "parte1": "Meninas... olha o que acabou de chegar... exatamente como eu pedi,",
+        "parte2": "estou apaixonada... Corre para garantir o seu na Loja da Valentina... clica no carrinho laranja aqui embaixo."
+    },
+    {
+        "parte1": "Gente, sério... recebi o produto exato da foto... precisava gravar bem de calma,",
+        "parte2": "para vocês verem. Está com um preço promocional imperdível na Loja da Valentina... clica no carrinho laranja."
+    },
+    {
+        "parte1": "Olha... veio idêntico ao que está cadastrado... qualidade impecável,",
+        "parte2": "perfeito para o dia a dia. Disponível agora com frete rápido na Loja da Valentina... clica no carrinho laranja aí na tela."
+    },
+    {
+        "parte1": "Vocês me pediram muito esse modelo exato... e ele chegou perfeito,",
+        "parte2": "exatamente como prometido. Não perde tempo porque esgota rápido... clica no carrinho laranja na Loja da Valentina."
+    },
+    {
+        "parte1": "Meninas... reposição oficial do produto que vocês tanto queriam,",
+        "parte2": "corre que vale muito a pena. Garante o seu direto na Loja da Valentina... clica no carrinho laranja aqui embaixo."
+    },
+    {
+        "parte1": "Para tudo... e presta atenção na fidelidade absoluta desse produto,",
+        "parte2": "simplesmente maravilhoso. Tudo disponível na Loja da Valentina... clica no carrinho laranja e aproveita a promoção."
+    }
 ]
 
-ctas_fechamento = [
-    "Corre para garantir o seu na Loja da Valentina... clica no carrinho laranja aqui embaixo.",
-    "Está com um preço promocional imperdível na Loja da Valentina... clica no carrinho laranja.",
-    "Disponível agora com frete rápido na Loja da Valentina... clica no carrinho laranja aí na tela.",
-    "Não perde tempo porque esgota rápido... clica no carrinho laranja na Loja da Valentina.",
-    "Garante o seu direto na Loja da Valentina... clica no carrinho laranja aqui embaixo.",
-    "Tudo disponível na Loja da Valentina... clica no carrinho laranja e aproveita a promoção."
-]
-
-# 5. GERADOR INDUSTRIAL COM ANÁLISE VISUAL + FALAS PAUSADAS + TRAVAS 1:1
-if st.button("🚀 GERAR PACOTE COMERCIAL COM ANÁLISE VISUAL (6 HORÁRIOS)"):
+# 5. GERADOR INDUSTRIAL COM FALAS UNIFICADAS EM BLOCO ÚNICO
+if st.button("🚀 GERAR PACOTE COMERCIAL COM FALAS UNIFICADAS (6 HORÁRIOS)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote gerado às {agora} | Análise Visual e Travas 1:1 Ativas.")
+        st.success(f"✅ Pacote gerado às {agora} | Prompts unificados em bloco único com divisão interna e Travas 1:1 Ativas.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -211,7 +220,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ANÁLISE VISUAL (6 HORÁRIOS)"):
             "15:00 - Tarde (Pausa Comercial)",
             "18:00 - Fim de Tarde (Deslocamento)",
             "19:00 - Noite (Pico Principal de Compra)",
-            "23:00 - Fechamento (Último Tiro do Dia)"
+            "23:00 - Fechamento (Último Tiro du Dia)"
         ]
         
         strict_precision_lock = (
@@ -224,25 +233,36 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ANÁLISE VISUAL (6 HORÁRIOS)"):
         base_negative = "Negative Prompt: low quality, fast speech, distorted hands, morphing, face distortion, wrong model face, altered brand name, extra letters on logo, enlarged product, scaled-up size, oversized buckle, thicker straps, wrong product color, item substitution, generic substitute item, blurry background, bad anatomy, deformed fingers, text artifacts, watermark, low resolution."
 
         for i, h in enumerate(horarios):
-            h_hook = hooks_abertura[i % len(hooks_abertura)]
-            h_cta = ctas_fechamento[i % len(ctas_fechamento)]
+            fala = blocos_fala[i % len(blocos_fala)]
 
             takes = [
                 (
                     "ESTILO 1: Unboxing na Bancada",
-                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Medium close-up handheld cinematic tracking inside a luxury room. The human creator opens a package on a table, lifting '{produto_nome}' into frame with calm, natural movements. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses): \"{h_hook} Tô abrindo aqui na bancada... pra vocês verem de perto a {produto_nome}. {h_cta}\". Continuous indoor location. {base_negative}"
+                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Medium close-up handheld cinematic tracking inside a luxury room. The human creator opens a package on a table, lifting '{produto_nome}' into frame with calm, natural movements. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses):\n"
+                    f"[PARTE 1 PARA 1ª GERAÇÃO]: \"{fala['parte1']}\"\n"
+                    f"[PARTE 2 PARA 2ª GERAÇÃO]: \"{fala['parte2']}\"\n"
+                    f"Continuous indoor location. {base_negative}"
                 ),
                 (
                     "ESTILO 2: Movimento Interno Dinâmico",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Fluid handheld movement in a bright modern space. The exact reference model wears and showcases '{produto_nome}' with natural fabric physics. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses): \"{h_hook} Testando no uso real hoje a {produto_nome}... e o caimento fica simplesmente impecável. {h_cta}\". Continuous indoor environment. {base_negative}"
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Fluid handheld movement in a bright modern space. The exact reference model wears and showcases '{produto_nome}' with natural fabric physics. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses):\n"
+                    f"[PARTE 1 PARA 1ª GERAÇÃO]: \"{fala['parte1']}\"\n"
+                    f"[PARTE 2 PARA 2ª GERAÇÃO]: \"{fala['parte2']}\"\n"
+                    f"Continuous indoor environment. {base_negative}"
                 ),
                 (
                     "ESTILO 3: Close Macro de Detalhes",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Macro close-up framing focusing tightly on '{produto_nome}' held steady in hands under warm ambient light, revealing precise surface finish, exact buckle dimensions, and exact brand lettering derived from visual analysis. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses): \"{h_hook} Olha bem de perto a textura... e o acabamento da {produto_nome} na minha mão. {h_cta}\". Zero artifacts, perfect fidelity. {base_negative}"
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Macro close-up framing focusing tightly on '{produto_nome}' held steady in hands under warm ambient light, revealing precise surface finish, exact buckle dimensions, and exact brand lettering derived from visual analysis. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses):\n"
+                    f"[PARTE 1 PARA 1ª GERAÇÃO]: \"{fala['parte1']}\"\n"
+                    f"[PARTE 2 PARA 2ª GERAÇÃO]: \"{fala['parte2']}\"\n"
+                    f"Zero artifacts, perfect fidelity. {base_negative}"
                 ),
                 (
                     "ESTILO 4: Review no Espelho",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Authentic mirror reflection video in a boutique dressing room. Creator holds smartphone, showcasing '{produto_nome}' clearly in the reflection. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses): \"{h_hook} Não podia deixar de gravar esse close no espelho... com a {produto_nome}. {h_cta}\". Continuous spatial continuity. {base_negative}"
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Authentic mirror reflection video in a boutique dressing room. Creator holds smartphone, showcasing '{produto_nome}' clearly in the reflection. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses):\n"
+                    f"[PARTE 1 PARA 1ª GERAÇÃO]: \"{fala['parte1']}\"\n"
+                    f"[PARTE 2 PARA 2ª GERAÇÃO]: \"{fala['parte2']}\"\n"
+                    f"Continuous spatial continuity. {base_negative}"
                 )
             ]
 
@@ -256,7 +276,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ANÁLISE VISUAL (6 HORÁRIOS)"):
                     st.markdown(f"""
                     <div class="metric-card">
                         <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Análise Visual + Trava 1:1 + Fala Natural):</b>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Bloco Único com Divisão Interna):</b>
                     """, unsafe_allow_html=True)
                     st.code(t_prompt, language="text")
                     st.markdown("</div>", unsafe_allow_html=True)
@@ -267,7 +287,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM ANÁLISE VISUAL (6 HORÁRIOS)"):
                     st.markdown(f"""
                     <div class="metric-card">
                         <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Análise Visual + Trava 1:1 + Fala Natural):</b>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Bloco Único com Divisão Interna):</b>
                     """, unsafe_allow_html=True)
                     st.code(t_prompt, language="text")
                     st.markdown("</div>", unsafe_allow_html=True)
