@@ -176,43 +176,43 @@ with col_input2:
 
 st.markdown("---")
 
-# 4. BANCOS DE GANCHOS E CTAS COM RITMO NATURAL E DIVIDIDOS EM 2 PARTES DENTRO DO MESMO BLOCO
-blocos_fala = [
+# 4. BANCOS DE ROTEIROS ÚNICOS (DIVIDIDOS EM FALA 1 E FALA 2 PARA CONTINUIDADE PERFEITA)
+roteiros_completos = [
     {
-        "parte1": "Meninas... olha o que acabou de chegar... exatamente como eu pedi,",
-        "parte2": "estou apaixonada... Corre para garantir o seu na Loja da Valentina... clica no carrinho laranja aqui embaixo."
+        "fala1": "Meninas... olha o que acabou de chegar... exatamente como eu pedi, estou totalmente apaixonada por cada detalhe...",
+        "fala2": "e para garantir o seu com segurança, corre lá na Loja da Valentina e clica no carrinho laranja aqui embaixo na tela."
     },
     {
-        "parte1": "Gente, sério... recebi o produto exato da foto... precisava gravar bem de calma,",
-        "parte2": "para vocês verem. Está com um preço promocional imperdível na Loja da Valentina... clica no carrinho laranja."
+        "fala1": "Gente, sério... recebi o produto exato da foto... precisava gravar bem de calma para vocês verem a qualidade real...",
+        "fala2": "está com um preço promocional imperdível na Loja da Valentina, então clica no carrinho laranja aí embaixo e aproveita."
     },
     {
-        "parte1": "Olha... veio idêntico ao que está cadastrado... qualidade impecável,",
-        "parte2": "perfeito para o dia a dia. Disponível agora com frete rápido na Loja da Valentina... clica no carrinho laranja aí na tela."
+        "fala1": "Olha... veio idêntico ao que está cadastrado... acabamento impecável, perfeito para o dia a dia e super confortável...",
+        "fala2": "já está disponível com frete rápido direto na Loja da Valentina, corre e clica no carrinho laranja aí na tela."
     },
     {
-        "parte1": "Vocês me pediram muito esse modelo exato... e ele chegou perfeito,",
-        "parte2": "exatamente como prometido. Não perde tempo porque esgota rápido... clica no carrinho laranja na Loja da Valentina."
+        "fala1": "Vocês me pediram muito esse modelo exato... e ele chegou perfeito, superando todas as expectativas de acabamento...",
+        "fala2": "não perde tempo porque esgota rápido, garante o seu na Loja da Valentina clicando no carrinho laranja."
     },
     {
-        "parte1": "Meninas... reposição oficial do produto que vocês tanto queriam,",
-        "parte2": "corre que vale muito a pena. Garante o seu direto na Loja da Valentina... clica no carrinho laranja aqui embaixo."
+        "fala1": "Meninas... reposição oficial do produto que vocês tanto queriam... chegou fresquinho para compor os melhores looks...",
+        "fala2": "corre para garantir o seu direto na Loja da Valentina, clica no carrinho laranja aqui embaixo e confere."
     },
     {
-        "parte1": "Para tudo... e presta atenção na fidelidade absoluta desse produto,",
-        "parte2": "simplesmente maravilhoso. Tudo disponível na Loja da Valentina... clica no carrinho laranja e aproveita a promoção."
+        "fala1": "Para tudo... e presta atenção na fidelidade absoluta desse produto... simplesmente maravilhoso e impecável em tudo...",
+        "fala2": "tudo disponível na Loja da Valentina, clica no carrinho laranja e aproveita a promoção especial de hoje."
     }
 ]
 
-# 5. GERADOR INDUSTRIAL COM FALAS UNIFICADAS EM BLOCO ÚNICO
-if st.button("🚀 GERAR PACOTE COMERCIAL COM FALAS UNIFICADAS (6 HORÁRIOS)"):
+# 5. GERADOR INDUSTRIAL COM ROTEIRO ÚNICO SEQUENCIAL (FALA 1 -> FALA 2 COM CTA)
+if st.button("🚀 GERAR PACOTE COMERCIAL COM ROTEIRO SEQUENCIAL (6 HORÁRIOS)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote gerado às {agora} | Prompts unificados em bloco único com divisão interna e Travas 1:1 Ativas.")
+        st.success(f"✅ Pacote gerado às {agora} | Roteiro sequencial unificado (Fala 1 + Fala 2 com CTA) e Travas 1:1 Ativas.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -220,7 +220,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM FALAS UNIFICADAS (6 HORÁRIOS)"):
             "15:00 - Tarde (Pausa Comercial)",
             "18:00 - Fim de Tarde (Deslocamento)",
             "19:00 - Noite (Pico Principal de Compra)",
-            "23:00 - Fechamento (Último Tiro du Dia)"
+            "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
         strict_precision_lock = (
@@ -233,35 +233,35 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM FALAS UNIFICADAS (6 HORÁRIOS)"):
         base_negative = "Negative Prompt: low quality, fast speech, distorted hands, morphing, face distortion, wrong model face, altered brand name, extra letters on logo, enlarged product, scaled-up size, oversized buckle, thicker straps, wrong product color, item substitution, generic substitute item, blurry background, bad anatomy, deformed fingers, text artifacts, watermark, low resolution."
 
         for i, h in enumerate(horarios):
-            fala = blocos_fala[i % len(blocos_fala)]
+            rot = roteiros_completos[i % len(roteiros_completos)]
 
             takes = [
                 (
                     "ESTILO 1: Unboxing na Bancada",
-                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Medium close-up handheld cinematic tracking inside a luxury room. The human creator opens a package on a table, lifting '{produto_nome}' into frame with calm, natural movements. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses):\n"
-                    f"[PARTE 1 PARA 1ª GERAÇÃO]: \"{fala['parte1']}\"\n"
-                    f"[PARTE 2 PARA 2ª GERAÇÃO]: \"{fala['parte2']}\"\n"
+                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Medium close-up handheld cinematic tracking inside a luxury room. The human creator opens a package on a table, lifting '{produto_nome}' into frame with calm, natural movements.\n\n\n\n"
+                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
                     f"Continuous indoor location. {base_negative}"
                 ),
                 (
                     "ESTILO 2: Movimento Interno Dinâmico",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Fluid handheld movement in a bright modern space. The exact reference model wears and showcases '{produto_nome}' with natural fabric physics. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses):\n"
-                    f"[PARTE 1 PARA 1ª GERAÇÃO]: \"{fala['parte1']}\"\n"
-                    f"[PARTE 2 PARA 2ª GERAÇÃO]: \"{fala['parte2']}\"\n"
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Fluid handheld movement in a bright modern space. The exact reference model wears and showcases '{produto_nome}' with natural fabric physics.\n\n\n\n"
+                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
                     f"Continuous indoor environment. {base_negative}"
                 ),
                 (
                     "ESTILO 3: Close Macro de Detalhes",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Macro close-up framing focusing tightly on '{produto_nome}' held steady in hands under warm ambient light, revealing precise surface finish, exact buckle dimensions, and exact brand lettering derived from visual analysis. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses):\n"
-                    f"[PARTE 1 PARA 1ª GERAÇÃO]: \"{fala['parte1']}\"\n"
-                    f"[PARTE 2 PARA 2ª GERAÇÃO]: \"{fala['parte2']}\"\n"
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Macro close-up framing focusing tightly on '{produto_nome}' held steady in hands under warm ambient light, revealing precise surface finish, exact buckle dimensions, and exact brand lettering derived from visual analysis.\n\n\n\n"
+                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
                     f"Zero artifacts, perfect fidelity. {base_negative}"
                 ),
                 (
                     "ESTILO 4: Review no Espelho",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Authentic mirror reflection video in a boutique dressing room. Creator holds smartphone, showcasing '{produto_nome}' clearly in the reflection. Spoken dialogue in Portuguese Brazil embedded (calm, natural pacing with pauses):\n"
-                    f"[PARTE 1 PARA 1ª GERAÇÃO]: \"{fala['parte1']}\"\n"
-                    f"[PARTE 2 PARA 2ª GERAÇÃO]: \"{fala['parte2']}\"\n"
+                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. {strict_precision_lock}. Authentic mirror reflection video in a boutique dressing room. Creator holds smartphone, showcasing '{produto_nome}' clearly in the reflection.\n\n\n\n"
+                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
                     f"Continuous spatial continuity. {base_negative}"
                 )
             ]
@@ -276,7 +276,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM FALAS UNIFICADAS (6 HORÁRIOS)"):
                     st.markdown(f"""
                     <div class="metric-card">
                         <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Bloco Único com Divisão Interna):</b>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Roteiro Sequencial Único):</b>
                     """, unsafe_allow_html=True)
                     st.code(t_prompt, language="text")
                     st.markdown("</div>", unsafe_allow_html=True)
@@ -287,7 +287,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL COM FALAS UNIFICADAS (6 HORÁRIOS)"):
                     st.markdown(f"""
                     <div class="metric-card">
                         <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Bloco Único com Divisão Interna):</b>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Completo (Roteiro Sequencial Único):</b>
                     """, unsafe_allow_html=True)
                     st.code(t_prompt, language="text")
                     st.markdown("</div>", unsafe_allow_html=True)
