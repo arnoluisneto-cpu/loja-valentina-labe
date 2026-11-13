@@ -113,7 +113,7 @@ st.markdown("""
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">VALENTINA LABS</h1>
-        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (10s PERFECT SPEECH & TRY-ON)</p>
+        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (CINEMA 8K RAW & COMPLIANT)</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -200,37 +200,39 @@ roteiros_21 = [
     "Para fechar com chave de ouro, olha essa pantalona maravilhosa. Tecido nobre, caimento impecável vestida no corpo! Corre na Loja da Valentina e clica no carrinho laranja agora."
 ]
 
-# 5. GERADOR UNIFORME PARA OS 21 PROMPTS (10s + FALA DISTRIBUÍDA NO TEMPO)
-if st.button("🚀 GERAR PACOTE COMPLETO (21 PROMPTS • FALA CALIBRADA 10s)"):
+# 5. GERADOR UNIFORME PARA OS 21 PROMPTS (CINEMA 8K RAW + TIKTOK SHOP COMPLIANCE)
+if st.button("🚀 GERAR PACOTE COMPLETO (21 PROMPTS • TIKTOK SHOP COMPLIANT)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote de 21 Prompts gerado às {agora} | Duração: 10s | Ritmo de Fala e Transição Otimizados.")
+        st.success(f"✅ Pacote de 21 Prompts gerado às {agora} | Duração: 10s | Cinema 8K RAW & Clean Compliance Ativo.")
         
         for idx in range(21):
             roteiro_atual = roteiros_21[idx % len(roteiros_21)]
             prompt_numero = idx + 1
 
             prompt_final = (
-                f"Photorealistic 4K viral TikTok Shop UGC video (10-second precise duration, {proporcao.split()[0]}), mobile sensor. ACTIVE STYLE: {estilo_persona}. "
+                f"Masterpiece 8K UHD viral TikTok Shop UGC video powered by Arri Alexa cinema color science (10-second precise duration, {proporcao.split()[0]}), RAW optical sensor. ACTIVE STYLE: {estilo_persona}. "
+                f"Strict TikTok Shop Compliance & Clean Screen Protocol: Absolute zero microphones, zero lapel mics, zero earphones, zero floating accessories, zero unauthorized branding, zero watermarks, zero text overlays, zero subtitles, zero UI graphics on screen. Bare clothes and clean natural appearance only. "
+                f"Cinematic Visual Engineering: hyper-detailed micro-textures on fabric weave, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
                 f"Strict 1:1 pixel lock: identical reference model face and body proportions. "
                 f"Rigid product lock: exact '{produto_nome}' matching reference image with zero substitution. "
                 f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera holding '{produto_nome}' for the first 2 seconds delivering a strong magnetic hook, then seamlessly transitions at second 2 already WEARING '{produto_nome}' on her body in a chic mirror/dressing room setting, pacing her speech evenly across the full 10 seconds while running her hands over the fabric. "
                 f"IMMEDIATE FLUID START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks. "
                 f"SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. "
                 f"Fixed static background, organic human movement.\n\n"
-                f"LOCUÇÃO RTMICA (10s com distribuição equilibrada de fala e conversão): \"{roteiro_atual}\"\n\n"
-                f"Negative Prompt: early speech ending, dead silence at the end, staying only holding the item without wearing it, no try-on, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, UI graphics, watermarks, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
+                f"LOCUÇÃO RÍTMICA (10s com distribuição equilibrada de fala e conversão): \"{roteiro_atual}\"\n\n"
+                f"Negative Prompt: microphone, lapel mic, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, staying only holding the item without wearing it, no try-on, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, UI graphics, watermarks, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
             )
 
             st.markdown(f"### 🎬 Prompt Comercial #{prompt_numero} de 21")
             
             st.markdown(
                 '<div class="metric-card">'
-                f'<span class="tag-estilo">Take Único #{prompt_numero} (10s) - Transição + Fala Equilibrada</span><br>',
+                f'<span class="tag-estilo">Take Único #{prompt_numero} (10s) - TikTok Shop Clean Compliance</span><br>',
                 unsafe_allow_html=True
             )
             
