@@ -7,7 +7,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ESTÉTICA ORIGINAL CLÁSSICA DE ALTO LUXO (Fundo Escuro Puro, Padrão Verde Neon)
+# ESTÉTICA DE ALTO LUXO (Fundo Escuro Puro, Padrão Verde Neon)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -113,11 +113,11 @@ st.markdown("""
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">VALENTINA LABS</h1>
-        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (FLOW COMPLIANT)</p>
+        <p style="color: #b0bec5; font-size: 12px; margin-top: 5px; margin-bottom: 0; letter-spacing: 2px;">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (ENGINEERING GRADE)</p>
     </div>
 """, unsafe_allow_html=True)
 
-# 2. SELETORES (20 Estilos Oficiais Ativos)
+# 2. SELETORES (20 Estilos Oficiais)
 c_top1, c_top2, c_top3 = st.columns(3)
 with c_top1:
     diretor_skin = st.selectbox("DIRETOR SKIN", ["BOY (Elite Director)", "UGC LIFESTYLE (Influencer & Conversão)"])
@@ -153,17 +153,17 @@ st.markdown("---")
 col_input1, col_input2 = st.columns(2)
 
 with col_input1:
-    produto_nome = st.text_input("NOME EXATO DO PRODUTO / SKU", placeholder="Ex: Estilete Profissional / Sandália Bloco")
+    produto_nome = st.text_input("NOME EXATO DO PRODUTO / SKU", placeholder="Ex: Sandália Salto Bloco GIGIL")
     
     st.markdown("<p style='font-size:13px; font-weight:700; margin-bottom:4px;'>DESCRIÇÃO DO PRODUTO - UPLOAD FOTO</p>", unsafe_allow_html=True)
     foto_produto_analise = st.file_uploader("Upload Foto Produto", type=["jpg", "jpeg", "png"], key="prod_upload_original", label_visibility="collapsed")
 
     tipo_produto = st.selectbox("CATEGORIA", [
-        "Ferramentas / Utilidades & Pequenos Objetos",
         "Calçado / Tênis / Sandália", 
         "Acessório de Pulso ou Rosto (Relógio / Óculos)", 
         "Vestuário / Vestido / Conjunto",
-        "Bolsa / Acessório de Mão"
+        "Bolsa / Acessório de Mão",
+        "Utilidades & Outros"
     ])
     
 with col_input2:
@@ -175,7 +175,7 @@ with col_input2:
 
 st.markdown("---")
 
-# 4. BANCO DE ROTEIROS COESOS (FALA 1 E FALA 2 EM BLOCO SEQUENCIAL)
+# 4. BANCO DE ROTEIROS (FALA 1 E FALA 2 EM BLOCO SEQUENCIAL)
 roteiros_completos = [
     {
         "fala1": "Meninas... olha o que acabou de chegar... exatamente como eu pedi, estou totalmente apaixonada por cada detalhe...",
@@ -186,7 +186,7 @@ roteiros_completos = [
         "fala2": "está com um preço promocional imperdível na Loja da Valentina, então clica no carrinho laranja aí embaixo e aproveita."
     },
     {
-        "fala1": "Olha... veio idêntico ao que está cadastrado... acabamento impecável, perfeito para o dia a dia e super útil...",
+        "fala1": "Olha... veio idêntico ao que está cadastrado... acabamento impecável, perfeito para o dia a dia e super confortável...",
         "fala2": "já está disponível com frete rápido direto na Loja da Valentina, corre e clica no carrinho laranja aí na tela."
     },
     {
@@ -194,7 +194,7 @@ roteiros_completos = [
         "fala2": "não perde tempo porque esgota rápido, garante o seu na Loja da Valentina clicando no carrinho laranja."
     },
     {
-        "fala1": "Meninas... reposição oficial do produto que vocês tanto queriam... chegou fresquinho para facilitar o nosso dia a dia...",
+        "fala1": "Meninas... reposição oficial do produto que vocês tanto queriam... chegou fresquinho para compor os melhores looks...",
         "fala2": "corre para garantir o seu direto na Loja da Valentina, clica no carrinho laranja aqui embaixo e confere."
     },
     {
@@ -203,15 +203,15 @@ roteiros_completos = [
     }
 ]
 
-# 5. GERADOR COM FLOW COMPLIANCE ENGINE ATIVO
-if st.button("🚀 GERAR PACOTE COMERCIAL (FLOW COMPLIANT)"):
+# 5. GERADOR COM ARQUITETURA DE ESPAÇO LATENTE & ESTABILIDADE DE MALHA
+if st.button("🚀 GERAR PACOTE COMERCIAL (ENGINEERING GRADE)"):
     if not produto_nome:
         st.warning("⚠️ Por favor, informe o nome exato do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
-        st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUTO e da foto na descrição para ativar a precisão máxima.")
+        st.warning("⚠️ Por favor, faça o upload da FOTO DA MODELO, da FOTO DO PRODUCTO e da foto na descrição para ativar a precisão máxima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Flow Compliance Engine: ATIVO.")
+        st.success(f"✅ Pacote gerado às {agora} | Estilo Ativo: [{estilo_persona}] | Matriz Latente Blindada.")
         
         horarios = [
             "09:00 - Manhã (Abertura de Feed)",
@@ -222,48 +222,48 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (FLOW COMPLIANT)"):
             "23:00 - Fechamento (Último Tiro do Dia)"
         ]
         
-        # MOTOR DE CONFORMIDADE NATIVO PARA O FLOW (Tokens Otimizados)
-        flow_compliance_engine = (
-            f"FLOW COMPLIANCE ENGINE PROTOCOL: "
-            f"1. EXACT MODEL EMBEDDING: Strict 1:1 match of reference model face, features, skin tone, and body proportions. Zero model swapping. "
-            f"2. STRICT OBJECT BOUNDING: The item handled is strictly and exclusively '{produto_nome}' as provided in reference images. Strictly prohibited from substituting, replacing, morphing, or converting '{produto_nome}' into boxes, generic tools, or alternate items. "
-            f"3. SPATIAL & LIGHTING CONTINUITY: Fixed indoor luxury environment, consistent warm ambient lighting, zero background shifting."
+        # NÚCLEO DE ENGENHARIA DE PROMPT (Latent Space & Mesh Lock)
+        engineering_core_prompt = (
+            f"Photorealistic 4K native UGC video ({proporcao.split()[0]}), captured on professional mobile sensor. ACTIVE STYLE: {estilo_persona}. "
+            f"Strict latent space biometric mesh lock: exact 1:1 pixel continuity of reference model face and body proportions, zero morphing, zero model swapping. "
+            f"Rigid product geometry anchor of '{produto_nome}' matching reference images perfectly with zero substitution. "
+            f"True human kinematics, organic weight distribution, natural fluid hand physics, static luxury indoor environment."
         )
         
-        base_negative = "Negative Prompt: object substitution, changing product, replacing item with box, morphing tool, model swapping, face mutation, outfit change, background shift, low quality, distortion, watermark."
+        base_negative = "Negative Prompt: CGI, plastic skin, AI texture artifacts, face morphing, model swapping, robotic movement, product substitution, temporal jitter, flickering."
 
         for i, h in enumerate(horarios):
             rot = roteiros_completos[i % len(roteiros_completos)]
 
             takes = [
                 (
-                    "ESTILO 1: Unboxing e Apresentação na Bancada",
-                    f"Hyper-realistic 8K full-body UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. {flow_compliance_engine}. Medium close-up handheld tracking inside a luxury room. The creator handles '{produto_nome}' directly with natural, precise movements.\n\n\n\n"
-                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
-                    f"Continuous indoor location. {base_negative}"
+                    "ESTILO 1: Unboxing na Bancada",
+                    f"{engineering_core_prompt} Medium close-up tracking, creator unpacks and presents '{produto_nome}' with organic human kinematics.\n\n\n\n"
+                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
+                    f"{base_negative}"
                 ),
                 (
                     "ESTILO 2: Movimento Interno Dinâmico",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. {flow_compliance_engine}. Fluid handheld movement in a bright modern space. The exact reference model showcases '{produto_nome}' with natural physics.\n\n\n\n"
-                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
-                    f"Continuous indoor environment. {base_negative}"
+                    f"{engineering_core_prompt} Fluid organic handheld movement, model showcases '{produto_nome}' with natural material physics.\n\n\n\n"
+                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
+                    f"{base_negative}"
                 ),
                 (
                     "ESTILO 3: Close Macro de Detalhes",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. {flow_compliance_engine}. Macro close-up framing focusing tightly on '{produto_nome}' held steady in hands under warm ambient light, preserving exact geometry and brand features.\n\n\n\n"
-                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
-                    f"Zero artifacts, perfect fidelity. {base_negative}"
+                    f"{engineering_core_prompt} Macro close-up framing focusing tightly on '{produto_nome}' held steady in human hands, preserving exact surface grain and texture.\n\n\n\n"
+                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
+                    f"{base_negative}"
                 ),
                 (
                     "ESTILO 4: Review no Espelho",
-                    f"Hyper-realistic 8K UGC video ({proporcao.split()[0]}), shot on iPhone Pro Max. ACTIVE SCENARIO & STYLE: {estilo_persona}. {flow_compliance_engine}. Authentic mirror reflection video in a boutique dressing room. Creator showcases '{produto_nome}' clearly in reflection.\n\n\n\n"
-                    f"FALA 1 (Início do Roteiro): \"{rot['fala1']}\"\n\n\n\n"
-                    f"FALA 2 (Continuação com CTA): \"{rot['fala2']}\"\n\n\n\n"
-                    f"Fixed spatial continuity. {base_negative}"
-                )
+                    f"{engineering_core_prompt} Authentic mirror reflection video in dressing room, showcasing '{produto_nome}' cleanly with absolute facial consistency.\n\n\n\n"
+                    f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
+                    f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
+                    f"{base_negative}"
+                ]
             ]
 
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
@@ -276,7 +276,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (FLOW COMPLIANT)"):
                     st.markdown(f"""
                     <div class="metric-card">
                         <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt com Flow Compliance Engine:</b>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Engineering Grade:</b>
                     """, unsafe_allow_html=True)
                     st.code(t_prompt, language="text")
                     st.markdown("</div>", unsafe_allow_html=True)
@@ -287,7 +287,7 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (FLOW COMPLIANT)"):
                     st.markdown(f"""
                     <div class="metric-card">
                         <span class="tag-estilo">{t_title}</span><br>
-                        <b style="color: #00FF66; font-size: 12px;">Prompt com Flow Compliance Engine:</b>
+                        <b style="color: #00FF66; font-size: 12px;">Prompt Engineering Grade:</b>
                     """, unsafe_allow_html=True)
                     st.code(t_prompt, language="text")
                     st.markdown("</div>", unsafe_allow_html=True)
