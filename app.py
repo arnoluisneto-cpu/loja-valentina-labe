@@ -141,7 +141,7 @@ with c_top3:
         "14. Trend do Sofá / Almofada",
         "15. POV Dirigindo o Carro",
         "16. POV Café da Manhã na Mesa Posta",
-        "17. Challenge de Transição: Look Casual para Luxo",
+        "17. Challenge de Transition: Look Casual para Luxo",
         "18. Unboxing Rasgando Pacote do TikTok Shop",
         "19. POV Fitness / Rotação de Estilo Diário",
         "20. POV Encontro Noturno / Night Out Look Reveal"
@@ -264,21 +264,21 @@ if st.button("🚀 GERAR PACOTE COMERCIAL (ENVIRONMENT LOCKED)"):
                     f"FALA 1: \"{rot['fala1']}\"\n\n\n\n"
                     f"FALA 2: \"{rot['fala2']}\"\n\n\n\n"
                     f"{base_negative}"
-                ]
+                )
             ]
 
             st.markdown(f"### 🕒 Bloco de Postagem: {h}")
-
-            st.markdown(f"""
-            <div class="metric-card">
-                <span class="tag-estilo">Take Completo (Fala 1 & Fala 2 no mesmo bloco)</span><br>
-                <b style="color: #00FF66; font-size: 12px;">Prompt com Environment Lock:</b>
-            """, unsafe_allow_html=True)
             
-            # Exibe os takes de forma organizada e limpa
-            for idx_take, (t_title, t_prompt) in enumerate(takes):
+            st.markdown(
+                '<div class="metric-card">'
+                '<span class="tag-estilo">Takes do Bloco (Fala 1 & Fala 2 integradas)</span><br>'
+                '<b style="color: #00FF66; font-size: 12px;">Prompts com Environment Lock:</b>',
+                unsafe_allow_html=True
+            )
+            
+            for t_title, t_prompt in takes:
                 st.markdown(f"**{t_title}:**")
                 st.code(t_prompt, language="text")
                 
-            st.markdown("</div>", unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
             st.markdown("---")
