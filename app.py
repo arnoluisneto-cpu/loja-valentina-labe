@@ -126,7 +126,7 @@ with c_top2:
 
 st.markdown("---")
 
-# 3. SELEÇÃO DE ESTILOS EMBUTIDO EXATAMENTE COM 20 OPÇÕES ÚNICAS
+# 3. SELEÇÃO DE ESTILOS EMBUTIDO (20 OPÇÕES ÚNICAS)
 lista_estilos_disponiveis = [
     "1. Caminhão e Van do TikTok Shop Chegando",
     "2. POV Acordando na Cama (Morning Routine)",
@@ -146,8 +146,8 @@ lista_estilos_disponiveis = [
     "16. POV Café da Manhã na Mesa Posta",
     "17. Challenge de Transição: Look Casual para Luxo",
     "18. Unboxing Rasgando Pacote do TikTok Shop",
-    "19. POV Fitness / Rotação de Estilo Diário",
-    "20. POV Encontro Noturno / Night Out Look Reveal"
+    "19. POV Van de Entregas Chegando na Loja de Vidro",
+    "20. POV Caminhão Chegando de Ré na Loja de Vidro (Estoque Total)"
 ]
 
 estilos_selecionados = st.multiselect(
@@ -225,6 +225,7 @@ def get_config_categoria(categoria):
 def get_roteiros_banco(prod, cfg):
     v = cfg["verbo_local"]
     return [
+        f"Olha, gente, meninas, olha aqui o que chegou agora na Loja da Valentina! Chegou todo esse estoque de {prod}. A gente vai trabalhar só com essa marca porque está vendendo muito. Clica no carrinho laranja aqui embaixo e garanta a sua, que esse estoque chegou agora e vai estar de promoção!",
         f"Amiga, para tudo e olha esse(a) {prod} da Loja da Valentina! Qualidade nobre, acabamento impecável {v}. Olha que luxo! Clica no carrinho laranja aqui embaixo e já garante o(a) seu(sua) agora.",
         f"Gente, sério, precisava mostrar a qualidade absurda desse(a) {prod}... material impecável que surpreende {v}. Olha esse detalhe! Corre na Loja da Valentina e clica no carrinho laranja.",
         f"Olha esse achado na Loja da Valentina! Esse(a) {prod} é perfeito(a), acabamento impecável. É um espetáculo de elegância {v}! Clica no carrinho laranja aí embaixo e já garante o(a) seu(sua).",
@@ -233,8 +234,7 @@ def get_roteiros_banco(prod, cfg):
         f"Para tudo e presta atenção na qualidade desse(a) {prod}... material maravilhoso e super confortável. Fica deslumbrante {v}! Disponível na Loja da Valentina, clica no carrinho laranja.",
         f"Amiga, elegância e conforto total com esse(a) {prod} da Loja da Valentina. Qualidade de shopping por preço de fábrica! Olha como fica {v}. Clica no carrinho laranja aqui embaixo.",
         f"Gente, eu testei e apaixonei... esse(a) {prod} tem uma qualidade surreal. É perfeito(a) {v}! Disponível na Loja da Valentina, clica no carrinho laranja.",
-        f"Olha esse design impecável... esse(a) {prod} combina com tudo! Peça indispensável. Corre lá na Loja da Valentina e clica no carrinho laranja aqui embaixo para garantir.",
-        f"Meninas, qualidade de primeira linha que fala, né? Esse(a) {prod} é perfeito demais. Olha como valoriza o visual {v}! Garante o(a) seu(sua) na Loja da Valentina, clica no carrinho laranja."
+        f"Olha esse design impecável... esse(a) {prod} combina com tudo! Peça indispensável. Corre lá na Loja da Valentina e clica no carrinho laranja aqui embaixo para garantir."
     ]
 
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
@@ -260,20 +260,38 @@ if st.button("🚀 GERAR PROMPTS DA GRADE DIÁRIA • SCHEDULED ENGINE"):
             roteiro_atual = banco_roteiros[idx % len(banco_roteiros)]
             horario_postagem = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
 
-            prompt_final = (
-                f"Masterpiece 8K UHD viral TikTok Shop UGC video powered by Arri Alexa cinema color science (10-second precise duration, {proporcao.split()[0]}), RAW optical sensor. ACTIVE STYLE: {estilo_atual}. "
-                f"STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: {cfg['instrucao_tecnica']}. Strictly binding uploaded model reference face/body and isolated product reference pixels of '{produto_nome}' with zero alterations. "
-                f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. "
-                f"Cinematic Visual Engineering: hyper-detailed micro-textures on material weave, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
-                f"Strict 1:1 pixel lock: identical reference model face and body proportions. "
-                f"Rigid product lock: exact '{produto_nome}' matching reference image with zero substitution. "
-                f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera holding '{produto_nome}' for the first 2 seconds delivering a strong magnetic hook, then seamlessly transitions at second 2 already {cfg['acao_tryon']} '{produto_nome}' ({cfg['foco_posicao']}) in a chic mirror/dressing room setting, pacing her speech evenly across the full 10 seconds while interacting directly with the item. "
-                f"IMMEDIATE FLUID START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks. "
-                f"SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. "
-                f"Fixed static background, organic human movement.\n\n"
-                f"LOCUÇÃO RÍTMICA (10s com distribuição equilibrada de fala e conversão): \"{roteiro_atual}\"\n\n"
-                f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, staying only holding the item without wearing it, no try-on, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, UI graphics, watermarks, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
-            )
+            # Lógica especial para os estilos 19 e 20 (Van e Caminhão Dinâmicos com a história completa)
+            if "19." in estilo_atual or "20." in estilo_atual:
+                tipo_veiculo = "delivery van" if "19." in estilo_atual else "large delivery truck"
+                prompt_final = (
+                    f"Masterpiece 8K UHD viral TikTok Shop UGC video powered by Arri Alexa cinema color science (10-second precise duration, 9:16), RAW optical sensor. ACTIVE STYLE: {estilo_atual}. "
+                    f"STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: {cfg['instrucao_tecnica']}. Strictly binding uploaded model reference face/body and isolated exact reference pixels of '{produto_nome}' with zero alterations, zero modifications to the product structure, details, or brand. "
+                    f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. "
+                    f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
+                    f"Strict 1:1 pixel lock: identical reference model face and body proportions. "
+                    f"Rigid product lock: exact '{produto_nome}' matching reference image with zero substitution, preserving original brand aesthetics. "
+                    f"CINEMATIC NARRATIVE SEQUENCE (0-10s): The video starts inside a modern boutique with transparent glass walls overlooking the busy street. A {tipo_veiculo} arrives, backing up slowly in front of the store and stopping. The male driver gets out, opens the rear doors of the vehicle, revealing the interior completely packed and stacked with boxes of '{produto_nome}'. The creator (Valentina) walks out from inside the store towards the vehicle, picks up one box, opens it to show the exact '{produto_nome}' inside, and immediately starts talking directly to the camera with excitement. "
+                    f"IMMEDIATE FLUID START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. "
+                    f"SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. "
+                    f"Fixed realistic background, organic human movement.\n\n"
+                    f"LOCUÇÃO RÍTMICA (10s com distribuição equilibrada de fala e conversão): \"{roteiro_atual}\"\n\n"
+                    f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, AI morphing transition, soft blending, product switching, changing product model at the end, sudden jump cuts, rapid unrealistic pacing, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, text captions, generated writing, UI graphics, watermarks, distorted brand, altered design, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
+                )
+            else:
+                prompt_final = (
+                    f"Masterpiece 8K UHD viral TikTok Shop UGC video powered by Arri Alexa cinema color science (10-second precise duration, {proporcao.split()[0]}), RAW optical sensor. ACTIVE STYLE: {estilo_atual}. "
+                    f"STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: {cfg['instrucao_tecnica']}. Strictly binding uploaded model reference face/body and isolated product reference pixels of '{produto_nome}' with zero alterations. "
+                    f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. "
+                    f"Cinematic Visual Engineering: hyper-detailed micro-textures on material weave, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
+                    f"Strict 1:1 pixel lock: identical reference model face and body proportions. "
+                    f"Rigid product lock: exact '{produto_nome}' matching reference image with zero substitution. "
+                    f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera holding '{produto_nome}' for the first 2 seconds delivering a strong magnetic hook, then seamlessly transitions at second 2 already {cfg['acao_tryon']} '{produto_nome}' ({cfg['foco_posicao']}) in a chic mirror/dressing room setting, pacing her speech evenly across the full 10 seconds while interacting directly with the item. "
+                    f"IMMEDIATE FLUID START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks. "
+                    f"SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. "
+                    f"Fixed static background, organic human movement.\n\n"
+                    f"LOCUÇÃO RÍTMICA (10s com distribuição equilibrada de fala e conversão): \"{roteiro_atual}\"\n\n"
+                    f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, staying only holding the item without wearing it, no try-on, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, UI graphics, watermarks, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
+                )
 
             st.markdown(f"### 🎬 Prompt Comercial #{prompt_numero} • ⏰ Horário: {horario_postagem}")
             
