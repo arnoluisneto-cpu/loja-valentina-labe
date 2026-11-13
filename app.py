@@ -126,7 +126,7 @@ with c_top2:
 
 st.markdown("---")
 
-# 3. SELEÇÃO DE ESTILOS EM EXPANDER COMPACTO (PADRÃO ORIGINAL ORGANIZADO)
+# 3. SELEÇÃO DE ESTILOS EMBUTIDO (ESTILO SELECTBOX / MULTISELECT DA CATEGORIA)
 lista_estilos_disponiveis = [
     "1. Caminhão e Van do TikTok Shop Chegando",
     "2. POV Acordando na Cama (Morning Routine)",
@@ -150,15 +150,11 @@ lista_estilos_disponiveis = [
     "20. POV Encontro Noturno / Night Out Look Reveal"
 ]
 
-estilos_selecionados = []
-with st.expander("🎬 CLIQUE AQUI PARA SELECIONAR OS ESTILOS / CENÁRIOS", expanded=True):
-    st.markdown("<p style='color: #00FF66; font-size: 13px; font-weight: 600;'>Marque os cenários desejados para a grade diária:</p>", unsafe_allow_html=True)
-    col_chk1, col_chk2 = st.columns(2)
-    for i, estilo in enumerate(lista_estilos_disponiveis):
-        target_col = col_chk1 if i % 2 == 0 else col_chk2
-        with target_col:
-            if st.checkbox(estilo, key=f"chk_estilo_{i}"):
-                estilos_selecionados.append(estilo)
+estilos_selecionados = st.multiselect(
+    "🎬 SELECIONE OS ESTILOS / CENÁRIOS DESEJADOS PARA A GRADE",
+    options=lista_estilos_disponiveis,
+    default=[]
+)
 
 st.markdown("---")
 
@@ -250,7 +246,7 @@ if st.button("🚀 GERAR PROMPTS DA GRADE DIÁRIA • SCHEDULED ENGINE"):
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Por favor, faça o upload de todas as fotos necessárias.")
     elif not estilos_selecionados:
-        st.warning("⚠️ Por favor, selecione pelo menos 1 estilo/cenário no expander acima.")
+        st.warning("⚠️ Por favor, selecione pelo menos 1 estilo/cenário no seletor acima.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
         total_gerados = len(estilos_selecionados)
