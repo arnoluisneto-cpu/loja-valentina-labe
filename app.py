@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM UPLOADS LIMPOS E ALINHADOS LADO A LADO
+# ESTÉTICA DE ALTO LUXO BLINDADA (UPLOADS 100% LIMPOS, SEM TEXTOS DE MB/FORMATO)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -85,27 +85,27 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* REMOÇÃO TOTAL DOS TEXTOS DE TAMANHO E FORMATO DOS UPLOADS */
-    div[data-testid="stFileUploader"] small, 
-    div[data-testid="stFileUploader"] section div div span,
-    div[data-testid="stFileUploader"] section div div {
-        color: #ffffff !important;
-    }
-    
-    /* Ocultar rigorosamente o texto de 200MB / formato */
-    div[data-testid="stFileUploader"] small {
+    /* ELIMINAÇÃO TOTAL E CIRÚRGICA DOS AVISOS DE TAMANHO (200MB / FORMATOS) */
+    div[data-testid="stFileUploader"] small,
+    div[data-testid="stFileUploader"] span:nth-of-type(2),
+    div[data-testid="stFileUploader"] div:has(> small),
+    section[aria-label="File uploader"] small {
         display: none !important;
+        visibility: hidden !important;
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 1px solid #00FF66 !important;
         border-radius: 6px !important;
-        padding: 4px !important;
+        padding: 6px !important;
         margin-bottom: 2px !important;
     }
     div[data-testid="stFileUploader"] section { background-color: #161026 !important; padding: 4px !important; }
-    div[data-testid="stFileUploader"] span, div[data-testid="stFileUploader"] p {
+    div[data-testid="stFileUploader"] span {
         color: #ffffff !important;
         font-size: 11px !important;
     }
@@ -242,7 +242,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Organizados em 2 Linhas Limpas e Padronizadas)
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Totalmente limpos e alinhados)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -257,7 +257,7 @@ with str_app.container(border=True):
 
     str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
-    # Linha 2: As 3 fotos perfeitamente alinhadas lado a lado (Foto Modelo, Foto Produto e Foto Peça)
+    # Linha 2: As 3 fotos limpas e perfeitamente alinhadas lado a lado
     c_f1, c_f2, c_f3 = str_app.columns(3)
     
     with c_f1:
@@ -269,8 +269,8 @@ with str_app.container(border=True):
         foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key="prod_1", label_visibility="collapsed")
         
     with c_f3:
-        str_app.markdown("🔒 **FOTO PEÇA (PIXEL LOCK)**")
-        foto_peca = str_app.file_uploader("Foto Peça", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
+        str_app.markdown("🔍 **FOTO ZOOM**")
+        foto_peca = str_app.file_uploader("Foto Zoom", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
