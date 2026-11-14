@@ -319,26 +319,27 @@ with str_app.container(border=True):
 
     str_app.markdown("<div style='margin: 12px 0; border-top: 1px solid #8A2BE2;'></div>", unsafe_allow_html=True)
     
-    # SEÇÃO DEDICADA PARA INSERIR NOVO PROMPT NA SEQUÊNCIA EXATA (Ex: 21, 22, 23...)
+    # SEÇÃO DEDICADA PARA INSERIR NOVO PROMPT EXCLUSIVAMENTE NO FINAL (Ex: 21, 22, 23...)
     proximo_id_sugerido = len(str_app.session_state.db_estilos) + 1 if str_app.session_state.db_estilos else 1
     
-    str_app.markdown(f"➕ **INSERIR NOVO PROMPT (SEQUÊNCIA: Estilo #{proximo_id_sugerido})**")
+    str_app.markdown(f"➕ **INSERIR NOVO PROMPT NO FINAL (PRÓXIMO: Estilo #{proximo_id_sugerido})**")
     
-    novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="novo_titulo_criacao")
-    novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=140, key="novo_prompt_criacao")
+    novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="novo_titulo_criacao_input")
+    novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=140, key="novo_prompt_criacao_textarea")
     
-    if str_app.button("📥 INSERIR E SALVAR NA SEQUÊNCIA"):
+    if str_app.button("📥 INSERIR E SALVAR NO FINAL"):
         if not novo_titulo_input or not novo_prompt_input:
             str_app.warning("⚠️ Preencha o Título e o Código do novo prompt.")
         else:
-            proximo_id = len(str_app.session_state.db_estilos) + 1
-            str_app.session_state.db_estilos[proximo_id] = {
+            # Força o ID a ser exatamente o próximo número após o último existente
+            novo_id = len(str_app.session_state.db_estilos) + 1
+            str_app.session_state.db_estilos[novo_id] = {
                 "titulo": novo_titulo_input,
                 "prompt": novo_prompt_input
             }
             reindexar_estilos()
-            str_app.session_state.estilo_ativo_idx = proximo_id
-            str_app.success(f"🎉 Novo Estilo #{proximo_id} inserido com sucesso na sequência!")
+            str_app.session_state.estilo_ativo_idx = novo_id
+            str_app.success(f"🎉 Novo Estilo #{novo_id} inserido com sucesso no final da sequência!")
             str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
