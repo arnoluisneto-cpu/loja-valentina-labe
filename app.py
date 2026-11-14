@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO EM GRADE PADRONIZADA (Fundo Escuro Puro, Verde Neon e Roxo Valentina)
+# ESTÉTICA DE ALTO LUXO ESTÁVEL (Fundo Escuro Puro, Verde Neon e Roxo Valentina)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -99,22 +99,6 @@ str_app.markdown("""
     
     ::placeholder { color: #b0bec5 !important; opacity: 1 !important; }
     
-    /* Estilo de Cards em Grade Padronizados */
-    .grid-card {
-        background-color: #161026 !important;
-        border: 1px solid #8A2BE2 !important;
-        padding: 10px;
-        border-radius: 8px;
-        text-align: center;
-        margin-bottom: 8px;
-        box-shadow: 0px 3px 10px rgba(138, 43, 226, 0.15);
-        min-height: 85px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-    }
-    
     .metric-card {
         background-color: #161026 !important;
         border: 1px solid #8A2BE2 !important;
@@ -188,37 +172,25 @@ if "db_estilos" not in str_app.session_state:
             "prompt": prompt_texto
         }
 
-# 2. SEÇÃO 1: PAINEL DE CONTROLE EM GRADE (ESTILO NUBANK)
+# 2. SEÇÃO 1: PAINEL DE CONTROLE (Com containers nativos seguros do Streamlit)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:6px;'>⚡ PAINEL DE CONTROLE RÁPIDO</p>", unsafe_allow_html=True)
 
 c_grid1, c_grid2, c_grid3 = str_app.columns(3)
 
 with c_grid1:
-    str_app.markdown("""
-        <div class="grid-card">
-            <span style="font-size: 14px;">🎬</span>
-            <b style="font-size: 10px; color: #00FF66; margin-top: 2px;">DIRETOR SKIN</b>
-            <span style="font-size: 9px; color: #b0bec5;">BOY (Elite)</span>
-        </div>
-    """, unsafe_allow_html=True)
+    with str_app.container(border=True):
+        str_app.markdown("🎬 **DIRETOR SKIN**")
+        str_app.markdown("<span style='color: #b0bec5; font-size: 11px;'>BOY (Elite)</span>", unsafe_allow_html=True)
 
 with c_grid2:
-    str_app.markdown("""
-        <div class="grid-card">
-            <span style="font-size: 14px;">📱</span>
-            <b style="font-size: 10px; color: #00FF66; margin-top: 2px;">PROPORÇÃO</b>
-            <span style="font-size: 9px; color: #b0bec5;">9:16 Vertical</span>
-        </div>
-    """, unsafe_allow_html=True)
+    with str_app.container(border=True):
+        str_app.markdown("📱 **PROPORÇÃO**")
+        str_app.markdown("<span style='color: #b0bec5; font-size: 11px;'>9:16 Vertical</span>", unsafe_allow_html=True)
 
 with c_grid3:
-    str_app.markdown("""
-        <div class="grid-card">
-            <span style="font-size: 14px;">⚡</span>
-            <b style="font-size: 10px; color: #00FF66; margin-top: 2px;">STATUS ENGINE</b>
-            <span style="font-size: 9px; color: #00FF66;">Ativo & Sincronizado</span>
-        </div>
-    """, unsafe_allow_html=True)
+    with str_app.container(border=True):
+        str_app.markdown("⚡ **STATUS ENGINE**")
+        str_app.markdown("<span style='color: #00FF66; font-size: 11px;'>Ativo & Sincronizado</span>", unsafe_allow_html=True)
 
 # Selectboxes funcionais logo abaixo dos cards
 col_s1, col_s2 = str_app.columns(2)
@@ -237,7 +209,7 @@ estilos_selecionados = str_app.multiselect(
 
 str_app.markdown("---")
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT EM GRADE COMPACTA
+# 3. SEÇÃO 2: EDITOR DE PROMPT COMPACTO
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:6px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 c_num, c_txt = str_app.columns([1, 3])
@@ -255,7 +227,7 @@ if str_app.button("💾 Salvar Alteração do Estilo"):
 
 str_app.markdown("---")
 
-# 4. SEÇÃO 3: ENTRADAS DO PRODUTO EM CARDS DE GRADE
+# 4. SEÇÃO 3: ENTRADAS DO PRODUTO EM CARDS SEGUROS
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:6px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 col_input1, col_input2 = str_app.columns(2)
@@ -289,7 +261,7 @@ if str_app.button("🚀 GERAR PROMPTS DA GRADE DIÁRIA"):
         
         for idx, estilo_titulo in enumerate(estilos_selecionados):
             prompt_numero = idx + 1
-            horario_postagem = GRADE_HORARIOS[idx % GRADE_HORARIOS.__len__()]
+            horario_postagem = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
             prompt_ativo_slot = mapa_prompts.get(estilo_titulo, "Prompt não encontrado.")
 
             str_app.markdown(f"### 🎬 Prompt #{prompt_numero} • {horario_postagem}")
