@@ -172,22 +172,15 @@ def obter_identidade_original(i):
         )
     return titulo_texto, prompt_texto
 
-# GESTÃO DE ESTADOS & HISTÓRICO DE EXCLUSÕES
+# GESTÃO DE ESTADOS & FILA DE EXCLUSÕES ORDENADA
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     for i in range(1, 21):
         t, p = obter_identidade_original(i)
         str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
 
-if "lixeira_exclusoes" not in str_app.session_state:
-    str_app.session_state.lixeira_exclusoes = [] # Guarda os IDs excluídos na ordem exata
-
-def reindexar_estilos():
-    chaves_ordenadas = sorted(str_app.session_state.db_estilos.keys())
-    novo_db = {}
-    for novo_idx, velha_chave in enumerate(chaves_ordenadas, start=1):
-        novo_db[novo_idx] = str_app.session_state.db_estilos[velha_chave]
-    str_app.session_state.db_estilos = novo_db
+if "fila_exclusoes" not in str_app.session_state:
+    str_app.session_state.fila_exclusoes = [] # Guarda a ordem exata em que os IDs foram apagados
 
 if "form_version" not in str_app.session_state:
     str_app.session_state.form_version = 0
@@ -244,42 +237,41 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR (TOPO): EXCLUIR E RESTAURAR SEQUENCIALMENTE NA ORDEM DA LIXEIRA
+# GERENCIADOR (TOPO): EXCLUIR E RESTAURAR NA ORDEM EXATA DE EXCLUSÃO
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
     col_ger1, col_ger2 = str_app.columns(2)
     
     with col_ger1:
-        if str_app.button("🔄 RESTAURAR PRÓXIMO APAGADO"):
-            # Identifica qual foi o ID original de fábrica que falta ser restaurado
-            ids_atuais = set(str_app.session_state.db_estilos.keys())
-            id_para_restaurar = None
-            
-            # Procura o primeiro ID de 1 a 20 que não está na lista atual
-            for original_id in range(1, 21):
-                if original_id not in ids_atuais:
-                    id_para_restaurar = original_id
-                    break
-            
-            if id_para_restaurar is not None:
-                with str_app.spinner(f"🔄 Restaurando Estilo Original #{id_para_restaurar}..."):
+        texto_botao_restaurar = "🔄 RESTAURAR PRÓXIMO APAGADO"
+        if str_app.session_state.fila_exclusoes:
+            proximo_a_voltar = str_app.session_state.fila_exclusoes[0]
+            texto_botao_restaurar = f"🔄 RESTAURAR ESTILO #{proximo_a_voltar}"
+
+        if str_app.button(texto_botao_restaurar):
+            if str_app.session_state.fila_exclusoes:
+                # Pega exatamente o primeiro ID que foi apagado (FIFO)
+                id_para_restaurar = str_app.session_state.fila_exclusoes.pop(0)
+                
+                with str_app.spinner(f"🔄 Restaurando Estilo #{id_para_restaurar} em sua numeração original..."):
                     time.sleep(0.4)
                     t_orig, p_orig = obter_identidade_original(id_para_restaurar)
                     str_app.session_state.db_estilos[id_para_restaurar] = {"titulo": t_orig, "prompt": p_orig}
-                    reindexar_estilos()
-                str_app.success(f"✅ Estilo #{id_para_restaurar} restaurado e encaixado na sequência com sucesso!")
+                
+                str_app.success(f"✅ Estilo #{id_para_restaurar} retornado com sucesso para a numeração {id_para_restaurar}!")
                 time.sleep(0.8)
                 str_app.rerun()
             else:
-                str_app.info("ℹ️ Todos os 20 estilos originais já estão restaurados na grade!")
+                str_app.info("ℹ️ Não há nenhum estilo na fila de restauração (nenhum apagado recentemente).")
 
     with col_ger2:
         if str_app.button("🔄 RESTAURAR TODOS OS 20"):
             with str_app.spinner("🔄 Restaurando grade completa de 1 a 20..."):
                 time.sleep(0.4)
+                str_app.session_state.db_estilos = {}
                 for i in range(1, 21):
                     t, p = obter_identidade_original(i)
                     str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
-                reindexar_estilos()
+                str_app.session_state.fila_exclusoes = []
             str_app.success("✅ Grade completa de 1 a 20 restaurada perfeitamente!")
             time.sleep(0.8)
             str_app.rerun()
@@ -292,7 +284,7 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
         ids_disp = sorted(list(str_app.session_state.db_estilos.keys()))
         
         estilo_escolhido = str_app.selectbox(
-            "Selecione o Estilo para Excluir Definitivo",
+            "Selecione o Estilo para Excluir",
             options=ids_disp,
             format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
             key="selectbox_gerenciador_topo"
@@ -301,24 +293,31 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
         str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
         
         if str_app.button("🗑️ EXCLUIR ESTILO SELECIONADO"):
-            with str_app.spinner(f"🗑️ Excluindo Estilo #{estilo_escolhido} e reorganizando sequência..."):
+            with str_app.spinner(f"🗑️ Excluindo Estilo #{estilo_escolhido}..."):
                 time.sleep(0.3)
+                # Salva na fila de exclusões a ordem exata em que foi apagado
+                if estilo_escolhido not in str_app.session_state.fila_exclusoes:
+                    str_app.session_state.fila_exclusoes.append(estilo_escolhido)
+                
                 del str_app.session_state.db_estilos[estilo_escolhido]
-                reindexar_estilos()
-            str_app.success(f"🗑️ Estilo excluído e sequência reorganizada com sucesso!")
+            
+            str_app.success(f"🗑️ Estilo #{estilo_escolhido} excluído e guardado na fila para restauração exata!")
             time.sleep(0.8)
             str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# MODO DE OPERAÇÃO UNIFICADO (EDITAR OU INSERIR COM FEEDBACK E SPINNER)
-proximo_id_sugerido = (max(str_app.session_state.db_estilos.keys()) + 1) if str_app.session_state.db_estilos else 1
+# MODO DE OPERAÇÃO UNIFICADO (EDITAR OU INSERIR NO FINAL)
+# Para novos inseridos criados manualmente além do 20, calculamos o próximo ID livre acima do 20
+todos_ids_existentes = list(str_app.session_state.db_estilos.keys())
+proximo_id_sugerido = (max(todos_ids_existentes) + 1) if todos_ids_existentes else 1
+
 modo_operacao = str_app.radio("Modo de Operação", ["✏️ Editar Estilo Existente", f"➕ Inserir Novo (Estilo #{proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed")
 
 str_app.markdown(f"<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>{modo_operacao.upper()}</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
-    opcoes_editor = sorted(list(str_app.session_state.db_estilos.keys())) if str_app.session_state.db_estilos else []
+    opcoes_editor = sorted(todos_ids_existentes)
     
     if "Editar" in modo_operacao:
         if opcoes_editor:
@@ -355,7 +354,7 @@ with str_app.container(border=True):
         else:
             str_app.write("Nenhum estilo disponível.")
     else:
-        # Modo Inserir Novo na Sequência Exata (Abaixo do último)
+        # Modo Inserir Novo (apenas para novos criados além dos originais)
         novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="campo_novo_titulo_valencia_fixo")
         novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=160, key="campo_novo_prompt_valencia_fixo")
         
@@ -365,18 +364,14 @@ with str_app.container(border=True):
             if not novo_titulo_input or not novo_prompt_input:
                 str_app.warning("⚠️ Preencha o Título e o Código do novo prompt.")
             else:
-                with str_app.spinner(f"📥 Inserindo Estilo #{proximo_id_sugerido} na sequência..."):
+                with str_app.spinner(f"📥 Inserindo Estilo #{proximo_id_sugerido}..."):
                     time.sleep(0.4)
-                    max_id = max(str_app.session_state.db_estilos.keys()) if str_app.session_state.db_estilos else 0
-                    novo_id = max_id + 1
-                    
-                    str_app.session_state.db_estilos[novo_id] = {
+                    str_app.session_state.db_estilos[proximo_id_sugerido] = {
                         "titulo": novo_titulo_input,
                         "prompt": novo_prompt_input
                     }
-                    reindexar_estilos()
-                    str_app.session_state.estilo_ativo_idx = novo_id
-                str_app.success(f"🎉 Novo Estilo #{novo_id} inserido com sucesso na sequência!")
+                    str_app.session_state.estilo_ativo_idx = proximo_id_sugerido
+                str_app.success(f"🎉 Novo Estilo #{proximo_id_sugerido} inserido com sucesso!")
                 time.sleep(0.8)
                 str_app.rerun()
 
