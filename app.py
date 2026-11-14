@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM OS 20 ESTILOS VIRAIS COMPLETOS E UNIVERSAIS
+# ESTÉTICA DE ALTO LUXO COM O BOTÃO DE RESET INTELIGENTE INTEGRADO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -164,6 +164,17 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# LÓGICA DE RESET INTELIGENTE (LIMPEZA DE ESTADO)
+if "reset_trigger" not in str_app.session_state:
+    str_app.session_state.reset_trigger = False
+
+if str_app.session_state.get("fazer_reset", False):
+    for key in list(str_app.session_state.keys()):
+        if key not in ["db_estilos"]:
+            del str_app.session_state[key]
+    str_app.session_state.fazer_reset = False
+    str_app.rerun()
+
 # 1. TOPO DA APLICAÇÃO (Banner Impactante)
 str_app.markdown("""
     <div class="hero-banner">
@@ -171,6 +182,15 @@ str_app.markdown("""
         <p class="hero-subtitle">LOJA DA VALENTINA • AUTOMATIZAÇÃO DE LOJAS NO TIKTOK</p>
     </div>
 """, unsafe_allow_html=True)
+
+# BOTÃO DE REINICIAR / LIMPAR CAMPOS DENTRO DO APP
+col_res1, col_res2, col_res3 = str_app.columns([2, 2, 2])
+with col_res2:
+    if str_app.button("🔄 Limpar Tudo / Novo Produto"):
+        str_app.session_state.fazer_reset = True
+        str_app.rerun()
+
+str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
 # Inicializar os 20 estilos universais completos (do 1 ao 20 garantidos)
 if "db_estilos" not in str_app.session_state:
@@ -224,7 +244,7 @@ if "db_estilos" not in str_app.session_state:
                 f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone. "
                 f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
                 f"Strict 1:1 pixel lock and rigid product match with zero substitution. "
-                f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera delivering a strong magnetic hook, pacing her speech evenly across the full 10 seconds while interacting directly withલ the item.\n\n"
+                f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera delivering a strong magnetic hook, pacing her speech evenly across the full 10 seconds while interacting directly with the item.\n\n"
                 f"\"Olha, gente, meninas, olha aqui o que chegou agora na Loja da Valentina! Chegou todo esse estoque exclusivo. A gente vai trabalhar só com essa marca porque está vendendo muito. Clica no carrinho laranja aqui embaixo e garanta a sua, que esse estoque chegou agora e vai estar de promoção!\"\n\n"
                 f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
             )
