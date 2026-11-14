@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO UNIFICADA (Fundo Escuro Puro, Verde Neon e Roxo Valentina)
+# ESTÉTICA DE ALTO LUXO COM UPLOADERS LIMPOS E GRADE PADRONIZADA
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -85,7 +85,11 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* Uploaders compactos */
+    /* Ocultar o texto de tamanho e formato dos uploader boxes para ficarem limpos */
+    div[data-testid="stFileUploader"] small {
+        display: none !important;
+    }
+    
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 1px solid #00FF66 !important;
@@ -94,7 +98,7 @@ str_app.markdown("""
         margin-bottom: 2px !important;
     }
     div[data-testid="stFileUploader"] section { background-color: #161026 !important; padding: 4px !important; }
-    div[data-testid="stFileUploader"] span, div[data-testid="stFileUploader"] small, div[data-testid="stFileUploader"] p {
+    div[data-testid="stFileUploader"] span, div[data-testid="stFileUploader"] p {
         color: #ffffff !important;
         font-size: 11px !important;
     }
@@ -174,7 +178,7 @@ if "db_estilos" not in str_app.session_state:
             "prompt": prompt_texto
         }
 
-# 2. SEÇÃO 1: PAINEL DE CONTROLE RÁPIDO (Em cards estruturados)
+# 2. SEÇÃO 1: PAINEL DE CONTROLE RÁPIDO
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>⚡ PAINEL DE CONTROLE RÁPIDO</p>", unsafe_allow_html=True)
 
 c_grid1, c_grid2, c_grid3 = str_app.columns(3)
@@ -206,7 +210,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Em card estruturado alinhado)
+# 3. SEÇÃO 2: EDITOR DE PROMPT
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -231,28 +235,41 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Em card estruturado simétrico)
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Grade de 5 Blocos Padronizados em Cards)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
-    col_input1, col_input2 = str_app.columns(2)
-
-    with col_input1:
+    # Linha 1: Blocos 1, 2 e 3 (Nome, Categoria e Foto Modelo)
+    c_b1, c_b2, c_b3 = str_app.columns(3)
+    
+    with c_b1:
         str_app.markdown("🏷️ **NOME PRODUTO / SKU**")
         produto_nome = str_app.text_input("Nome", placeholder="Ex: Sandália Gigil...", label_visibility="collapsed")
         
+    with c_b2:
         str_app.markdown("📂 **CATEGORIA**")
         tipo_produto = str_app.selectbox("Categoria", ["Calçado / Tênis / Sandália", "Acessório", "Vestuário", "Bolsa", "Outros"], label_visibility="collapsed")
         
+    with c_b3:
+        str_app.markdown("👩 **FOTO MODELO (1:1)**")
+        foto_modelo = str_app.file_uploader("Foto Modelo", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
+
+    str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
+
+    # Linha 2: Blocos 4 e 5 (Foto Peça e Foto Produto centralizada no meio)
+    c_b4, c_b5, c_b6 = str_app.columns(3)
+    
+    with c_b4:
+        str_app.markdown("🔒 **FOTO PEÇA (PIXEL LOCK)**")
+        foto_peca = str_app.file_uploader("Foto Peça", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
+        
+    with c_b5:
         str_app.markdown("📷 **FOTO PRODUTO**")
         foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key="prod_1", label_visibility="collapsed")
         
-    with col_input2:
-        str_app.markdown("👩 **FOTO MODELO (1:1)**")
-        foto_modelo = str_app.file_uploader("Foto Modelo", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
-        
-        str_app.markdown("🔒 **FOTO PEÇA (PIXEL LOCK)**")
-        foto_peca = str_app.file_uploader("Foto Peça", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
+    with c_b6:
+        # Coluna de espaçamento simétrico para centralizar perfeitamente o 5º bloco
+        str_app.markdown("")
 
 str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
