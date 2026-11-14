@@ -179,7 +179,6 @@ if "db_estilos" not in str_app.session_state:
         str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
 
 def reindexar_estilos():
-    """Garante que a sequência numérica comece sempre do 1 sem nenhum vão."""
     chaves_ordenadas = sorted(str_app.session_state.db_estilos.keys())
     novo_db = {}
     for novo_idx, velha_chave in enumerate(chaves_ordenadas, start=1):
@@ -241,7 +240,7 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR (TOPO): RESTAURAR E EXCLUIR DEFINITIVO COM REINDEXAÇÃO
+# GERENCIADOR (TOPO): RESTAURAR E EXCLUIR DEFINITIVO
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo na memória.")
@@ -277,7 +276,7 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
         with col_r2:
             if str_app.button("🗑️ EXCLUIR DEFINITIVO"):
                 del str_app.session_state.db_estilos[estilo_escolhido]
-                reindexar_estilos()  # Reorganiza automaticamente para não deixar vazios (ex: 1, 2, 3...)
+                reindexar_estilos()
                 str_app.warning("Estilo excluído e sequência reorganizada perfeitamente!")
                 str_app.rerun()
 
@@ -320,10 +319,10 @@ with str_app.container(border=True):
 
     str_app.markdown("<div style='margin: 12px 0; border-top: 1px solid #8A2BE2;'></div>", unsafe_allow_html=True)
     
-    # SEÇÃO DEDICADA PARA INSERIR NOVO PROMPT COM SEQUENCIA EXATA
-    str_app.markdown("➕ **INSERIR NOVO PROMPT NA SEQUÊNCIA**")
-    
+    # SEÇÃO DEDICADA PARA INSERIR NOVO PROMPT NA SEQUÊNCIA EXATA (Ex: 21, 22, 23...)
     proximo_id_sugerido = len(str_app.session_state.db_estilos) + 1 if str_app.session_state.db_estilos else 1
+    
+    str_app.markdown(f"➕ **INSERIR NOVO PROMPT (SEQUÊNCIA: Estilo #{proximo_id_sugerido})**")
     
     novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="novo_titulo_criacao")
     novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=140, key="novo_prompt_criacao")
@@ -339,7 +338,7 @@ with str_app.container(border=True):
             }
             reindexar_estilos()
             str_app.session_state.estilo_ativo_idx = proximo_id
-            str_app.success(f"🎉 Novo Estilo inserido com sucesso na sequência!")
+            str_app.success(f"🎉 Novo Estilo #{proximo_id} inserido com sucesso na sequência!")
             str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
