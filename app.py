@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM BOTÕES CENTRALIZADOS E RESET INFALÍVEL
+# ESTÉTICA DE ALTO LUXO (BLINDADA E INTACTA)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -164,30 +164,7 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# CONTROLE DE VERSÃO DE ESTADO PARA FORÇAR O RESET DOS INPUTS
-if "form_version" not in str_app.session_state:
-    str_app.session_state.form_version = 0
-
-def acionar_limpeza():
-    str_app.session_state.form_version += 1
-    # Limpa explicitamente todas as chaves dinâmicas da sessão
-    for k in ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos"]:
-        if k in str_app.session_state:
-            del str_app.session_state[k]
-
-v = str_app.session_state.form_version
-
-# 1. TOPO DA APLICAÇÃO (Banner Impactante)
-str_app.markdown("""
-    <div class="hero-banner">
-        <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
-        <p class="hero-subtitle">LOJA DA VALENTINA • AUTOMATIZAÇÃO DE LOJAS NO TIKTOK</p>
-    </div>
-""", unsafe_allow_html=True)
-
-str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
-
-# Inicializar os 20 estilos universais completos (do 1 ao 20 garantidos)
+# GESTÃO INTELIGENTE DE ESTADO (PRESERVA OS ESTILOS, LIMPA APENAS O FORMULÁRIO)
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     
@@ -249,6 +226,28 @@ if "db_estilos" not in str_app.session_state:
             "prompt": prompt_texto
         }
 
+if "form_version" not in str_app.session_state:
+    str_app.session_state.form_version = 0
+
+def limpar_apenas_formulario():
+    # Incrementa a versão para destruir e recriar limpos todos os inputs e uploader de fotos
+    str_app.session_state.form_version += 1
+    for k in ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos", "sel_estilo_edit", "m_1", "prod_1", "p_1"]:
+        if k in str_app.session_state:
+            del str_app.session_state[k]
+
+v = str_app.session_state.form_version
+
+# 1. TOPO DA APLICAÇÃO (Banner Impactante)
+str_app.markdown("""
+    <div class="hero-banner">
+        <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
+        <p class="hero-subtitle">LOJA DA VALENTINA • AUTOMATIZAÇÃO DE LOJAS NO TIKTOK</p>
+    </div>
+""", unsafe_allow_html=True)
+
+str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
+
 # 2. SEÇÃO 1: PAINEL DE CONTROLE RÁPIDO
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>⚡ PAINEL DE CONTROLE RÁPIDO</p>", unsafe_allow_html=True)
 
@@ -282,7 +281,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Caixinha limpa e alinhada ao botão Salvar)
+# 3. SEÇÃO 2: EDITOR DE PROMPT
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -290,8 +289,6 @@ with str_app.container(border=True):
 
     with col_esq:
         str_app.markdown("🔢 **ESTILO**")
-        
-        # Container com largura idêntica ao botão de salvar
         str_app.markdown('<div style="max-width: 200px;">', unsafe_allow_html=True)
         slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed", key=f"sel_estilo_edit_{v}")
         str_app.markdown('</div>', unsafe_allow_html=True)
@@ -340,14 +337,14 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
-# 5. BOTÕES CENTRALIZADOS EXATAMENTE NO MEIO (Lado a lado, colados com espaçamento milimétrico)
+# 5. BOTÕES CENTRALIZADOS EXATAMENTE NO MEIO (Lado a lado, milimetricamente alinhados)
 col_esq_vazio, col_btn1, col_btn2, col_dir_vazio = str_app.columns([1, 2, 2, 1])
 
 with col_btn1:
     gerar_clicado = str_app.button("🚀 GERAR PROMPTS")
 
 with col_btn2:
-    str_app.button("🔄 LIMPAR TUDO", on_click=acionar_limpeza)
+    str_app.button("🔄 LIMPAR TUDO", on_click=limpar_apenas_formulario)
 
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
 
