@@ -1,5 +1,6 @@
 import streamlit as str_app
 from datetime import datetime
+import time
 
 str_app.set_page_config(
     page_title="Valentina Labs - TikTok Shop Automation",
@@ -240,16 +241,19 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR (TOPO): RESTAURAR E EXCLUIR DEFINITIVO
+# GERENCIADOR (TOPO): RESTAURAR E EXCLUIR COM FEEDBACK VISUAL
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo na memória.")
         if str_app.button("🔄 RESTAURAR ESTILOS INICIAIS"):
-            for i in range(1, 21):
-                t, p = obter_identidade_original(i)
-                str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
-            reindexar_estilos()
-            str_app.success("Estilos restaurados com sucesso!")
+            with str_app.spinner("🔄 Restaurando estilos padrão de fábrica..."):
+                time.sleep(0.4)
+                for i in range(1, 21):
+                    t, p = obter_identidade_original(i)
+                    str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
+                reindexar_estilos()
+            str_app.success("✅ Todos os 20 estilos foram restaurados com sucesso!")
+            time.sleep(0.8)
             str_app.rerun()
     else:
         ids_disp = sorted(list(str_app.session_state.db_estilos.keys()))
@@ -267,22 +271,28 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
         
         with col_r1:
             if str_app.button("🔄 RESTAURAR"):
-                t_orig, p_orig = obter_identidade_original(estilo_escolhido)
-                str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
-                reindexar_estilos()
-                str_app.success(f"Estilo #{estilo_escolhido} restaurado ao original de fábrica!")
+                with str_app.spinner(f"🔄 Restaurando Estilo #{estilo_escolhido}..."):
+                    time.sleep(0.3)
+                    t_orig, p_orig = obter_identidade_original(estilo_escolhido)
+                    str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
+                    reindexar_estilos()
+                str_app.success(f"✅ Estilo #{estilo_escolhido} restaurado ao original com sucesso!")
+                time.sleep(0.8)
                 str_app.rerun()
                 
         with col_r2:
             if str_app.button("🗑️ EXCLUIR DEFINITIVO"):
-                del str_app.session_state.db_estilos[estilo_escolhido]
-                reindexar_estilos()
-                str_app.warning("Estilo excluído e sequência reorganizada perfeitamente!")
+                with str_app.spinner(f"🗑️ Excluindo Estilo #{estilo_escolhido} e reindexando sequência..."):
+                    time.sleep(0.3)
+                    del str_app.session_state.db_estilos[estilo_escolhido]
+                    reindexar_estilos()
+                str_app.success(f"🗑️ Estilo excluído e sequência reorganizada com sucesso!")
+                time.sleep(0.8)
                 str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# ÚNICA CAIXA UNIFICADA: EDITOR E INSERÇÃO DE PROMPT
+# MODO DE OPERAÇÃO UNIFICADO (EDITAR OU INSERIR COM FEEDBACK E SPINNER)
 proximo_id_sugerido = (max(str_app.session_state.db_estilos.keys()) + 1) if str_app.session_state.db_estilos else 1
 modo_operacao = str_app.radio("Modo de Operação", ["✏️ Editar Estilo Existente", f"➕ Inserir Novo (Estilo #{proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed")
 
@@ -316,14 +326,17 @@ with str_app.container(border=True):
             str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
             
             if str_app.button("💾 SALVAR ALTERAÇÃO"):
-                str_app.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
-                str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
-                str_app.success(f"✅ Estilo #{slot_num_edit} salvo com sucesso!")
+                with str_app.spinner(f"💾 Salvando alterações do Estilo #{slot_num_edit}..."):
+                    time.sleep(0.4)
+                    str_app.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
+                    str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
+                str_app.success(f"✨ Estilo #{slot_num_edit} alterado e salvo com sucesso!")
+                time.sleep(0.8)
                 str_app.rerun()
         else:
             str_app.write("Nenhum estilo disponível.")
     else:
-        # Modo Inserir Novo no Final da Sequência
+        # Modo Inserir Novo na Sequência Exata (Abaixo do último)
         novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="campo_novo_titulo_valencia_fixo")
         novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=160, key="campo_novo_prompt_valencia_fixo")
         
@@ -333,16 +346,19 @@ with str_app.container(border=True):
             if not novo_titulo_input or not novo_prompt_input:
                 str_app.warning("⚠️ Preencha o Título e o Código do novo prompt.")
             else:
-                max_id = max(str_app.session_state.db_estilos.keys()) if str_app.session_state.db_estilos else 0
-                novo_id = max_id + 1
-                
-                str_app.session_state.db_estilos[novo_id] = {
-                    "titulo": novo_titulo_input,
-                    "prompt": novo_prompt_input
-                }
-                reindexar_estilos()
-                str_app.session_state.estilo_ativo_idx = novo_id
-                str_app.success(f"🎉 Novo Estilo #{novo_id} inserido com sucesso no final da sequência!")
+                with str_app.spinner(f"📥 Inserindo Estilo #{proximo_id_sugerido} na sequência..."):
+                    time.sleep(0.4)
+                    max_id = max(str_app.session_state.db_estilos.keys()) if str_app.session_state.db_estilos else 0
+                    novo_id = max_id + 1
+                    
+                    str_app.session_state.db_estilos[novo_id] = {
+                        "titulo": novo_titulo_input,
+                        "prompt": novo_prompt_input
+                    }
+                    reindexar_estilos()
+                    str_app.session_state.estilo_ativo_idx = novo_id
+                str_app.success(f"🎉 Novo Estilo #{novo_id} inserido com sucesso na sequência!")
+                time.sleep(0.8)
                 str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
