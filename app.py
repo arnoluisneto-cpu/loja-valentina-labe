@@ -113,20 +113,43 @@ str_app.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Inicializar os 20 estilos com os prompts completos e estruturados
+# Inicializar os 20 estilos com a estrutura completa (Visual em Inglês + Fala Integrada em Português do Brasil)
 if "db_estilos" not in str_app.session_state:
-    str_app.session_state.db_estilos = {
-        i: {
-            "titulo": f"Estilo {i}: Padrão Loja da Valentina #{i}",
-            "prompt": f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. Standard Valentina Showcase. Focus strictly on product quality, flawless lip-sync in Brazilian Portuguese, and direct CTA to the orange cart. Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing. Clean screen with zero watermarks or subtitles."
-        } for i in range(1, 21)
-    }
-    
-    # Estilo 20 com o nosso prompt definitivo do caminhão preto gigante
-    str_app.session_state.db_estilos[20] = {
-        "titulo": "Estilo 20: POV Caminhão Preto Gigante Parado com Portas Abertas e Valentina",
-        "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus exclusively on footwear display, showing shoes clearly on feet, highlighting heel height and comfort. Strictly binding uploaded model reference face/body and isolated exact reference pixels of 'SANDALIA MARCA GIGIL SALTO BLOCO COR PRETA' with zero alterations, zero modifications to the product structure, details, or brand. Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. Rigid product lock: exact 'SANDALIA MARCA GIGIL SALTO BLOCO COR PRETA' matching reference image with zero substitution, preserving original brand aesthetics. STATIC TRUCK & PERSISTENT BOX CHOREOGRAPHY (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally with flawless lip-sync as she walks forward from inside her boutique toward the street. Directly in front of the store, a massive, giant black delivery truck with clean, bold \"TikTok\" lettering written in bright white on its black body is ALREADY PARKED in reverse, completely stationary with its rear cargo doors ALREADY WIDE OPEN, revealing an interior completely packed and stacked wall-to-wall up to the ceiling with storage boxes of the 'SANDALIA MARCA GIGIL SALTO BLOCO COR PRETA' (Brand Gigi). Valentina reaches the glass door, manually pushes it open with her hands, and walks straight up to the truck. She picks up a single storage box. STRICT PERSISTENCE RULE: Throughout the entire duration of the video, the storage box remains physically present and firmly held in her hands without ever disappearing, vanishing, or morphing. She opens the box steadily while holding it, lifts a matching pair of 'SANDALIA MARCA GIGIL SALTO BLOCO COR PRETA' directly out of the box while keeping the box visible in her grip, displays the footwear clearly to the camera, and concludes her sales pitch. IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. Fixed realistic background, organic human movement.\n\n\"Olha, gente... acabou de chegar o estoque aqui na Loja da Valentina. A gente vai trabalhar só com essa sandália, porque ela é recordista de vendas e de muita qualidade! Clica aqui no carrinho laranja embaixo para garantir a sua.\"\n\nAbsolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, AI morphing transition, soft blending, product switching, changing product model at the end, sudden jump cuts, rapid unrealistic pacing, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, text captions, generated writing, UI graphics, watermarks, distorted brand, altered design, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI, walking backward, truck moving, doors opening, box disappearing, box vanishing, item morphing into hand."
-    }
+    str_app.session_state.db_estilos = {}
+    for i in range(1, 21):
+        if i == 20:
+            prompt_texto = (
+                "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. "
+                "STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus exclusively on footwear display, showing shoes clearly on feet, highlighting heel height and comfort. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations, zero modifications to the product structure, details, or brand. "
+                "Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. "
+                "Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. "
+                "Rigid product lock: exact product matching reference image with zero substitution, preserving original brand aesthetics. "
+                "STATIC TRUCK & PERSISTENT BOX CHOREOGRAPHY (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally with flawless lip-sync as she walks forward from inside her boutique toward the street. "
+                "Directly in front of the store, a massive, giant black delivery truck with clean, bold 'TikTok' lettering written in bright white on its black body is ALREADY PARKED in reverse, completely stationary with its rear cargo doors ALREADY WIDE OPEN, revealing an interior completely packed and stacked wall-to-wall up to the ceiling with storage boxes. "
+                "Valentina reaches the glass door, manually pushes it open with her hands, and walks straight up to the truck. She picks up a single storage box. "
+                "STRICT PERSISTENCE RULE: Throughout the entire duration of the video, the storage box remains physically present and firmly held in her hands without ever disappearing, vanishing, or morphing. She opens the box steadily while holding it, lifts a matching pair directly out of the box while keeping the box visible in her grip, displays the footwear clearly to the camera, and concludes her sales pitch. "
+                "IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. Fixed realistic background, organic human movement.\n\n"
+                "\"Olha, gente... acabou de chegar o estoque aqui na Loja da Valentina. A gente vai trabalhar só com essa sandália, porque ela é recordista de vendas e de muita qualidade! Clica aqui no carrinho laranja embaixo para garantir a sua.\"\n\n"
+                "Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, AI morphing transition, soft blending, product switching, changing product model at the end, sudden jump cuts, rapid unrealistic pacing, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, text captions, generated writing, UI graphics, watermarks, distorted brand, altered design, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI, walking backward, truck moving, doors opening, box disappearing, box vanishing, item morphing into hand."
+            )
+            titulo_texto = "Estilo 20: POV Caminhão Preto Gigante Parado com Portas Abertas e Valentina"
+        else:
+            prompt_texto = (
+                f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. Standard Valentina Showcase. "
+                f"STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus on clear product demonstration, showing details clearly. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations. "
+                f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone. "
+                f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
+                f"Strict 1:1 pixel lock and rigid product match with zero substitution. "
+                f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera delivering a strong magnetic hook, pacing her speech evenly across the full 10 seconds while interacting directly with the item.\n\n"
+                f"\"Olha, gente, meninas, olha aqui o que chegou agora na Loja da Valentina! Chegou todo esse estoque exclusivo. A gente vai trabalhar só com essa marca porque está vendendo muito. Clica no carrinho laranja aqui embaixo e garanta a sua, que esse estoque chegou agora e vai estar de promoção!\"\n\n"
+                f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
+            )
+            titulo_texto = f"Estilo {i}: Padrão Loja da Valentina #{i}"
+            
+        str_app.session_state.db_estilos[i] = {
+            "titulo": titulo_texto,
+            "prompt": prompt_texto
+        }
 
 # 2. SELETORES DO TOPO
 c_top1, c_top2 = str_app.columns(2)
@@ -147,12 +170,11 @@ estilos_selecionados = str_app.multiselect(
 
 str_app.markdown("---")
 
-# 4. CAMPO ÚNICO E LIMPO DE EDIÇÃO (Carrega o prompt inteiro aberto)
+# 4. CAMPO ÚNICO DE EDIÇÃO (Com altura maior para exibir o texto completo de ponta a ponta)
 slot_num_edit = str_app.selectbox("Número do Estilo", options=list(str_app.session_state.db_estilos.keys()))
 
-# Chave dinâmica para forçar a atualização correta do texto completo na caixinha
 prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
-novo_prompt_digitado = str_app.text_area("Código do Prompt", value=prompt_ativo, height=220, key=f"prompt_full_{slot_num_edit}")
+novo_prompt_digitado = str_app.text_area("Código do Prompt", value=prompt_ativo, height=350, key=f"prompt_full_{slot_num_edit}")
 
 if str_app.button("Salvar Alteração do Estilo"):
     str_app.session_state.db_estilos[slot_num_edit]["prompt"] = novo_prompt_digitado
