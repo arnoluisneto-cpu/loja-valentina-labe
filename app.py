@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM O BOTÃO DE EXCLUIR ESTILO INTEGRADO
+# ESTÉTICA DE ALTO LUXO (BLINDADA E POLIDA)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -278,9 +278,28 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
+# GERENCIADOR / EXCLUSÃO RÁPIDA DE ESTILOS DIRETO NA SEÇÃO DO SELETOR
+with str_app.expander("⚙️ Gerenciar / Excluir Estilos da Grade", expanded=False):
+    if not str_app.session_state.db_estilos:
+        str_app.write("Nenhum estilo cadastrado.")
+    else:
+        for est_id, dados_est in list(str_app.session_state.db_estilos.items()):
+            col_txt, col_edit, col_del = str_app.columns([6, 1.5, 1.5])
+            with col_txt:
+                str_app.markdown(f"<span style='font-size:12px;'>{dados_est['titulo']}</span>", unsafe_allow_html=True)
+            with col_edit:
+                if str_app.button("✏️", key=f"btn_edit_quick_{est_id}"):
+                    str_app.session_state[f"sel_estilo_edit_{v}"] = est_id
+                    str_app.rerun()
+            with col_del:
+                if str_app.button("🗑️", key=f"btn_del_quick_{est_id}"):
+                    del str_app.session_state.db_estilos[est_id]
+                    str_app.success(f"Estilo #{est_id} excluído!")
+                    str_app.rerun()
+
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Com opção 0 limpa e botão de excluir estilo)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Com opção 0 limpa)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -313,27 +332,14 @@ with str_app.container(border=True):
                 str_app.success(f"Estilo #{slot_num_edit} salvo!")
         str_app.markdown('</div>', unsafe_allow_html=True)
 
-        str_app.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
-
-        # Botão Excluir Estilo Selecionado
-        str_app.markdown('<div style="max-width: 190px;">', unsafe_allow_html=True)
-        if str_app.button("🗑️ Excluir Estilo"):
-            if slot_num_edit == 0 or slot_num_edit not in str_app.session_state.db_estilos:
-                str_app.warning("⚠️ Selecione um estilo válido para excluir.")
-            else:
-                del str_app.session_state.db_estilos[slot_num_edit]
-                str_app.success(f"Estilo #{slot_num_edit} excluído com sucesso!")
-                str_app.rerun()
-        str_app.markdown('</div>', unsafe_allow_html=True)
-
     with col_dir:
         str_app.markdown("📝 **CÓDIGO DO PROMPT**")
         if slot_num_edit == 0 or slot_num_edit not in str_app.session_state.db_estilos:
-            prompt_ativo = "Selecione um estilo numérico ao lado para visualizar e editar o código do prompt, ou excluí-lo."
+            prompt_ativo = "Selecione um estilo numérico ao lado para visualizar e editar o código do prompt."
         else:
             prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
             
-        novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=155, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
+        novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
@@ -382,7 +388,7 @@ if gerar_clicado:
     if not produto_nome:
         str_app.warning("⚠️ Informe o nome do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
-        str_app.warning("⚠️ Envie todas as fotos.")
+        str_app.warning("⚠️ Envie todas las fotos.")
     elif not estilos_selecionados:
         str_app.warning("⚠️ Selecione pelo menos 1 estilo.")
     else:
