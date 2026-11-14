@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM OS 20 ESTILOS VIRAIS MAIS POTENTES DO TIKTOK SHOP
+# ESTÉTICA DE ALTO LUXO COM OS 20 ESTILOS VIRAIS COMPLETOS E UNIVERSAIS
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -87,13 +87,13 @@ str_app.markdown("""
         text-overflow: clip !important;
     }
 
-    /* CORREÇÃO DO MENU DE ESTILOS (Rolagem para o Estilo 20) */
+    /* CORREÇÃO DO MENU DE ESTILOS (Rolagem garantida para mostrar até o Estilo 20) */
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
         background-color: #161026 !important;
         color: #ffffff !important;
         border: 1.5px solid #00FF66 !important;
         font-size: 13px !important;
-        max-height: 280px !important;
+        max-height: 300px !important;
         overflow-y: auto !important;
     }
     
@@ -172,30 +172,30 @@ str_app.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Inicializar os 20 estilos com os padrões mais modernos, virais e de elite do TikTok Shop
+# Inicializar os 20 estilos universais completos (do 1 ao 20 garantidos)
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     
     identidades_estilos = {
-        1: ("Estilo 1: POV Mão & Rasgando o Plástico de Proteção (ASMR)", "Foco tátil em primeira pessoa (POV) abrindo a embalagem e rasgando o plástico de proteção da peça com extrema nitidez e som imersivo."),
-        2: ("Estilo 2: POV Corpo Inteiro Caminhando na Calçada Urbana", "Câmera em movimento fluido acompanhando a modelo de corpo inteiro (head-to-toe) ao ar livre sob luz natural."),
-        3: ("Estilo 3: POV Sentada no Provador de Luxo (Close Íntimo)", "Enquadramento elegante com a modelo sentada em um provador sofisticado, detalhando o caimento e o tecido."),
-        4: ("Estilo 4: POV Giro 360 Graus em Frente ao Espelho", "Rotação e giros fluidos em frente ao espelho iluminado da boutique, exibindo frente, costas e caimento perfeito."),
+        1: ("Estilo 1: POV Mão & Rasgando o Plástico de Proteção (ASMR)", "Foco tátil universal abrindo a embalagem e rasgando o plástico de proteção da peça com extrema nitidez e som imersivo."),
+        2: ("Estilo 2: POV Corpo Inteiro Caminhando na Calçada Urbana", "Câmera em movimento fluido acompanhando o produto de corpo inteiro (head-to-toe) ao ar livre sob luz natural."),
+        3: ("Estilo 3: POV Sentada no Provador de Luxo (Close Íntimo)", "Enquadramento elegante com a modelo sentada em provador sofisticado, detalhando o caimento e o tecido."),
+        4: ("Estilo 4: POV Giro 360 Graus em Frente ao Espelho", "Rotação e giros fluidos em frente ao espelho iluminado da boutique, exibindo todos os ângulos da peça."),
         5: ("Estilo 5: POV Sem Fala com Trilha Viral & Transição Rápida", "Estilo puramente visual de altíssima retenção, sem diálogos, focado em cortes dinâmicos sincronizados com a batida da música."),
-        6: ("Estilo 6: POV Close Macro em Pé com Foco nos Calçados", "Câmera baixa apontada diretamente para os pés e solados, destacando o conforto, o design e a altura do salto."),
-        7: ("Estilo 7: Look do Dia Executivo com Blazer (Estilo Virgínia)", "Estética corporativa de alto padrão transmitindo autoridade, poder e elegância profissional com semijoias."),
-        8: ("Estilo 8: Rasteirinha Verão & Frescor na Praça Externa", "Cenário ensolarado e vibrante, mostrando leveza e praticidade para calçados de dias quentes."),
-        9: ("Estilo 9: Scarpin Clássico Imponente em Estúdio de Cinema", "Iluminação profissional de estúdio de cinema focada na imponência, postura ereta e sofisticação máxima do salto alto."),
+        6: ("Estilo 6: POV Close Macro com Foco nos Detalhes", "Câmera de perto apontada diretamente para o produto, destacando texturas, acabamentos e diferenciais."),
+        7: ("Estilo 7: Look do Dia Executivo com Blazer (Estilo Virgínia)", "Estética corporativa de alto padrão transmitindo autoridade, poder e elegância profissional."),
+        8: ("Estilo 8: Look Verão & Frescor na Praça Externa", "Cenário ensolarado e vibrante, mostrando leveza e praticidade para dias quentes."),
+        9: ("Estilo 9: Estilo Clássico Imponente em Estúdio de Cinema", "Iluminação profissional de estúdio de cinema focada na imponência, postura e sofisticação máxima."),
         10: ("Estilo 10: Provador Expresso de Oferta Relâmpago", "Ritmo acelerado, troca dinâmica e foco em conversão imediata de estoque limitado e preço promocional."),
-        11: ("Estilo 11: Bolsa Transversal & Movimento Urbano", "Destaque dinâmico para a utilidade, alças e acabamento da bolsa em trânsito pela cidade."),
+        11: ("Estilo 11: Acessório & Movimento Urbano", "Destaque dinâmico para a utilidade e acabamento do item em trânsito pela cidade."),
         12: ("Estilo 12: Conjunto Tricô Aconchegante (Macro Texturas)", "Foco em macro-texturas de tramas fechadas e toque suave para dias amenos."),
         13: ("Estilo 13: Look Noite & Balada com Luz Dramática", "Iluminação noturna sofisticada e moderna, destacando peças acetinadas e brilhantes sob reflexos de neon."),
-        14: ("Estilo 14: Tênis Chunky Platform & Atitude Streetwear", "Foco em solados robustos, estilo urbano moderno e atitude jovem para o público do TikTok."),
-        15: ("Estilo 15: Sandália de Tiras Finas Delicate (Close de Festa)", "Detalhes delicados das tiras e amarrações nos pés em enquadramento refinado para eventos sociais."),
+        14: ("Estilo 14: Estilo Chunky Platform & Atitude Streetwear", "Foco em design robusto, estilo urbano moderno e atitude jovem para o público do TikTok."),
+        15: ("Estilo 15: Peça Delicate (Close de Festa & Elegância)", "Detalhes delicados e acabamento refinado para eventos sociais e ocasiões especiais."),
         16: ("Estilo 16: Colete Alfaiataria & Camadas Elegantes", "Estilo moderno de sobreposições, demonstrando sofisticação para compor looks versáteis."),
-        17: ("Estilo 17: Short Saia Envelope em Movimento Fluido", "Fluidez, leveza e segurança no design envelope com passos ritmados e naturais."),
-        18: ("Estilo 18: Pantalona Jeans Premium (Cós Alto & Elegância)", "Caimento impecável nas pernas e resistência do jeans de alfaiataria em plano aberto."),
-        19: ("Estilo 19: Slip On Prático (Calce Fácil Ágil)", "Demonstração rápida de calce ágil, ideal para o público que busca praticidade sem perder a elegância."),
+        17: ("Estilo 17: Short Saia / Envelope em Movimento Fluido", "Fluidez, leveza e segurança com passos ritmados e naturais."),
+        18: ("Estilo 18: Pantalona Jeans Premium (Cós Alto & Elegância)", "Caimento impecável e resistência de alfaiataria em plano aberto."),
+        19: ("Estilo 19: Slip On Prático (Calce Fácil Ágil)", "Demonstração rápida de agilidade, ideal para o público que busca praticidade sem perder a elegância."),
         20: ("Estilo 20: POV Caminhão Preto Gigante do TikTok (Estoque Chegando)", "Cenário épico externo com caminhão gigante estacionado e portas abertas repletas de caixas da Loja da Valentina.")
     }
 
@@ -205,16 +205,16 @@ if "db_estilos" not in str_app.session_state:
         if i == 20:
             prompt_texto = (
                 "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. "
-                "STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus exclusively on footwear display, showing shoes clearly on feet, highlighting heel height and comfort. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations, zero modifications to the product structure, details, or brand. "
+                "STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus exclusively on product display, showing items clearly on model, highlighting quality and comfort. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations, zero modifications to the product structure, details, or brand. "
                 "Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. "
                 "Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. "
                 "Rigid product lock: exact product matching reference image with zero substitution, preserving original brand aesthetics. "
                 "STATIC TRUCK & PERSISTENT BOX CHOREOGRAPHY (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally with flawless lip-sync as she walks forward from inside her boutique toward the street. "
                 "Directly in front of the store, a massive, giant black delivery truck with clean, bold 'TikTok' lettering written in bright white on its black body is ALREADY PARKED in reverse, completely stationary with its rear cargo doors ALREADY WIDE OPEN, revealing an interior completely packed and stacked wall-to-wall up to the ceiling with storage boxes. "
                 "Valentina reaches the glass door, manually pushes it open with her hands, and walks straight up to the truck. She picks up a single storage box. "
-                "STRICT PERSISTENCE RULE: Throughout the entire duration of the video, the storage box remains physically present and firmly held in her hands without ever disappearing, vanishing, or morphing. She opens the box steadily while holding it, lifts a matching pair directly out of the box while keeping the box visible in her grip, displays the footwear clearly to the camera, and concludes her sales pitch. "
+                "STRICT PERSISTENCE RULE: Throughout the entire duration of the video, the storage box remains physically present and firmly held in her hands without ever disappearing, vanishing, or morphing. She opens the box steadily while holding it, lifts a matching item directly out of the box while keeping the box visible in her grip, displays the product clearly to the camera, and concludes her sales pitch. "
                 "IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. Fixed realistic background, organic human movement.\n\n"
-                "\"Olha, gente... acabou de chegar o estoque aqui na Loja da Valentina. A gente vai trabalhar só com essa sandália, porque ela é recordista de vendas e de muita qualidade! Clica aqui no carrinho laranja embaixo para garantir a sua.\"\n\n"
+                "\"Olha, gente... acabou de chegar o estoque aqui na Loja da Valentina. A gente vai trabalhar só com esse produto, porque ele é recordista de vendas e de muita qualidade! Clica aqui no carrinho laranja embaixo para garantir o seu.\"\n\n"
                 "Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, AI morphing transition, soft blending, product switching, changing product model at the end, sudden jump cuts, rapid unrealistic pacing, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, text captions, generated writing, UI graphics, watermarks, distorted brand, altered design, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI, walking backward, truck moving, doors opening, box disappearing, box vanishing, item morphing into hand."
             )
         else:
@@ -224,7 +224,7 @@ if "db_estilos" not in str_app.session_state:
                 f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone. "
                 f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
                 f"Strict 1:1 pixel lock and rigid product match with zero substitution. "
-                f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera delivering a strong magnetic hook, pacing her speech evenly across the full 10 seconds while interacting directly with the item.\n\n"
+                f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera delivering a strong magnetic hook, pacing her speech evenly across the full 10 seconds while interacting directly withલ the item.\n\n"
                 f"\"Olha, gente, meninas, olha aqui o que chegou agora na Loja da Valentina! Chegou todo esse estoque exclusivo. A gente vai trabalhar só com essa marca porque está vendendo muito. Clica no carrinho laranja aqui embaixo e garanta a sua, que esse estoque chegou agora e vai estar de promoção!\"\n\n"
                 f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
             )
