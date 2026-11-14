@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO MILIMÉTRICO FINAL
+# ESTÉTICA DE ALTO LUXO UNIFICADA (Fundo Escuro Puro, Verde Neon e Roxo Valentina)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -85,7 +85,7 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* Uploaders compactos idênticos */
+    /* Uploaders compactos */
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 1px solid #00FF66 !important;
@@ -174,7 +174,7 @@ if "db_estilos" not in str_app.session_state:
             "prompt": prompt_texto
         }
 
-# 2. SEÇÃO 1: PAINEL DE CONTROLE RÁPIDO
+# 2. SEÇÃO 1: PAINEL DE CONTROLE RÁPIDO (Em cards estruturados)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>⚡ PAINEL DE CONTROLE RÁPIDO</p>", unsafe_allow_html=True)
 
 c_grid1, c_grid2, c_grid3 = str_app.columns(3)
@@ -182,74 +182,77 @@ c_grid1, c_grid2, c_grid3 = str_app.columns(3)
 with c_grid1:
     with str_app.container(border=True):
         str_app.markdown("🎬 **DIRETOR SKIN**")
-        str_app.markdown("<span style='color: #b0bec5; font-size: 10px;'>BOY (Elite)</span>", unsafe_allow_html=True)
+        diretor_skin = str_app.selectbox("Skin", ["BOY (Elite Director)", "UGC LIFESTYLE"], label_visibility="collapsed")
 
 with c_grid2:
     with str_app.container(border=True):
         str_app.markdown("📱 **PROPORÇÃO**")
-        str_app.markdown("<span style='color: #b0bec5; font-size: 10px;'>9:16 Vertical</span>", unsafe_allow_html=True)
+        proporcao = str_app.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"], label_visibility="collapsed")
 
 with c_grid3:
     with str_app.container(border=True):
         str_app.markdown("⚡ **STATUS ENGINE**")
-        str_app.markdown("<span style='color: #00FF66; font-size: 10px;'>Ativo & Sincronizado</span>", unsafe_allow_html=True)
+        str_app.markdown("<span style='color: #00FF66; font-size: 11px; font-weight:700;'>Ativo & Sincronizado</span>", unsafe_allow_html=True)
 
-col_s1, col_s2 = str_app.columns(2)
-with col_s1:
-    diretor_skin = str_app.selectbox("Skin", ["BOY (Elite Director)", "UGC LIFESTYLE"], label_visibility="collapsed")
-with col_s2:
-    proporcao = str_app.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"], label_visibility="collapsed")
+with str_app.container(border=True):
+    str_app.markdown("🎬 **SELECIONAR ESTILOS PARA GRADE DIÁRIA**")
+    lista_titulos_geral = [str_app.session_state.db_estilos[i]["titulo"] for i in str_app.session_state.db_estilos]
+    estilos_selecionados = str_app.multiselect(
+        "Selecione",
+        options=lista_titulos_geral,
+        default=[str_app.session_state.db_estilos[20]["titulo"]],
+        label_visibility="collapsed"
+    )
 
-lista_titulos_geral = [str_app.session_state.db_estilos[i]["titulo"] for i in str_app.session_state.db_estilos]
-estilos_selecionados = str_app.multiselect(
-    "🎬 SELECIONAR ESTILOS PARA GRADE DIÁRIA",
-    options=lista_titulos_geral,
-    default=[str_app.session_state.db_estilos[20]["titulo"]]
-)
+str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
-
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Perfeitamente nivelado e padronizado)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Em card estruturado alinhado)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
-col_esq, col_dir = str_app.columns([1, 2])
+with str_app.container(border=True):
+    col_esq, col_dir = str_app.columns([1, 2])
 
-with col_esq:
-    slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed")
-    str_app.markdown(f"<p style='font-size: 10px; font-weight:600; color: #00FF66; margin: 2px 0;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
-    
-    # Espaçamento estético exato para nivelar com a base da caixa ao lado
-    str_app.markdown("<div style='height: 52px;'></div>", unsafe_allow_html=True)
-    
-    if str_app.button("💾 Salvar Alteração"):
-        current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
-        str_app.session_state.db_estilos[slot_num_edit]["prompt"] = current_val
-        str_app.success(f"Estilo #{slot_num_edit} salvo!")
+    with col_esq:
+        str_app.markdown("🔢 **ESTILO**")
+        slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed")
+        str_app.markdown(f"<p style='font-size: 10px; font-weight:600; color: #00FF66; margin: 4px 0;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
+        
+        str_app.markdown("<div style='height: 38px;'></div>", unsafe_allow_html=True)
+        
+        if str_app.button("💾 Salvar Alteração"):
+            current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
+            str_app.session_state.db_estilos[slot_num_edit]["prompt"] = current_val
+            str_app.success(f"Estilo #{slot_num_edit} salvo!")
 
-with col_dir:
-    prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
-    novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
+    with col_dir:
+        str_app.markdown("📝 **CÓDIGO DO PROMPT**")
+        prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
+        novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
 
-str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
+str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Perfeitamente nivelados simetricamente)
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Em card estruturado simétrico)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
-col_input1, col_input2 = str_app.columns(2)
+with str_app.container(border=True):
+    col_input1, col_input2 = str_app.columns(2)
 
-with col_input1:
-    produto_nome = str_app.text_input("NOME PRODUTO / SKU", placeholder="Ex: Sandália Gigil...")
-    tipo_produto = str_app.selectbox("CATEGORIA", ["Calçado / Tênis / Sandália", "Acessório", "Vestuário", "Bolsa", "Outros"])
-    
-    str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px;'>Foto Produto</p>", unsafe_allow_html=True)
-    foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key="prod_1", label_visibility="collapsed")
-    
-with col_input2:
-    str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px;'>Foto Modelo (1:1)</p>", unsafe_allow_html=True)
-    foto_modelo = str_app.file_uploader("Foto Modelo (1:1)", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
-    
-    str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px; margin-top: 14px;'>Foto Peça (Pixel Lock)</p>", unsafe_allow_html=True)
-    foto_peca = str_app.file_uploader("Foto Peça (Pixel Lock)", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
+    with col_input1:
+        str_app.markdown("🏷️ **NOME PRODUTO / SKU**")
+        produto_nome = str_app.text_input("Nome", placeholder="Ex: Sandália Gigil...", label_visibility="collapsed")
+        
+        str_app.markdown("📂 **CATEGORIA**")
+        tipo_produto = str_app.selectbox("Categoria", ["Calçado / Tênis / Sandália", "Acessório", "Vestuário", "Bolsa", "Outros"], label_visibility="collapsed")
+        
+        str_app.markdown("📷 **FOTO PRODUTO**")
+        foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key="prod_1", label_visibility="collapsed")
+        
+    with col_input2:
+        str_app.markdown("👩 **FOTO MODELO (1:1)**")
+        foto_modelo = str_app.file_uploader("Foto Modelo", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
+        
+        str_app.markdown("🔒 **FOTO PEÇA (PIXEL LOCK)**")
+        foto_peca = str_app.file_uploader("Foto Peça", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
