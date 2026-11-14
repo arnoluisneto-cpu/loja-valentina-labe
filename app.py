@@ -34,7 +34,7 @@ str_app.markdown("""
         color: #ffffff !important;
     }
     
-    /* Banner do Topo: Título Gigante, Pesado, com Sombra Forte e Subtítulo Menor */
+    /* Banner do Topo */
     .hero-banner {
         background: linear-gradient(135deg, #130d22 0%, #20133f 100%);
         border: 2.5px solid #00FF66;
@@ -74,7 +74,6 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* CORREÇÃO DO DROPDOWN DO DIRETOR SKIN */
     div[data-testid="stSelectbox"] {
         width: 100% !important;
     }
@@ -87,7 +86,6 @@ str_app.markdown("""
         text-overflow: clip !important;
     }
 
-    /* CORREÇÃO DO MENU DE ESTILOS (Rolagem garantida) */
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
         background-color: #161026 !important;
         color: #ffffff !important;
@@ -97,7 +95,6 @@ str_app.markdown("""
         overflow-y: auto !important;
     }
     
-    /* Textarea com rolagem interna travada */
     textarea {
         background-color: #161026 !important;
         color: #ffffff !important;
@@ -110,7 +107,6 @@ str_app.markdown("""
     
     .stTextInput input, .stSelectbox select { color: #ffffff !important; font-size: 13px !important; }
     
-    /* ELIMINAÇÃO TOTAL DOS AVISOS DE TAMANHO */
     div[data-testid="stFileUploader"] small,
     div[data-testid="stFileUploader"] span:nth-of-type(2),
     div[data-testid="stFileUploader"] div:has(> small),
@@ -282,34 +278,44 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR COM 3 BOTÕES ISOLADOS E SEGUROS POR ESTILO
-with str_app.expander("⚙️ Gerenciar / Editar / Restaurar Estilos", expanded=False):
+# GERENCIADOR BLINDADO COM SELEÇÃO DIRETA (100% FUNCIONAL PARA EDITAR, RESTAURAR E EXCLUIR)
+with str_app.expander("⚙️ Gerenciar / Editar / Restaurar Estilos", expanded=True):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo cadastrado.")
     else:
-        for est_id in sorted(list(str_app.session_state.db_estilos.keys())):
-            dados_est = str_app.session_state.db_estilos[est_id]
+        ids_disponiveis = sorted(list(str_app.session_state.db_estilos.keys()))
+        
+        c_sel_est, c_acao_est = str_app.columns([2, 1])
+        with c_sel_est:
+            estilo_gerenciar_escolhido = str_app.selectbox(
+                "Escolha o Estilo",
+                options=ids_disponiveis,
+                format_func=lambda x: f"#{x} - {str_app.session_state.db_estilos[x]['titulo']}",
+                label_visibility="collapsed"
+            )
+        with c_acao_est:
+            acao_escolhida = str_app.selectbox(
+                "Ação",
+                options=["Selecione a Ação...", "✏️ Editar Estilo", "🔄 Restaurar Padrão", "🗑️ Excluir Definitivo"],
+                label_visibility="collapsed"
+            )
             
-            with str_app.container(border=True):
-                str_app.markdown(f"<span style='font-size:12px; font-weight:700; color:#00FF66;'>#{est_id} - {dados_est['titulo']}</span>", unsafe_allow_html=True)
-                
-                c_btn1, c_btn2, c_btn3 = str_app.columns(3)
-                with c_btn1:
-                    if str_app.button("✏️ Editar", key=f"b_edit_{est_id}"):
-                        str_app.session_state.id_estilo_selecionado = est_id
-                        str_app.success(f"Estilo #{est_id} carregado no editor abaixo!")
-                        str_app.rerun()
-                with c_btn2:
-                    if str_app.button("🔄 Restaurar", key=f"b_rest_{est_id}"):
-                        t_orig, p_orig = obter_identidade_original(est_id)
-                        str_app.session_state.db_estilos[est_id] = {"titulo": t_orig, "prompt": p_orig}
-                        str_app.success(f"Estilo #{est_id} restaurado com sucesso!")
-                        str_app.rerun()
-                with c_btn3:
-                    if str_app.button("🗑️ Excluir", key=f"b_del_{est_id}"):
-                        del str_app.session_state.db_estilos[est_id]
-                        str_app.success(f"Estilo #{est_id} excluído!")
-                        str_app.rerun()
+        if str_app.button("Executar Ação no Estilo"):
+            if acao_escolhida == "Selecione a Ação...":
+                str_app.warning("⚠️ Selecione uma ação válida.")
+            elif "Editar" in acao_escolhida:
+                str_app.session_state.id_estilo_selecionado = estilo_gerenciar_escolhido
+                str_app.success(f"✅ Estilo #{estilo_gerenciar_escolhido} carregado no Editor abaixo!")
+                str_app.rerun()
+            elif "Restaurar" in acao_escolhida:
+                t_orig, p_orig = obter_identidade_original(estilo_gerenciar_escolhido)
+                str_app.session_state.db_estilos[estilo_gerenciar_escolhido] = {"titulo": t_orig, "prompt": p_orig}
+                str_app.success(f"🔄 Estilo #{estilo_gerenciar_escolhido} restaurado com sucesso!")
+                str_app.rerun()
+            elif "Excluir" in acao_escolhida:
+                del str_app.session_state.db_estilos[estilo_gerenciar_escolhido]
+                str_app.success(f"🗑️ Estilo #{estilo_gerenciar_escolhido} excluído definitivamente!")
+                str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
@@ -357,7 +363,7 @@ with str_app.container(border=True):
     with col_dir:
         str_app.markdown("📝 **CÓDIGO DO PROMPT**")
         if slot_num_edit == 0 or slot_num_edit not in str_app.session_state.db_estilos:
-            prompt_ativo = "Selecione um estilo numérico ao lado ou clique em '✏️ Editar' em cima para visualizar e editar o código."
+            prompt_ativo = "Selecione um estilo numérico ao lado ou use o menu acima para carregar e editar."
         else:
             prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
             
