@@ -8,7 +8,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO (BLINDADA E POLIDA - FUNDO DE UPLOAD CORRIGIDO PARA ROXO)
+# ESTÉTICA DE ALTO LUXO (BOTÃO DE UPLOAD COM TEXTO PRETO E NEGRITO)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -19,23 +19,27 @@ str_app.markdown("""
         font-family: 'Inter', sans-serif !important;
     }
     
-    /* Botão de Upload verde */
+    /* Botão de Upload verde com texto e ícone PRETO E EM NEGRITO */
     div[data-testid="stFileUploader"] button {
         background-color: #00FF66 !important;
         color: #000000 !important;
-        font-weight: 700 !important;
+        font-weight: 900 !important;
         border-radius: 6px !important;
         border: none !important;
         padding: 6px 12px !important;
         font-size: 13px !important;
         width: 100% !important;
     }
+    div[data-testid="stFileUploader"] button * {
+        color: #000000 !important;
+        font-weight: 900 !important;
+    }
     div[data-testid="stFileUploader"] button:hover {
         background-color: #00cc52 !important;
-        color: #ffffff !important;
+        color: #000000 !important;
     }
     
-    /* REMOÇÃO DO FUNDO BRANCO DO FILE UPLOADER (DEIXANDO ROXO ESCURO) */
+    /* Fundo da caixa de upload roxo escuro */
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 1px solid #00FF66 !important;
