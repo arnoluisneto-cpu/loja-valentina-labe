@@ -320,19 +320,21 @@ with str_app.container(border=True):
     str_app.markdown("<div style='margin: 12px 0; border-top: 1px solid #8A2BE2;'></div>", unsafe_allow_html=True)
     
     # SEÇÃO DEDICADA PARA INSERIR NOVO PROMPT EXCLUSIVAMENTE NO FINAL (Ex: 21, 22, 23...)
-    proximo_id_sugerido = len(str_app.session_state.db_estilos) + 1 if str_app.session_state.db_estilos else 1
+    proximo_id_sugerido = (max(str_app.session_state.db_estilos.keys()) + 1) if str_app.session_state.db_estilos else 1
     
     str_app.markdown(f"➕ **INSERIR NOVO PROMPT NO FINAL (PRÓXIMO: Estilo #{proximo_id_sugerido})**")
     
-    novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="novo_titulo_criacao_input")
-    novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=140, key="novo_prompt_criacao_textarea")
+    novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="campo_novo_titulo_valencia_fixo")
+    novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=140, key="campo_novo_prompt_valencia_fixo")
     
     if str_app.button("📥 INSERIR E SALVAR NO FINAL"):
         if not novo_titulo_input or not novo_prompt_input:
             str_app.warning("⚠️ Preencha o Título e o Código do novo prompt.")
         else:
-            # Força o ID a ser exatamente o próximo número após o último existente
-            novo_id = len(str_app.session_state.db_estilos) + 1
+            # Pega o maior ID existente de forma estrita e soma 1 para garantir que nunca sobrescreva o 1
+            max_id = max(str_app.session_state.db_estilos.keys()) if str_app.session_state.db_estilos else 0
+            novo_id = max_id + 1
+            
             str_app.session_state.db_estilos[novo_id] = {
                 "titulo": novo_titulo_input,
                 "prompt": novo_prompt_input
