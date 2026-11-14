@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM NOMECLATURA LIMPA DOS ESTILOS
+# ESTÉTICA DE ALTO LUXO COM IDENTIDADES ÚNICAS PARA CADA ESTILO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -172,10 +172,37 @@ str_app.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Inicializar os 20 estilos com a estrutura completa (Nomes limpos sem hashtag no final)
+# Inicializar os 20 estilos com IDENTIDADES ÚNICAS E EXCLUSIVAS
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
+    
+    # Dicionário com nomes próprios e identidades dedicadas para cada um dos 20 estilos
+    identidades_estilos = {
+        1: ("Estilo 1: Sandália Recordista de Vendas (POV Calçado)", "Foco total na apresentação detalhada de calçados nos pés, destacando conforto, saltos e acabamento premium com CTA agressiva para o carrinho laranja."),
+        2: ("Estilo 2: Unboxing Luxo e Revelação de Estoque", "Abertura dinâmica mostrando caixas exclusivas chegando na Loja da Valentina, gerando escassez e desejo imediato."),
+        3: ("Estilo 3: Pantalona de Alfaiataria (Movimento e Fluidez)", "Demonstração de caimento, tecido de alta qualidade e elegância em cenário corporativo / boutique chique."),
+        4: ("Estilo 4: Tênis Trend Urbano (Look Conforto Diário)", "Foco em lifestyle urbano, calçando o tênis na rua ou calçada moderna, enfatizando versatilidade e maciez."),
+        5: ("Estilo 5: Vestido Midi Casual Chic (Ajuste Perfeito ao Corpo)", "Apresentação em frente ao espelho de corpo inteiro, girando suavemente para exibir o corte e a modelagem impecável."),
+        6: ("Estilo 6: Acessórios & Relógios de Alto Padrão (Close Macro)", "Enquadramento dinâmico focado nos pulsos e mãos, exibindo brilho, fechos e sofisticação dos detalhes."),
+        7: ("Estilo 7: Look do Dia Executivo (Blazer & Sofisticação)", "Estética inspirada em grandes influenciadoras, transmitindo poder, elegância e autoridade no visual."),
+        8: ("Estilo 8: Rasteirinha Verão & Frescor (Estreia de Coleção)", "Tom alegre e descontraído de provador, mostrando leveza para os dias quentes e alta conversão por impulso."),
+        9: ("Estilo 9: Scarpin Clássico de Luxo (Poder e Elegância)", "Câmera focada na postura, altura do salto e imponência do calçado em ambiente sofisticado."),
+        10: ("Estilo 10: Provador Expresso Valentina (Viral TikTok Shop)", "Ritmo acelerado, troca dinâmica e foco em preço promocional relâmpago com chamada forte para o carrinho laranja."),
+        11: ("Estilo 11: Bolsa Transversal & Estilo Urban Chic", "Destaque para o design utilitário e acabamento em couro sintético de alta durabilidade e elegância."),
+        12: ("Estilo 12: Conjunto Tricô Inverno (Textura e Conforto Térmico)", "Foco em macro-texturas de tramas fechadas, toque macio e caimento aconchegante."),
+        13: ("Estilo 13: Look Balada & Noite (Brilho e Ousadia)", "Iluminação dramática de estúdio, destacando peças com acabamentos acetinados ou detalhes brilhantes."),
+        14: ("Estilo 14: Tênis Chunky Platform (Moda Streetwear)", "Foco total no solado robusto, estilo moderno e atitude jovem para o público do TikTok."),
+        15: ("Estilo 15: Sandália de Tiras Finas (Delicadeza & Festa)", "Enquadramento elegante nos pés com close na amarração e delicadeza das tiras."),
+        16: ("Estilo 16: Colete Alfaiataria & Sobreposição Moderna", "Estilo moderno de camadas, demonstrando versatilidade para compor múltiplos looks."),
+        17: ("Estilo 17: Short Saia Envelope (Praticidade e Estilo)", "Movimento fluido e natural, mostrando o conforto e a segurança do design envelope."),
+        18: ("Estilo 18: Pantalona Jeans Premium (Lavagem Exclusiva)", "Foco no cós alto, caimento perfeito nas pernas e resistência do jeans de alfaiataria."),
+        19: ("Estilo 19: Slip On Prático & Confortável (Dia a Dia Ágil)", "Demonstração rápida de calce fácil, ideal para o público que busca agilidade sem perder a elegância."),
+        20: ("Estilo 20: POV Caminhão Preto Gigante do TikTok (Chegada de Estoque)", "Cenário épico externo com caminhão gigante estacionado, portas traseiras abertas repletas de caixas da Loja da Valentina.")
+    }
+
     for i in range(1, 21):
+        titulo_texto, desc_estilo = identidades_estilos[i]
+        
         if i == 20:
             prompt_texto = (
                 "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. "
@@ -191,10 +218,9 @@ if "db_estilos" not in str_app.session_state:
                 "\"Olha, gente... acabou de chegar o estoque aqui na Loja da Valentina. A gente vai trabalhar só com essa sandália, porque ela é recordista de vendas e de muita qualidade! Clica aqui no carrinho laranja embaixo para garantir a sua.\"\n\n"
                 "Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, AI morphing transition, soft blending, product switching, changing product model at the end, sudden jump cuts, rapid unrealistic pacing, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, text captions, generated writing, UI graphics, watermarks, distorted brand, altered design, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI, walking backward, truck moving, doors opening, box disappearing, box vanishing, item morphing into hand."
             )
-            titulo_texto = "Estilo 20: POV Caminhão Preto Gigante Parado com Portas Abertas e Valentina"
         else:
             prompt_texto = (
-                f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. Standard Valentina Showcase. "
+                f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto}. "
                 f"STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus on clear product demonstration, showing details clearly. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations. "
                 f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone. "
                 f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
@@ -203,7 +229,6 @@ if "db_estilos" not in str_app.session_state:
                 f"\"Olha, gente, meninas, olha aqui o que chegou agora na Loja da Valentina! Chegou todo esse estoque exclusivo. A gente vai trabalhar só com essa marca porque está vendendo muito. Clica no carrinho laranja aqui embaixo e garanta a sua, que esse estoque chegou agora e vai estar de promoção!\"\n\n"
                 f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
             )
-            titulo_texto = f"Estilo {i}: Padrão Loja da Valentina"
             
         str_app.session_state.db_estilos[i] = {
             "titulo": titulo_texto,
@@ -242,7 +267,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Com o seletor travado na largura exata do botão salvar)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Com a caixinha de estilo perfeitamente alinhada ao botão Salvar)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -251,7 +276,7 @@ with str_app.container(border=True):
     with col_esq:
         str_app.markdown("🔢 **ESTILO**")
         
-        # Container com largura exata do botão de salvar
+        # Container com largura idêntica ao botão de salvar
         str_app.markdown('<div style="max-width: 200px;">', unsafe_allow_html=True)
         slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed")
         str_app.markdown('</div>', unsafe_allow_html=True)
