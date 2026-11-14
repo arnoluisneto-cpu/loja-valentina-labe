@@ -7,10 +7,10 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM TRAVA DE LARGURA EXATA PARA O SELETOR DE ESTILO
+# ESTÉTICA DE ALTO LUXO COM BANNER IMPACTANTE E SELETOR COMPACTO
 str_app.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
     
     .stApp, .main, div[data-testid="stVerticalBlock"] {
         background-color: #0b0914 !important;
@@ -34,23 +34,32 @@ str_app.markdown("""
         color: #ffffff !important;
     }
     
-    /* Banner do Topo com Nome Grande, Largo, Grosso e Sombra Neon */
+    /* Banner do Topo Reformulado: Maior, Mais Largo, Letras Grossas e Sombra Neon Impactante */
     .hero-banner {
-        background: linear-gradient(135deg, #161026 0%, #22153b 100%);
-        border: 2px solid #8A2BE2;
-        padding: 14px;
-        border-radius: 8px;
+        background: linear-gradient(135deg, #130d22 0%, #1f123d 100%);
+        border: 2.5px solid #00FF66;
+        padding: 18px 20px;
+        border-radius: 10px;
         text-align: center;
-        margin-bottom: 10px;
-        box-shadow: 0px 0px 20px rgba(138, 43, 226, 0.35);
+        margin-bottom: 12px;
+        box-shadow: 0px 0px 25px rgba(0, 255, 102, 0.45);
     }
     .hero-title {
-        font-size: 26px;
+        font-size: 30px;
         font-weight: 900;
-        letter-spacing: 3px;
-        color: #00FF66 !important;
-        text-shadow: 0 0 12px rgba(0, 255, 102, 0.6);
+        letter-spacing: 4px;
+        color: #ffffff !important;
+        text-shadow: 0 0 16px rgba(0, 255, 102, 0.8), 0 0 30px rgba(138, 43, 226, 0.5);
         margin: 0;
+    }
+    .hero-subtitle {
+        color: #00FF66 !important;
+        font-size: 10px;
+        font-weight: 700;
+        margin-top: 5px;
+        margin-bottom: 0;
+        letter-spacing: 2.5px;
+        text-transform: uppercase;
     }
     
     /* Campos gerais e selects */
@@ -63,9 +72,9 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* TRAVA CIRÚRGICA: LIMITA A LARGURA E ALTURA DO SELETOR DE ESTILO PARA FICAR IGUAL AO BOTÃO SALVAR */
+    /* TRAVA CIRÚRGICA: REDUÇÃO MÁXIMA DA LARGURA DO SELETOR DE ESTILO */
     div[data-testid="stSelectbox"] {
-        max-width: 180px !important;
+        max-width: 150px !important;
     }
     
     div[data-baseweb="select"]:has(input[aria-autocomplete="list"]) > div,
@@ -78,7 +87,7 @@ str_app.markdown("""
         max-height: 36px !important;
         padding-top: 2px !important;
         padding-bottom: 2px !important;
-        width: 180px !important;
+        width: 150px !important;
     }
     
     div[data-baseweb="select"] span, div[data-baseweb="select"] svg {
@@ -161,11 +170,11 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 1. TOPO DA APLICAÇÃO
+# 1. TOPO DA APLICAÇÃO (Banner Novo: Impactante, Largo e com Fonte Grossa)
 str_app.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
-        <p style="color: #b0bec5; font-size: 9px; margin-top: 3px; margin-bottom: 0; letter-spacing: 1.5px;">LOJA DA VALENTINA • AUTOMATIZAÇÃO DE LOJAS NO TIKTOK</p>
+        <p class="hero-subtitle">LOJA DA VALENTINA • AUTOMATIZAÇÃO DE LOJAS NO TIKTOK</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -239,7 +248,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Com o seletor travado na largura exata do botão salvar)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Seletor compacto alinhado ao botão)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -249,7 +258,6 @@ with str_app.container(border=True):
         str_app.markdown("🔢 **ESTILO**")
         slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed")
         
-        # Espaçamento milimétrico ajustado
         str_app.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
         
         if str_app.button("💾 Salvar Alteração"):
