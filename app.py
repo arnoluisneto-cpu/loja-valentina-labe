@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO PERFEITO E BANNER IMPACTANTE
+# ESTÉTICA DE ALTO LUXO COM CORREÇÃO DOS DROPDOWNS (SCROLL NO MULTISELECT E LARGURA NO SKIN)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -74,8 +74,31 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* TRAVA CIRÚRGICA: REDUÇÃO RIGOROSA DA LARGURA DO SELETOR DE ESTILO PARA ENCAIXAR COM O BOTÃO */
+    /* CORREÇÃO DO DROPDOWN DO DIRETOR SKIN (Texto inteiro visível e com espaço) */
     div[data-testid="stSelectbox"] {
+        width: 100% !important;
+    }
+    div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+        padding-right: 15px !important;
+    }
+    div[data-testid="stSelectbox"] span {
+        white-space: nowrap !important;
+        overflow: visible !important;
+        text-overflow: clip !important;
+    }
+
+    /* CORREÇÃO DO MENU DE ESTILOS (Adiciona barra de rolagem para aparecer o Estilo 20 completo) */
+    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
+        background-color: #161026 !important;
+        color: #ffffff !important;
+        border: 1.5px solid #00FF66 !important;
+        font-size: 13px !important;
+        max-height: 280px !important;
+        overflow-y: auto !important;
+    }
+    
+    /* TRAVA CIRÚRGICA: LARGURA DO SELETOR DE ESTILO DO EDITOR DE PROMPT */
+    div.row-widget.stSelectbox:has(input[aria-autocomplete="list"]) {
         max-width: 115px !important;
     }
     
@@ -96,13 +119,6 @@ str_app.markdown("""
         color: #000000 !important;
         fill: #000000 !important;
         font-weight: 700 !important;
-    }
-    
-    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
-        background-color: #161026 !important;
-        color: #ffffff !important;
-        border: 1.5px solid #00FF66 !important;
-        font-size: 13px !important;
     }
     
     /* Textarea com rolagem interna travada */
