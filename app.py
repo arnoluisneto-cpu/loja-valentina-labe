@@ -233,7 +233,7 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR COM OS BOTÕES EXATOS: EDITAR, RESTAURAR E EXCLUIR DEFINITIVO
+# GERENCIADOR COM AÇÃO POR SELECTBOX + BOTÃO ÚNICO DE EXECUÇÃO (GARANTIA TOTAL)
 with str_app.expander("⚙️ Gerenciar / Editar / Restaurar / Excluir Estilos", expanded=True):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo na memória.")
@@ -246,31 +246,44 @@ with str_app.expander("⚙️ Gerenciar / Editar / Restaurar / Excluir Estilos",
     else:
         ids_disp = sorted(list(str_app.session_state.db_estilos.keys()))
         
-        estilo_escolhido = str_app.selectbox(
-            "Selecione o Estilo",
-            options=ids_disp,
-            format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
-            key="selectbox_gerenciador_direto"
-        )
-        
+        c_est, c_ac = str_app.columns([2, 2])
+        with c_est:
+            estilo_escolhido = str_app.selectbox(
+                "Estilo",
+                options=ids_disp,
+                format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
+                key="selectbox_gerenciador_estilo"
+            )
+        with c_ac:
+            acao_escolhida = str_app.selectbox(
+                "Ação",
+                options=["✏️ Editar Estilo", "🔄 Restaurar Padrão", "🗑️ Excluir Definitivo"],
+                key="selectbox_gerenciador_acao"
+            )
+            
         str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
         
-        col_b1, col_b2, col_b3 = str_app.columns(3)
-        
-        if col_b1.button("✏️ EDITAR"):
-            str_app.session_state.estilo_ativo_idx = estilo_escolhido
-            str_app.success(f"Estilo #{estilo_escolhido} carregado no Editor abaixo!")
-            str_app.rerun()
-            
-        if col_b2.button("🔄 RESTAURAR"):
-            t_orig, p_orig = obter_identidade_original(estilo_escolhido)
-            str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
-            str_app.success(f"Estilo #{estilo_escolhido} restaurado ao original!")
-            str_app.rerun()
-            
-        if col_b3.button("🗑️ EXCLUIR DEFINITIVO"):
-            del str_app.session_state.db_estilos[estilo_escolhido]
-            str_app.warning(f"Estilo #{estilo_escolhido} excluído permanentemente!")
+        if str_app.button("⚡ EXECUTAR AÇÃO SELECIONADA"):
+            if "Editar" in acao_escolhida:
+                str_app.session_state.estilo_ativo_idx = estilo_escolhido
+                str_app.success(f"Estilo #{estilo_escolhido} carregado no Editor abaixo com sucesso!")
+                str_app.rerun()
+            elif "Restaurar" in acao_escolhida:
+                t_orig, p_orig = obter_identidade_original(estilo_escolhido)
+                str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
+                str_app.success(f"Estilo #{estilo_escolhido} restaurado para o original de fábrica!")
+                str_app.rerun()
+            elif "Excluir" in acao_escolhida:
+                del str_app.session_state.db_estilos[estilo_escolhido]
+                str_app.warning(f"Estilo #{estilo_escolhido} excluído permanentemente!")
+                str_app.rerun()
+                
+        if str_app.button("➕ RECRIAR TODOS OS 20 ESTILOS NA GRADE"):
+            for i in range(1, 21):
+                if i not in str_app.session_state.db_estilos:
+                    t, p = obter_identidade_original(i)
+                    str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
+            str_app.success("Todos os estilos de 1 a 20 restaurados/recriados!")
             str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
@@ -293,7 +306,6 @@ with str_app.container(border=True):
             key="select_editor_direto_id"
         )
         
-        # Atualiza o índice ativo se o usuário mexer manualmente no selectbox do editor
         if slot_num_edit != str_app.session_state.estilo_ativo_idx:
             str_app.session_state.estilo_ativo_idx = slot_num_edit
 
