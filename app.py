@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO ESTÁVEL (Fundo Escuro Puro, Verde Neon e Roxo Valentina)
+# ESTÉTICA DE ALTO LUXO REFINADA (Fundo Escuro Puro, Verde Neon com Sombra e Roxo Valentina)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -34,21 +34,22 @@ str_app.markdown("""
         color: #ffffff !important;
     }
     
-    /* Banner do Topo */
+    /* Banner do Topo com Nome Grande, Largo, Grosso e Sombra Neon */
     .hero-banner {
         background: linear-gradient(135deg, #161026 0%, #22153b 100%);
-        border: 1.5px solid #8A2BE2;
-        padding: 10px;
+        border: 2px solid #8A2BE2;
+        padding: 14px;
         border-radius: 8px;
         text-align: center;
-        margin-bottom: 12px;
-        box-shadow: 0px 0px 15px rgba(138, 43, 226, 0.25);
+        margin-bottom: 10px;
+        box-shadow: 0px 0px 20px rgba(138, 43, 226, 0.35);
     }
     .hero-title {
-        font-size: 20px;
+        font-size: 26px;
         font-weight: 900;
-        letter-spacing: 2px;
+        letter-spacing: 3px;
         color: #00FF66 !important;
+        text-shadow: 0 0 12px rgba(0, 255, 102, 0.6);
         margin: 0;
     }
     
@@ -126,11 +127,11 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 1. TOPO DA APLICAÇÃO
+# 1. TOPO DA APLICAÇÃO (Nome Destacado, Largo, Grosso e com Sombra)
 str_app.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
-        <p style="color: #b0bec5; font-size: 9px; margin-top: 2px; margin-bottom: 0; letter-spacing: 1.5px;">LOJA DA VALENTINA • AUTOMATIZAÇÃO DE LOJAS NO TIKTOK</p>
+        <p style="color: #b0bec5; font-size: 9px; margin-top: 3px; margin-bottom: 0; letter-spacing: 1.5px;">LOJA DA VALENTINA • AUTOMATIZAÇÃO DE LOJAS NO TIKTOK</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -172,34 +173,32 @@ if "db_estilos" not in str_app.session_state:
             "prompt": prompt_texto
         }
 
-# 2. SEÇÃO 1: PAINEL DE CONTROLE (Com containers nativos seguros do Streamlit)
-str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:6px;'>⚡ PAINEL DE CONTROLE RÁPIDO</p>", unsafe_allow_html=True)
+# 2. SEÇÃO 1: PAINEL DE CONTROLE RÁPIDO (Cards Compactos)
+str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>⚡ PAINEL DE CONTROLE RÁPIDO</p>", unsafe_allow_html=True)
 
 c_grid1, c_grid2, c_grid3 = str_app.columns(3)
 
 with c_grid1:
     with str_app.container(border=True):
         str_app.markdown("🎬 **DIRETOR SKIN**")
-        str_app.markdown("<span style='color: #b0bec5; font-size: 11px;'>BOY (Elite)</span>", unsafe_allow_html=True)
+        str_app.markdown("<span style='color: #b0bec5; font-size: 10px;'>BOY (Elite)</span>", unsafe_allow_html=True)
 
 with c_grid2:
     with str_app.container(border=True):
         str_app.markdown("📱 **PROPORÇÃO**")
-        str_app.markdown("<span style='color: #b0bec5; font-size: 11px;'>9:16 Vertical</span>", unsafe_allow_html=True)
+        str_app.markdown("<span style='color: #b0bec5; font-size: 10px;'>9:16 Vertical</span>", unsafe_allow_html=True)
 
 with c_grid3:
     with str_app.container(border=True):
         str_app.markdown("⚡ **STATUS ENGINE**")
-        str_app.markdown("<span style='color: #00FF66; font-size: 11px;'>Ativo & Sincronizado</span>", unsafe_allow_html=True)
+        str_app.markdown("<span style='color: #00FF66; font-size: 10px;'>Ativo & Sincronizado</span>", unsafe_allow_html=True)
 
-# Selectboxes funcionais logo abaixo dos cards
 col_s1, col_s2 = str_app.columns(2)
 with col_s1:
     diretor_skin = str_app.selectbox("Skin", ["BOY (Elite Director)", "UGC LIFESTYLE"], label_visibility="collapsed")
 with col_s2:
     proporcao = str_app.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"], label_visibility="collapsed")
 
-# Seleção de estilos para a grade diária
 lista_titulos_geral = [str_app.session_state.db_estilos[i]["titulo"] for i in str_app.session_state.db_estilos]
 estilos_selecionados = str_app.multiselect(
     "🎬 SELECIONAR ESTILOS PARA GRADE DIÁRIA",
@@ -207,28 +206,31 @@ estilos_selecionados = str_app.multiselect(
     default=[str_app.session_state.db_estilos[20]["titulo"]]
 )
 
-str_app.markdown("---")
+str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT COMPACTO
-str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:6px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Lado a Lado: Controles à esquerda, Código do Prompt à direita)
+str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
-c_num, c_txt = str_app.columns([1, 3])
-with c_num:
-    slot_num_edit = str_app.selectbox("Nº", options=list(str_app.session_state.db_estilos.keys()))
-with c_txt:
-    str_app.markdown(f"<p style='margin-top: 22px; font-size: 11px; font-weight:600; color: #00FF66;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
+col_editor_esq, col_editor_dir = str_app.columns([1, 2])
 
-prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
-novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}")
+with col_editor_esq:
+    slot_num_edit = str_app.selectbox("Número do Estilo", options=list(str_app.session_state.db_estilos.keys()))
+    str_app.markdown(f"<p style='font-size: 10px; font-weight:600; color: #00FF66; margin: 4px 0;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
+    
+    if str_app.button("💾 Salvar Estilo"):
+        # O valor será pego da caixinha ao lado através do session_state
+        current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
+        str_app.session_state.db_estilos[slot_num_edit]["prompt"] = current_val
+        str_app.success(f"Estilo #{slot_num_edit} salvo!")
 
-if str_app.button("💾 Salvar Alteração do Estilo"):
-    str_app.session_state.db_estilos[slot_num_edit]["prompt"] = novo_prompt_digitado
-    str_app.success(f"Estilo #{slot_num_edit} salvo com sucesso!")
+with col_editor_dir:
+    prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
+    novo_prompt_digitado = str_app.text_area("Código do Prompt", value=prompt_ativo, height=130, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
 
-str_app.markdown("---")
+str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: ENTRADAS DO PRODUTO EM CARDS SEGUROS
-str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:6px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS
+str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 col_input1, col_input2 = str_app.columns(2)
 
@@ -243,7 +245,7 @@ with col_input2:
 
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
 
-str_app.markdown("---")
+str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
 # 5. BOTÃO DE GERAÇÃO FINAL
 if str_app.button("🚀 GERAR PROMPTS DA GRADE DIÁRIA"):
