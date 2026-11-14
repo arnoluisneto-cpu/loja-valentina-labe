@@ -208,24 +208,23 @@ estilos_selecionados = str_app.multiselect(
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Lado a Lado: Controles à esquerda, Código do Prompt à direita)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Lado a Lado: Número e Salvar à esquerda, Caixa do Prompt à direita)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
-col_editor_esq, col_editor_dir = str_app.columns([1, 2])
+col_esq, col_dir = str_app.columns([1, 2])
 
-with col_editor_esq:
-    slot_num_edit = str_app.selectbox("Número do Estilo", options=list(str_app.session_state.db_estilos.keys()))
+with col_esq:
+    slot_num_edit = str_app.selectbox("Nº", options=list(str_app.session_state.db_estilos.keys()))
     str_app.markdown(f"<p style='font-size: 10px; font-weight:600; color: #00FF66; margin: 4px 0;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
     
-    if str_app.button("💾 Salvar Estilo"):
-        # O valor será pego da caixinha ao lado através do session_state
+    if str_app.button("💾 Salvar Alteração do Estilo"):
         current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
         str_app.session_state.db_estilos[slot_num_edit]["prompt"] = current_val
         str_app.success(f"Estilo #{slot_num_edit} salvo!")
 
-with col_editor_dir:
+with col_dir:
     prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
-    novo_prompt_digitado = str_app.text_area("Código do Prompt", value=prompt_ativo, height=130, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
+    novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=130, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
