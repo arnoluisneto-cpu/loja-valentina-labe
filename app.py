@@ -3,7 +3,7 @@ from datetime import datetime
 import time
 
 str_app.set_page_config(
-    page_title="VALENTINA TIKTOK ",
+    page_title=" APP-VALENTINA ",
     page_icon="💜",
     layout="centered"
 )
