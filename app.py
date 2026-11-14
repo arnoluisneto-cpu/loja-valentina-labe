@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM EDITOR DE PROMPT LIMPO E SEM TEXTO DUPLICADO
+# ESTÉTICA DE ALTO LUXO COM OS 20 ESTILOS VIRAIS MAIS POTENTES DO TIKTOK SHOP
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -172,31 +172,31 @@ str_app.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Inicializar os 20 estilos com IDENTIDADES ÚNICAS E EXCLUSIVAS
+# Inicializar os 20 estilos com os padrões mais modernos, virais e de elite do TikTok Shop
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     
     identidades_estilos = {
-        1: ("Estilo 1: Sandália Recordista de Vendas", "Foco total na apresentação detalhada de calçados nos pés, destacando conforto, saltos e acabamento premium com CTA agressiva para o carrinho laranja."),
-        2: ("Estilo 2: Unboxing Luxo e Revelação de Estoque", "Abertura dinâmica mostrando caixas exclusivas chegando na Loja da Valentina, gerando escassez e desejo imediato."),
-        3: ("Estilo 3: Pantalona de Alfaiataria Fluida", "Demonstração de caimento, tecido de alta qualidade e elegância em cenário corporativo / boutique chique."),
-        4: ("Estilo 4: Tênis Trend Urbano Streetwear", "Foco em lifestyle urbano, calçando o tênis na rua ou calçada moderna, enfatizando versatilidade e maciez."),
-        5: ("Estilo 5: Vestido Midi Casual Chic", "Apresentação em frente ao espelho de corpo inteiro, girando suavemente para exibir o corte e a modelagem impecável."),
-        6: ("Estilo 6: Acessórios & Relógios de Luxo (Macro)", "Enquadramento dinâmico focado nos pulsos e mãos, exibindo brilho, fechos e sofisticação dos detalhes."),
-        7: ("Estilo 7: Look do Dia Executivo Valentina", "Estética inspirada em grandes influenciadoras, transmitindo poder, elegância e autoridade no visual."),
-        8: ("Estilo 8: Rasteirinha Verão & Frescor", "Tom alegre e descontraído de provador, mostrando leveza para os dias quentes e alta conversão por impulso."),
-        9: ("Estilo 9: Scarpin Clássico Imponente", "Câmera focada na postura, altura do salto e imponência do calçado em ambiente sofisticado."),
-        10: ("Estilo 10: Provador Expresso TikTok Shop", "Ritmo acelerado, troca dinâmica e foco em preço promocional relâmpago com chamada forte para o carrinho laranja."),
-        11: ("Estilo 11: Bolsa Transversal Urban Chic", "Destaque para o design utilitário e acabamento em couro sintético de alta durabilidade e elegância."),
-        12: ("Estilo 12: Conjunto Tricô Aconchegante", "Foco em macro-texturas de tramas fechadas, toque macio e caimento aconchegante para dias amenos."),
-        13: ("Estilo 13: Look Noite & Balada Acetinado", "Iluminação dramática de estúdio, destacando peças com acabamentos acetinados ou detalhes brilhantes."),
-        14: ("Estilo 14: Tênis Chunky Platform Style", "Foco total no solado robusto, estilo moderno e atitude jovem para o público do TikTok."),
-        15: ("Estilo 15: Sandália de Tiras Finas Delicate", "Enquadramento elegante nos pés com close na amarração e delicadeza das tiras."),
-        16: ("Estilo 16: Colete Alfaiataria & Sobreposição", "Estilo moderno de camadas, demonstrando versatilidade para compor múltiplos looks."),
-        17: ("Estilo 17: Short Saia Envelope Prático", "Movimento fluido e natural, mostrando o conforto e a segurança do design envelope."),
-        18: ("Estilo 18: Pantalona Jeans Premium Lavagem Exclusiva", "Foco no cós alto, caimento perfeito nas pernas e resistência do jeans de alfaiataria."),
-        19: ("Estilo 19: Slip On Prático Calce Fácil", "Demonstração rápida de calce ágil, ideal para o público que busca praticidade sem perder a elegância."),
-        20: ("Estilo 20: POV Caminhão Preto Gigante Valentina", "Cenário épico externo com caminhão gigante estacionado, portas traseiras abertas repletas de caixas da Loja da Valentina.")
+        1: ("Estilo 1: POV Mão & Rasgando o Plástico de Proteção (ASMR)", "Foco tátil em primeira pessoa (POV) abrindo a embalagem e rasgando o plástico de proteção da peça com extrema nitidez e som imersivo."),
+        2: ("Estilo 2: POV Corpo Inteiro Caminhando na Calçada Urbana", "Câmera em movimento fluido acompanhando a modelo de corpo inteiro (head-to-toe) ao ar livre sob luz natural."),
+        3: ("Estilo 3: POV Sentada no Provador de Luxo (Close Íntimo)", "Enquadramento elegante com a modelo sentada em um provador sofisticado, detalhando o caimento e o tecido."),
+        4: ("Estilo 4: POV Giro 360 Graus em Frente ao Espelho", "Rotação e giros fluidos em frente ao espelho iluminado da boutique, exibindo frente, costas e caimento perfeito."),
+        5: ("Estilo 5: POV Sem Fala com Trilha Viral & Transição Rápida", "Estilo puramente visual de altíssima retenção, sem diálogos, focado em cortes dinâmicos sincronizados com a batida da música."),
+        6: ("Estilo 6: POV Close Macro em Pé com Foco nos Calçados", "Câmera baixa apontada diretamente para os pés e solados, destacando o conforto, o design e a altura do salto."),
+        7: ("Estilo 7: Look do Dia Executivo com Blazer (Estilo Virgínia)", "Estética corporativa de alto padrão transmitindo autoridade, poder e elegância profissional com semijoias."),
+        8: ("Estilo 8: Rasteirinha Verão & Frescor na Praça Externa", "Cenário ensolarado e vibrante, mostrando leveza e praticidade para calçados de dias quentes."),
+        9: ("Estilo 9: Scarpin Clássico Imponente em Estúdio de Cinema", "Iluminação profissional de estúdio de cinema focada na imponência, postura ereta e sofisticação máxima do salto alto."),
+        10: ("Estilo 10: Provador Expresso de Oferta Relâmpago", "Ritmo acelerado, troca dinâmica e foco em conversão imediata de estoque limitado e preço promocional."),
+        11: ("Estilo 11: Bolsa Transversal & Movimento Urbano", "Destaque dinâmico para a utilidade, alças e acabamento da bolsa em trânsito pela cidade."),
+        12: ("Estilo 12: Conjunto Tricô Aconchegante (Macro Texturas)", "Foco em macro-texturas de tramas fechadas e toque suave para dias amenos."),
+        13: ("Estilo 13: Look Noite & Balada com Luz Dramática", "Iluminação noturna sofisticada e moderna, destacando peças acetinadas e brilhantes sob reflexos de neon."),
+        14: ("Estilo 14: Tênis Chunky Platform & Atitude Streetwear", "Foco em solados robustos, estilo urbano moderno e atitude jovem para o público do TikTok."),
+        15: ("Estilo 15: Sandália de Tiras Finas Delicate (Close de Festa)", "Detalhes delicados das tiras e amarrações nos pés em enquadramento refinado para eventos sociais."),
+        16: ("Estilo 16: Colete Alfaiataria & Camadas Elegantes", "Estilo moderno de sobreposições, demonstrando sofisticação para compor looks versáteis."),
+        17: ("Estilo 17: Short Saia Envelope em Movimento Fluido", "Fluidez, leveza e segurança no design envelope com passos ritmados e naturais."),
+        18: ("Estilo 18: Pantalona Jeans Premium (Cós Alto & Elegância)", "Caimento impecável nas pernas e resistência do jeans de alfaiataria em plano aberto."),
+        19: ("Estilo 19: Slip On Prático (Calce Fácil Ágil)", "Demonstração rápida de calce ágil, ideal para o público que busca praticidade sem perder a elegância."),
+        20: ("Estilo 20: POV Caminhão Preto Gigante do TikTok (Estoque Chegando)", "Cenário épico externo com caminhão gigante estacionado e portas abertas repletas de caixas da Loja da Valentina.")
     }
 
     for i in range(1, 21):
@@ -219,7 +219,7 @@ if "db_estilos" not in str_app.session_state:
             )
         else:
             prompt_texto = (
-                f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto}. "
+                f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
                 f"STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus on clear product demonstration, showing details clearly. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations. "
                 f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone. "
                 f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
@@ -266,7 +266,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Sem o texto duplicado embaixo da caixinha)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Caixinha limpa e perfeitamente alinhada ao botão Salvar)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
