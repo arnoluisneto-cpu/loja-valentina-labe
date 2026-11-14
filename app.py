@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO MILIMÉTRICO (Fundo Escuro Puro, Verde Neon e Roxo Valentina)
+# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO MILIMÉTRICO REFINADO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -209,7 +209,7 @@ estilos_selecionados = str_app.multiselect(
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Perfeitamente nivelado lado a lado)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 col_esq, col_dir = str_app.columns([1, 2])
@@ -217,7 +217,9 @@ col_esq, col_dir = str_app.columns([1, 2])
 with col_esq:
     slot_num_edit = str_app.selectbox("Nº", options=list(str_app.session_state.db_estilos.keys()))
     str_app.markdown(f"<p style='font-size: 10px; font-weight:600; color: #00FF66; margin: 4px 0;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
-    str_app.markdown("<div style='height: 48px;'></div>", unsafe_allow_html=True)
+    
+    # Espaçamento estético calibrado para nivelar exatamente com a base da caixa de prompt ao lado
+    str_app.markdown("<div style='height: 42px;'></div>", unsafe_allow_html=True)
     
     if str_app.button("💾 Salvar Alteração"):
         current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
@@ -225,12 +227,14 @@ with col_esq:
         str_app.success(f"Estilo #{slot_num_edit} salvo!")
 
 with col_dir:
+    # Espaçador superior invisível para nivelar o topo exato da caixa com o topo do selectbox da esquerda
+    str_app.markdown("<div style='height: 22px;'></div>", unsafe_allow_html=True)
     prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
-    novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}")
+    novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Alinhamento milimétrico ajustado)
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 col_input1, col_input2 = str_app.columns(2)
@@ -243,19 +247,17 @@ with col_input1:
     foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key="prod_1", label_visibility="collapsed")
     
 with col_input2:
-    # Ajuste fino exato para alinhar com o topo do input "Nome Produto / SKU" da esquerda
     str_app.markdown("<div style='height: 2px;'></div>", unsafe_allow_html=True)
     str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px;'>Foto Modelo (1:1)</p>", unsafe_allow_html=True)
     foto_modelo = str_app.file_uploader("Foto Modelo (1:1)", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
     
-    # Espaçamento calibrado para alinhar perfeitamente com o uploader da Foto Produto da esquerda
     str_app.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
     str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px;'>Foto Peça (Pixel Lock)</p>", unsafe_allow_html=True)
     foto_peca = str_app.file_uploader("Foto Peça (Pixel Lock)", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
-# 5. BOTÃO DE GERAÇÃO FINAL (Posicionado perfeitamente no centro entre as colunas)
+# 5. BOTÃO DE GERAÇÃO FINAL (Centralizado)
 col_btn1, col_btn_centro, col_btn2 = str_app.columns([1, 2, 1])
 with col_btn_centro:
     gerar_clicado = str_app.button("🚀 GERAR PROMPTS DA GRADE DIÁRIA")
