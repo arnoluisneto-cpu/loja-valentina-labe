@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO PERFEITO (Fundo Escuro Puro, Verde Neon e Roxo Valentina)
+# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO MILIMÉTRICO (Fundo Escuro Puro, Verde Neon e Roxo Valentina)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -85,7 +85,7 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* Uploaders compactos alinhados */
+    /* Uploaders compactos */
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 1px solid #00FF66 !important;
@@ -209,7 +209,7 @@ estilos_selecionados = str_app.multiselect(
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Perfeitamente alinhado lado a lado)
+# 3. SEÇÃO 2: EDITOR DE PROMPT
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 col_esq, col_dir = str_app.columns([1, 2])
@@ -217,8 +217,6 @@ col_esq, col_dir = str_app.columns([1, 2])
 with col_esq:
     slot_num_edit = str_app.selectbox("Nº", options=list(str_app.session_state.db_estilos.keys()))
     str_app.markdown(f"<p style='font-size: 10px; font-weight:600; color: #00FF66; margin: 4px 0;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
-    
-    # Espaçamento estético para nivelar perfeitamente com a caixa ao lado
     str_app.markdown("<div style='height: 48px;'></div>", unsafe_allow_html=True)
     
     if str_app.button("💾 Salvar Alteração"):
@@ -232,7 +230,7 @@ with col_dir:
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Perfeitamente alinhados em duas colunas simétricas)
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Alinhamento milimétrico ajustado)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 col_input1, col_input2 = str_app.columns(2)
@@ -245,20 +243,26 @@ with col_input1:
     foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key="prod_1", label_visibility="collapsed")
     
 with col_input2:
-    # Espaçadores invisíveis para alinhar perfeitamente com os inputs da coluna da esquerda
-    str_app.markdown("<div style='height: 24px;'></div>", unsafe_allow_html=True)
+    # Ajuste fino exato para alinhar com o topo do input "Nome Produto / SKU" da esquerda
+    str_app.markdown("<div style='height: 2px;'></div>", unsafe_allow_html=True)
     str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px;'>Foto Modelo (1:1)</p>", unsafe_allow_html=True)
     foto_modelo = str_app.file_uploader("Foto Modelo (1:1)", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
     
+    # Espaçamento calibrado para alinhar perfeitamente com o uploader da Foto Produto da esquerda
+    str_app.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
     str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px;'>Foto Peça (Pixel Lock)</p>", unsafe_allow_html=True)
     foto_peca = str_app.file_uploader("Foto Peça (Pixel Lock)", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
 
+str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
+
+# 5. BOTÃO DE GERAÇÃO FINAL (Posicionado perfeitamente no centro entre as colunas)
+col_btn1, col_btn_centro, col_btn2 = str_app.columns([1, 2, 1])
+with col_btn_centro:
+    gerar_clicado = str_app.button("🚀 GERAR PROMPTS DA GRADE DIÁRIA")
+
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
 
-str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
-
-# 5. BOTÃO DE GERAÇÃO FINAL
-if str_app.button("🚀 GERAR PROMPTS DA GRADE DIÁRIA"):
+if gerar_clicado:
     if not produto_nome:
         str_app.warning("⚠️ Informe o nome do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
