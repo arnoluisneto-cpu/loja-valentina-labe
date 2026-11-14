@@ -226,10 +226,6 @@ if "estilo_ativo_idx" not in str_app.session_state:
 if "acesso_liberado" not in str_app.session_state:
     str_app.session_state.acesso_liberado = False
 
-# Controle de limpeza inicial dos campos de edição para abrirem vazios
-if "ultimo_estilo_editado" not in str_app.session_state:
-    str_app.session_state.ultimo_estilo_editado = None
-
 def limpar_apenas_formulario():
     str_app.session_state.form_version += 1
     for k in ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos", "m_1", "prod_1", "p_1"]:
@@ -366,7 +362,7 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Res
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# MODO DE OPERAÇÃO UNIFICADO (EDITAR OU INSERIR NO FINAL - ABERTURA LIMPA/VAZIA)
+# MODO DE OPERAÇÃO UNIFICADO (EDITAR OU INSERIR NO FINAL)
 todos_ids_existentes = list(str_app.session_state.db_estilos.keys())
 proximo_id_sugerido = (max(todos_ids_existentes) + 1) if todos_ids_existentes else 1
 
@@ -392,11 +388,13 @@ with str_app.container(border=True):
             
             if slot_num_edit != str_app.session_state.estilo_ativo_idx:
                 str_app.session_state.estilo_ativo_idx = slot_num_edit
-                str_app.session_state.ultimo_estilo_editado = slot_num_edit
 
-            # Campos abrem limpos para digitação sem texto pré-carregado
-            novo_titulo_editado = str_app.text_input("Tema / Título do Estilo", value="", placeholder="Digite o novo título ou tema...", key=f"titulo_input_{slot_num_edit}")
-            texto_editado_usuario = str_app.text_area("Código do Prompt", value="", placeholder="Digite ou cole o novo código do prompt aqui...", height=160, key=f"prompt_textarea_{slot_num_edit}")
+            # Puxa automaticamente os textos salvos para as caixinhas para que você possa editá-los
+            titulo_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["titulo"]
+            prompt_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
+
+            novo_titulo_editado = str_app.text_input("Tema / Título do Estilo", value=titulo_atual_estilo, key=f"titulo_input_{slot_num_edit}")
+            texto_editado_usuario = str_app.text_area("Código do Prompt", value=prompt_atual_estilo, height=160, key=f"prompt_textarea_{slot_num_edit}")
             
             str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
             
