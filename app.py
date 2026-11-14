@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO REFINADA (Fundo Escuro Puro, Verde Neon com Sombra e Roxo Valentina)
+# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO PERFEITO (Fundo Escuro Puro, Verde Neon e Roxo Valentina)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -85,12 +85,13 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* Uploaders compactos */
+    /* Uploaders compactos alinhados */
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 1px solid #00FF66 !important;
         border-radius: 6px !important;
         padding: 4px !important;
+        margin-bottom: 2px !important;
     }
     div[data-testid="stFileUploader"] section { background-color: #161026 !important; padding: 4px !important; }
     div[data-testid="stFileUploader"] span, div[data-testid="stFileUploader"] small, div[data-testid="stFileUploader"] p {
@@ -127,7 +128,7 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 1. TOPO DA APLICAÇÃO (Nome Destacado, Largo, Grosso e com Sombra)
+# 1. TOPO DA APLICAÇÃO
 str_app.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
@@ -173,7 +174,7 @@ if "db_estilos" not in str_app.session_state:
             "prompt": prompt_texto
         }
 
-# 2. SEÇÃO 1: PAINEL DE CONTROLE RÁPIDO (Cards Compactos)
+# 2. SEÇÃO 1: PAINEL DE CONTROLE RÁPIDO
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>⚡ PAINEL DE CONTROLE RÁPIDO</p>", unsafe_allow_html=True)
 
 c_grid1, c_grid2, c_grid3 = str_app.columns(3)
@@ -208,7 +209,7 @@ estilos_selecionados = str_app.multiselect(
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Lado a Lado: Número e Salvar à esquerda, Caixa do Prompt à direita)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Perfeitamente alinhado lado a lado)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 col_esq, col_dir = str_app.columns([1, 2])
@@ -217,18 +218,21 @@ with col_esq:
     slot_num_edit = str_app.selectbox("Nº", options=list(str_app.session_state.db_estilos.keys()))
     str_app.markdown(f"<p style='font-size: 10px; font-weight:600; color: #00FF66; margin: 4px 0;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
     
-    if str_app.button("💾 Salvar Alteração do Estilo"):
+    # Espaçamento estético para nivelar perfeitamente com a caixa ao lado
+    str_app.markdown("<div style='height: 48px;'></div>", unsafe_allow_html=True)
+    
+    if str_app.button("💾 Salvar Alteração"):
         current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
         str_app.session_state.db_estilos[slot_num_edit]["prompt"] = current_val
         str_app.success(f"Estilo #{slot_num_edit} salvo!")
 
 with col_dir:
     prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
-    novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=130, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
+    novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}")
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Perfeitamente alinhados em duas colunas simétricas)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 col_input1, col_input2 = str_app.columns(2)
@@ -236,11 +240,18 @@ col_input1, col_input2 = str_app.columns(2)
 with col_input1:
     produto_nome = str_app.text_input("NOME PRODUTO / SKU", placeholder="Ex: Sandália Gigil...")
     tipo_produto = str_app.selectbox("CATEGORIA", ["Calçado / Tênis / Sandália", "Acessório", "Vestuário", "Bolsa", "Outros"])
-    foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key="prod_1")
+    
+    str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px;'>Foto Produto</p>", unsafe_allow_html=True)
+    foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key="prod_1", label_visibility="collapsed")
     
 with col_input2:
-    foto_modelo = str_app.file_uploader("Foto Modelo (1:1)", type=["jpg", "jpeg", "png"], key="m_1")
-    foto_peca = str_app.file_uploader("Foto Peça (Pixel Lock)", type=["jpg", "jpeg", "png"], key="p_1")
+    # Espaçadores invisíveis para alinhar perfeitamente com os inputs da coluna da esquerda
+    str_app.markdown("<div style='height: 24px;'></div>", unsafe_allow_html=True)
+    str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px;'>Foto Modelo (1:1)</p>", unsafe_allow_html=True)
+    foto_modelo = str_app.file_uploader("Foto Modelo (1:1)", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
+    
+    str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px;'>Foto Peça (Pixel Lock)</p>", unsafe_allow_html=True)
+    foto_peca = str_app.file_uploader("Foto Peça (Pixel Lock)", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
 
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
 
