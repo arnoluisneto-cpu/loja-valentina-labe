@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM O BOTÃO DE RESET FUNCIONAL E BLINDADO
+# ESTÉTICA DE ALTO LUXO COM O RESET 100% FUNCIONAL
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -164,11 +164,16 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# FUNÇÃO DE CALLBACK PARA LIMPAR O APP SEM REINICIAR A PÁGINA EXTERNAMENTE
-def reiniciar_aplicativo():
-    for key in list(str_app.session_state.keys()):
-        if key != "db_estilos":
-            del str_app.session_state[key]
+# GERENCIAMENTO DE ESTADO PARA LIMPEZA TOTAL DOS INPUTS
+if "trigger_limpeza" not in str_app.session_state:
+    str_app.session_state.trigger_limpeza = False
+
+def acionar_limpeza():
+    # Limpa valores de texto e seleções da sessão
+    keys_para_limpar = ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos"]
+    for k in keys_para_limpar:
+        if k in str_app.session_state:
+            del str_app.session_state[k]
 
 # 1. TOPO DA APLICAÇÃO (Banner Impactante)
 str_app.markdown("""
@@ -177,11 +182,6 @@ str_app.markdown("""
         <p class="hero-subtitle">LOJA DA VALENTINA • AUTOMATIZAÇÃO DE LOJAS NO TIKTOK</p>
     </div>
 """, unsafe_allow_html=True)
-
-# BOTÃO DE REINICIAR / LIMPAR CAMPOS COM CALLBACK DIRETO
-col_res1, col_res2, col_res3 = str_app.columns([2, 2, 2])
-with col_res2:
-    str_app.button("🔄 Limpar Tudo / Novo Produto", on_click=reiniciar_aplicativo)
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
@@ -338,10 +338,14 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
-# 5. BOTÃO DE GERAÇÃO FINAL (Centralizado)
-col_btn1, col_btn_centro, col_btn2 = str_app.columns([1, 2, 1])
-with col_btn_centro:
-    gerar_clicado = str_app.button("🚀 GERAR PROMPTS DA GRADE DIÁRIA")
+# 5. BOTÕES DE AÇÃO FINAL LADO A LADO (Gerar Prompts e Limpar Tudo)
+col_b1, col_b2 = str_app.columns(2)
+
+with col_b1:
+    gerar_clicado = str_app.button("🚀 GERAR PROMPTS")
+
+with col_b2:
+    btn_limpar = str_app.button("🔄 LIMPAR TUDO", on_click=acionar_limpeza)
 
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
 
