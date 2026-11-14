@@ -8,7 +8,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO (BLINDADA E POLIDA)
+# ESTÉTICA DE ALTO LUXO (BLINDADA E POLIDA - FUNDO DE UPLOAD CORRIGIDO PARA ROXO)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -19,7 +19,8 @@ str_app.markdown("""
         font-family: 'Inter', sans-serif !important;
     }
     
-    .stButton>button, div[data-testid="stFileUploader"] button {
+    /* Botão de Upload verde */
+    div[data-testid="stFileUploader"] button {
         background-color: #00FF66 !important;
         color: #000000 !important;
         font-weight: 700 !important;
@@ -29,7 +30,37 @@ str_app.markdown("""
         font-size: 13px !important;
         width: 100% !important;
     }
-    .stButton>button:hover, div[data-testid="stFileUploader"] button:hover {
+    div[data-testid="stFileUploader"] button:hover {
+        background-color: #00cc52 !important;
+        color: #ffffff !important;
+    }
+    
+    /* REMOÇÃO DO FUNDO BRANCO DO FILE UPLOADER (DEIXANDO ROXO ESCURO) */
+    div[data-testid="stFileUploader"] {
+        background-color: #161026 !important;
+        border: 1px solid #00FF66 !important;
+        border-radius: 8px !important;
+        padding: 10px !important;
+    }
+    div[data-testid="stFileUploader"] section {
+        background-color: #161026 !important;
+        border: none !important;
+    }
+    div[data-testid="stFileUploader"] small, div[data-testid="stFileUploader"] span, div[data-testid="stFileUploader"] div {
+        color: #cccccc !important;
+    }
+    
+    .stButton>button {
+        background-color: #00FF66 !important;
+        color: #000000 !important;
+        font-weight: 700 !important;
+        border-radius: 6px !important;
+        border: none !important;
+        padding: 6px 12px !important;
+        font-size: 13px !important;
+        width: 100% !important;
+    }
+    .stButton>button:hover {
         background-color: #00cc52 !important;
         color: #ffffff !important;
     }
