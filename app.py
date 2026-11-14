@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM IDENTIDADES ÚNICAS PARA CADA ESTILO
+# ESTÉTICA DE ALTO LUXO COM IDENTIDADES ÚNICAS E EXCLUSIVAS PARA CADA ESTILO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -176,28 +176,28 @@ str_app.markdown("""
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     
-    # Dicionário com nomes próprios e identidades dedicadas para cada um dos 20 estilos
+    # Dicionario oficial com nomes próprios e identidades dedicadas para cada um dos 20 estilos
     identidades_estilos = {
-        1: ("Estilo 1: Sandália Recordista de Vendas (POV Calçado)", "Foco total na apresentação detalhada de calçados nos pés, destacando conforto, saltos e acabamento premium com CTA agressiva para o carrinho laranja."),
+        1: ("Estilo 1: Sandália Recordista de Vendas", "Foco total na apresentação detalhada de calçados nos pés, destacando conforto, saltos e acabamento premium com CTA agressiva para o carrinho laranja."),
         2: ("Estilo 2: Unboxing Luxo e Revelação de Estoque", "Abertura dinâmica mostrando caixas exclusivas chegando na Loja da Valentina, gerando escassez e desejo imediato."),
-        3: ("Estilo 3: Pantalona de Alfaiataria (Movimento e Fluidez)", "Demonstração de caimento, tecido de alta qualidade e elegância em cenário corporativo / boutique chique."),
-        4: ("Estilo 4: Tênis Trend Urbano (Look Conforto Diário)", "Foco em lifestyle urbano, calçando o tênis na rua ou calçada moderna, enfatizando versatilidade e maciez."),
-        5: ("Estilo 5: Vestido Midi Casual Chic (Ajuste Perfeito ao Corpo)", "Apresentação em frente ao espelho de corpo inteiro, girando suavemente para exibir o corte e a modelagem impecável."),
-        6: ("Estilo 6: Acessórios & Relógios de Alto Padrão (Close Macro)", "Enquadramento dinâmico focado nos pulsos e mãos, exibindo brilho, fechos e sofisticação dos detalhes."),
-        7: ("Estilo 7: Look do Dia Executivo (Blazer & Sofisticação)", "Estética inspirada em grandes influenciadoras, transmitindo poder, elegância e autoridade no visual."),
-        8: ("Estilo 8: Rasteirinha Verão & Frescor (Estreia de Coleção)", "Tom alegre e descontraído de provador, mostrando leveza para os dias quentes e alta conversão por impulso."),
-        9: ("Estilo 9: Scarpin Clássico de Luxo (Poder e Elegância)", "Câmera focada na postura, altura do salto e imponência do calçado em ambiente sofisticado."),
-        10: ("Estilo 10: Provador Expresso Valentina (Viral TikTok Shop)", "Ritmo acelerado, troca dinâmica e foco em preço promocional relâmpago com chamada forte para o carrinho laranja."),
-        11: ("Estilo 11: Bolsa Transversal & Estilo Urban Chic", "Destaque para o design utilitário e acabamento em couro sintético de alta durabilidade e elegância."),
-        12: ("Estilo 12: Conjunto Tricô Inverno (Textura e Conforto Térmico)", "Foco em macro-texturas de tramas fechadas, toque macio e caimento aconchegante."),
-        13: ("Estilo 13: Look Balada & Noite (Brilho e Ousadia)", "Iluminação dramática de estúdio, destacando peças com acabamentos acetinados ou detalhes brilhantes."),
-        14: ("Estilo 14: Tênis Chunky Platform (Moda Streetwear)", "Foco total no solado robusto, estilo moderno e atitude jovem para o público do TikTok."),
-        15: ("Estilo 15: Sandália de Tiras Finas (Delicadeza & Festa)", "Enquadramento elegante nos pés com close na amarração e delicadeza das tiras."),
-        16: ("Estilo 16: Colete Alfaiataria & Sobreposição Moderna", "Estilo moderno de camadas, demonstrando versatilidade para compor múltiplos looks."),
-        17: ("Estilo 17: Short Saia Envelope (Praticidade e Estilo)", "Movimento fluido e natural, mostrando o conforto e a segurança do design envelope."),
-        18: ("Estilo 18: Pantalona Jeans Premium (Lavagem Exclusiva)", "Foco no cós alto, caimento perfeito nas pernas e resistência do jeans de alfaiataria."),
-        19: ("Estilo 19: Slip On Prático & Confortável (Dia a Dia Ágil)", "Demonstração rápida de calce fácil, ideal para o público que busca agilidade sem perder a elegância."),
-        20: ("Estilo 20: POV Caminhão Preto Gigante do TikTok (Chegada de Estoque)", "Cenário épico externo com caminhão gigante estacionado, portas traseiras abertas repletas de caixas da Loja da Valentina.")
+        3: ("Estilo 3: Pantalona de Alfaiataria Fluida", "Demonstração de caimento, tecido de alta qualidade e elegância em cenário corporativo / boutique chique."),
+        4: ("Estilo 4: Tênis Trend Urbano Streetwear", "Foco em lifestyle urbano, calçando o tênis na rua ou calçada moderna, enfatizando versatilidade e maciez."),
+        5: ("Estilo 5: Vestido Midi Casual Chic", "Apresentação em frente ao espelho de corpo inteiro, girando suavemente para exibir o corte e a modelagem impecável."),
+        6: ("Estilo 6: Acessórios & Relógios de Luxo (Macro)", "Enquadramento dinâmico focado nos pulsos e mãos, exibindo brilho, fechos e sofisticação dos detalhes."),
+        7: ("Estilo 7: Look do Dia Executivo Valentina", "Estética inspirada em grandes influenciadoras, transmitindo poder, elegância e autoridade no visual."),
+        8: ("Estilo 8: Rasteirinha Verão & Frescor", "Tom alegre e descontraído de provador, mostrando leveza para os dias quentes e alta conversão por impulso."),
+        9: ("Estilo 9: Scarpin Clássico Imponente", "Câmera focada na postura, altura do salto e imponência do calçado em ambiente sofisticado."),
+        10: ("Estilo 10: Provador Expresso TikTok Shop", "Ritmo acelerado, troca dinâmica e foco em preço promocional relâmpago com chamada forte para o carrinho laranja."),
+        11: ("Estilo 11: Bolsa Transversal Urban Chic", "Destaque para o design utilitário e acabamento em couro sintético de alta durabilidade e elegância."),
+        12: ("Estilo 12: Conjunto Tricô Aconchegante", "Foco em macro-texturas de tramas fechadas, toque macio e caimento aconchegante para dias amenos."),
+        13: ("Estilo 13: Look Noite & Balada Acetinado", "Iluminação dramática de estúdio, destacando peças com acabamentos acetinados ou detalhes brilhantes."),
+        14: ("Estilo 14: Tênis Chunky Platform Style", "Foco total no solado robusto, estilo moderno e atitude jovem para o público do TikTok."),
+        15: ("Estilo 15: Sandália de Tiras Finas Delicate", "Enquadramento elegante nos pés com close na amarração e delicadeza das tiras."),
+        16: ("Estilo 16: Colete Alfaiataria & Sobreposição", "Estilo moderno de camadas, demonstrando versatilidade para compor múltiplos looks."),
+        17: ("Estilo 17: Short Saia Envelope Prático", "Movimento fluido e natural, mostrando o conforto e a segurança do design envelope."),
+        18: ("Estilo 18: Pantalona Jeans Premium Lavagem Exclusiva", "Foco no cós alto, caimento perfeito nas pernas e resistência do jeans de alfaiataria."),
+        19: ("Estilo 19: Slip On Prático Calce Fácil", "Demonstração rápida de calce ágil, ideal para o público que busca praticidade sem perder a elegância."),
+        20: ("Estilo 20: POV Caminhão Preto Gigante Valentina", "Cenário épico externo com caminhão gigante estacionado, portas traseiras abertas repletas de caixas da Loja da Valentina.")
     }
 
     for i in range(1, 21):
