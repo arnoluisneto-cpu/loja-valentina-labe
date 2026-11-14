@@ -8,7 +8,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO (BOTÃO DE UPLOAD COM TEXTO PRETO E NEGRITO)
+# ESTÉTICA DE ALTO LUXO (BLINDADA E POLIDA)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -218,7 +218,7 @@ if "fila_exclusoes" not in str_app.session_state:
     str_app.session_state.fila_exclusoes = []
 
 if "form_version" not in str_app.session_state:
-    str_app.session_state.form_version = 0
+    str_app.session_version = 0
 
 if "estilo_ativo_idx" not in str_app.session_state:
     str_app.session_state.estilo_ativo_idx = 1
@@ -272,71 +272,90 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR (TOPO): EXCLUIR E RESTAURAR NA ORDEM EXATA DE EXCLUSÃO (SEM HASHTAG)
-with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
-    col_ger1, col_ger2 = str_app.columns(2)
-    
-    with col_ger1:
-        texto_botao_restaurar = "🔄 RESTAURAR PRÓXIMO APAGADO"
-        if str_app.session_state.fila_exclusoes:
-            proximo_a_voltar = str_app.session_state.fila_exclusoes[0]
-            texto_botao_restaurar = f"🔄 RESTAURAR ESTILO {proximo_a_voltar}"
+# GERENCIADOR COM CAIXA DE SENHA (CADEADO)
+SENHA_MESTRE = "valentina123"  # Defina sua senha comercial aqui
 
-        if str_app.button(texto_botao_restaurar):
+with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Restrita)", expanded=True):
+    # Caixinha com o cadeado ao lado/acima
+    col_s1, col_s2 = str_app.columns([2, 1])
+    with col_s1:
+        str_app.markdown("🔐 **SENHA ADMINISTRATIVA**")
+        senha_digitada = str_app.text_input("Senha", type="password", placeholder="Digite a senha...", label_visibility="collapsed", key="input_senha_adm")
+    with col_s2:
+        str_app.markdown("🛡️ **STATUS ACESSO**")
+        if senha_digitada == SENHA_MESTRE:
+            str_app.markdown("<span style='color: #00FF66; font-weight:700;'>Liberado ✅</span>", unsafe_allow_html=True)
+        else:
+            str_app.markdown("<span style='color: #ff4d4d; font-weight:700;'>Bloqueado 🔒</span>", unsafe_allow_html=True)
+
+    str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
+
+    if senha_digitada == SENHA_MESTRE:
+        col_ger1, col_ger2 = str_app.columns(2)
+        
+        with col_ger1:
+            texto_botao_restaurar = "🔄 RESTAURAR PRÓXIMO APAGADO"
             if str_app.session_state.fila_exclusoes:
-                id_para_restaurar = str_app.session_state.fila_exclusoes.pop(0)
-                
-                with str_app.spinner(f"🔄 Restaurando Estilo {id_para_restaurar} em sua numeração original..."):
+                proximo_a_voltar = str_app.session_state.fila_exclusoes[0]
+                texto_botao_restaurar = f"🔄 RESTAURAR ESTILO {proximo_a_voltar}"
+
+            if str_app.button(texto_botao_restaurar):
+                if str_app.session_state.fila_exclusoes:
+                    id_para_restaurar = str_app.session_state.fila_exclusoes.pop(0)
+                    
+                    with str_app.spinner(f"🔄 Restaurando Estilo {id_para_restaurar} em sua numeração original..."):
+                        time.sleep(0.4)
+                        t_orig, p_orig = obter_identidade_original(id_para_restaurar)
+                        str_app.session_state.db_estilos[id_para_restaurar] = {"titulo": t_orig, "prompt": p_orig}
+                    
+                    str_app.success(f"✅ Estilo {id_para_restaurar} retornado com sucesso para a numeração {id_para_restaurar}!")
+                    time.sleep(0.8)
+                    str_app.rerun()
+                else:
+                    str_app.info("ℹ️ Não há nenhum estilo na fila de restauração (nenhum apagado recentemente).")
+
+        with col_ger2:
+            if str_app.button("🔄 RESTAURAR TODOS OS 20"):
+                with str_app.spinner("🔄 Restaurando grade completa de 1 a 20..."):
                     time.sleep(0.4)
-                    t_orig, p_orig = obter_identidade_original(id_para_restaurar)
-                    str_app.session_state.db_estilos[id_para_restaurar] = {"titulo": t_orig, "prompt": p_orig}
-                
-                str_app.success(f"✅ Estilo {id_para_restaurar} retornado com sucesso para a numeração {id_para_restaurar}!")
+                    str_app.session_state.db_estilos = {}
+                    for i in range(1, 21):
+                        t, p = obter_identidade_original(i)
+                        str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
+                    str_app.session_state.fila_exclusoes = []
+                str_app.success("✅ Grade completa de 1 a 20 restaurada perfeitamente!")
                 time.sleep(0.8)
                 str_app.rerun()
-            else:
-                str_app.info("ℹ️ Não há nenhum estilo na fila de restauração (nenhum apagado recentemente).")
 
-    with col_ger2:
-        if str_app.button("🔄 RESTAURAR TODOS OS 20"):
-            with str_app.spinner("🔄 Restaurando grade completa de 1 a 20..."):
-                time.sleep(0.4)
-                str_app.session_state.db_estilos = {}
-                for i in range(1, 21):
-                    t, p = obter_identidade_original(i)
-                    str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
-                str_app.session_state.fila_exclusoes = []
-            str_app.success("✅ Grade completa de 1 a 20 restaurada perfeitamente!")
-            time.sleep(0.8)
-            str_app.rerun()
+        str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-    str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
-
-    if not str_app.session_state.db_estilos:
-        str_app.write("Nenhum estilo na memória.")
-    else:
-        ids_disp = sorted(list(str_app.session_state.db_estilos.keys()))
-        
-        estilo_escolhido = str_app.selectbox(
-            "Selecione o Estilo para Excluir",
-            options=ids_disp,
-            format_func=lambda x: f"Estilo {x} - {str_app.session_state.db_estilos[x]['titulo']}",
-            key="selectbox_gerenciador_topo"
-        )
-        
-        str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
-        
-        if str_app.button("🗑️ EXCLUIR ESTILO SELECIONADO"):
-            with str_app.spinner(f"🗑️ Excluindo Estilo {estilo_escolhido}..."):
-                time.sleep(0.3)
-                if estilo_escolhido not in str_app.session_state.fila_exclusoes:
-                    str_app.session_state.fila_exclusoes.append(estilo_escolhido)
-                
-                del str_app.session_state.db_estilos[estilo_escolhido]
+        if not str_app.session_state.db_estilos:
+            str_app.write("Nenhum estilo na memória.")
+        else:
+            ids_disp = sorted(list(str_app.session_state.db_estilos.keys()))
             
-            str_app.success(f"🗑️ Estilo {estilo_escolhido} excluído e guardado na fila para restauração exata!")
-            time.sleep(0.8)
-            str_app.rerun()
+            estilo_escolhido = str_app.selectbox(
+                "Selecione o Estilo para Excluir",
+                options=ids_disp,
+                format_func=lambda x: f"Estilo {x} - {str_app.session_state.db_estilos[x]['titulo']}",
+                key="selectbox_gerenciador_topo"
+            )
+            
+            str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
+            
+            if str_app.button("🗑️ EXCLUIR ESTILO SELECIONADO"):
+                with str_app.spinner(f"🗑️ Excluindo Estilo {estilo_escolhido}..."):
+                    time.sleep(0.3)
+                    if estilo_escolhido not in str_app.session_state.fila_exclusoes:
+                        str_app.session_state.fila_exclusoes.append(estilo_escolhido)
+                    
+                    del str_app.session_state.db_estilos[estilo_escolhido]
+                
+                str_app.success(f"🗑️ Estilo {estilo_escolhido} excluído e guardado na fila para restauração exata!")
+                time.sleep(0.8)
+                str_app.rerun()
+    else:
+        str_app.markdown("<p style='color: #ff4d4d; font-size: 12px; text-align: center;'>🔒 Digite a senha correta acima para liberar as opções de gerenciamento, restauração e exclusão de estilos.</p>", unsafe_allow_html=True)
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
