@@ -282,39 +282,38 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR COM 3 PASTINHAS: EDITAR, RESTAURAR E EXCLUIR DEFINITIVO
+# GERENCIADOR COM 3 BOTÕES ISOLADOS E SEGUROS POR ESTILO
 with str_app.expander("⚙️ Gerenciar / Editar / Restaurar Estilos", expanded=False):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo cadastrado.")
     else:
         for est_id in sorted(list(str_app.session_state.db_estilos.keys())):
             dados_est = str_app.session_state.db_estilos[est_id]
-            col_txt, col_edit, col_rest, col_del = str_app.columns([4.5, 1.2, 1.2, 1.2])
             
-            with col_txt:
-                str_app.markdown(f"<span style='font-size:11px;'>#{est_id} - {dados_est['titulo']}</span>", unsafe_allow_html=True)
-            
-            with col_edit:
-                if str_app.button("✏️ Editar", key=f"btn_edit_{est_id}"):
-                    str_app.session_state.id_estilo_selecionado = est_id
-                    str_app.rerun()
-            
-            with col_rest:
-                if str_app.button("🔄 Restaurar", key=f"btn_rest_{est_id}"):
-                    t_orig, p_orig = obter_identidade_original(est_id)
-                    str_app.session_state.db_estilos[est_id] = {"titulo": t_orig, "prompt": p_orig}
-                    str_app.success(f"Estilo #{est_id} restaurado!")
-                    str_app.rerun()
-            
-            with col_del:
-                if str_app.button("🗑️ Excluir", key=f"btn_del_{est_id}"):
-                    del str_app.session_state.db_estilos[est_id]
-                    str_app.success(f"Estilo #{est_id} excluído!")
-                    str_app.rerun()
+            with str_app.container(border=True):
+                str_app.markdown(f"<span style='font-size:12px; font-weight:700; color:#00FF66;'>#{est_id} - {dados_est['titulo']}</span>", unsafe_allow_html=True)
+                
+                c_btn1, c_btn2, c_btn3 = str_app.columns(3)
+                with c_btn1:
+                    if str_app.button("✏️ Editar", key=f"b_edit_{est_id}"):
+                        str_app.session_state.id_estilo_selecionado = est_id
+                        str_app.success(f"Estilo #{est_id} carregado no editor abaixo!")
+                        str_app.rerun()
+                with c_btn2:
+                    if str_app.button("🔄 Restaurar", key=f"b_rest_{est_id}"):
+                        t_orig, p_orig = obter_identidade_original(est_id)
+                        str_app.session_state.db_estilos[est_id] = {"titulo": t_orig, "prompt": p_orig}
+                        str_app.success(f"Estilo #{est_id} restaurado com sucesso!")
+                        str_app.rerun()
+                with c_btn3:
+                    if str_app.button("🗑️ Excluir", key=f"b_del_{est_id}"):
+                        del str_app.session_state.db_estilos[est_id]
+                        str_app.success(f"Estilo #{est_id} excluído!")
+                        str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Com estado seguro e blindado)
+# 3. SEÇÃO 2: EDITOR DE PROMPT
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -358,7 +357,7 @@ with str_app.container(border=True):
     with col_dir:
         str_app.markdown("📝 **CÓDIGO DO PROMPT**")
         if slot_num_edit == 0 or slot_num_edit not in str_app.session_state.db_estilos:
-            prompt_ativo = "Selecione um estilo numérico ao lado ou clique em '✏️ Editar' acima para visualizar e editar o código."
+            prompt_ativo = "Selecione um estilo numérico ao lado ou clique em '✏️ Editar' em cima para visualizar e editar o código."
         else:
             prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
             
