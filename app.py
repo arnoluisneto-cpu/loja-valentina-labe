@@ -164,10 +164,8 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# GESTÃO INTELIGENTE DE ESTADO DOS 20 ESTILOS
-if "db_estilos" not in str_app.session_state:
-    str_app.session_state.db_estilos = {}
-    
+# DICIONÁRIO MESTRE DE FÁBRICA (ORIGINAL DOS 20 ESTILOS)
+def obter_identidade_original(i):
     identidades_estilos = {
         1: ("Estilo 1: POV Mão & Rasgando o Plástico de Proteção (ASMR)", "Foco tátil universal abrindo a embalagem e rasgando o plástico de proteção da peça com extrema nitidez e som imersivo."),
         2: ("Estilo 2: POV Corpo Inteiro Caminhando na Calçada Urbana", "Câmera em movimento fluido acompanhando o produto de corpo inteiro (head-to-toe) ao ar livre sob luz natural."),
@@ -190,48 +188,54 @@ if "db_estilos" not in str_app.session_state:
         19: ("Estilo 19: Slip On Prático (Calce Fácil Ágil)", "Demonstração rápida de agilidade, ideal para o público que busca praticidade sem perder a elegância."),
         20: ("Estilo 20: POV Caminhão Preto Gigante do TikTok (Estoque Chegando)", "Cenário épico externo com caminhão gigante estacionado e portas abertas repletas de caixas da Loja da Valentina.")
     }
+    
+    titulo_texto, desc_estilo = identidades_estilos.get(i, (f"Estilo {i}", "Estilo personalizado da Loja da Valentina."))
+    
+    if i == 20:
+        prompt_texto = (
+            "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. "
+            "STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus exclusively on product display, showing items clearly on model, highlighting quality and comfort. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations, zero modifications to the product structure, details, or brand. "
+            "Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. "
+            "Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. "
+            "Rigid product lock: exact product matching reference image with zero substitution, preserving original brand aesthetics. "
+            "STATIC TRUCK & PERSISTENT BOX CHOREOGRAPHY (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally with flawless lip-sync as she walks forward from inside her boutique toward the street. "
+            "Directly in front of the store, a massive, giant black delivery truck with clean, bold 'TikTok' lettering written in bright white on its black body is ALREADY PARKED in reverse, completely stationary with its rear cargo doors ALREADY WIDE OPEN, revealing an interior completely packed and stacked wall-to-wall up to the ceiling with storage boxes. "
+            "Valentina reaches the glass door, manually pushes it open with her hands, and walks straight up to the truck. She picks up a single storage box. "
+            "STRICT PERSISTENCE RULE: Throughout the entire duration of the video, the storage box remains physically present and firmly held in her hands without ever disappearing, vanishing, or morphing. She opens the box steadily while holding it, lifts a matching item directly out of the box while keeping the box visible in her grip, displays the product clearly to the camera, and concludes her sales pitch. "
+            "IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. Fixed realistic background, organic human movement.\n\n"
+            "\"Olha, gente... acabou de chegar o estoque aqui na Loja da Valentina. A gente vai trabalhar só com esse produto, porque ele é recordista de vendas e de muita qualidade! Clica aqui no carrinho laranja embaixo para garantir o seu.\"\n\n"
+            "Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, AI morphing transition, soft blending, product switching, changing product model at the end, sudden jump cuts, rapid unrealistic pacing, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, text captions, generated writing, UI graphics, watermarks, distorted brand, altered design, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI, walking backward, truck moving, doors opening, box disappearing, box vanishing, item morphing into hand."
+        )
+    else:
+        prompt_texto = (
+            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
+            f"STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus on clear product demonstration, showing details clearly. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations. "
+            f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone. "
+            f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
+            f"Strict 1:1 pixel lock and rigid product match with zero substitution. "
+            f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera delivering a strong magnetic hook, pacing her speech evenly across the full 10 seconds while interacting directly with the item.\n\n"
+            f"\"Olha, gente, meninas, olha aqui o que chegou agora na Loja da Valentina! Chegou todo esse estoque exclusivo. A gente vai trabalhar só com essa marca porque está vendendo muito. Clica no carrinho laranja aqui embaixo e garanta a sua, que esse estoque chegou agora e vai estar de promoção!\"\n\n"
+            f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
+        )
+    return titulo_texto, prompt_texto
 
+# GESTÃO INTELIGENTE DE ESTADO DOS ESTILOS
+if "db_estilos" not in str_app.session_state:
+    str_app.session_state.db_estilos = {}
     for i in range(1, 21):
-        titulo_texto, desc_estilo = identidades_estilos[i]
-        
-        if i == 20:
-            prompt_texto = (
-                "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. "
-                "STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus exclusively on product display, showing items clearly on model, highlighting quality and comfort. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations, zero modifications to the product structure, details, or brand. "
-                "Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. "
-                "Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. "
-                "Rigid product lock: exact product matching reference image with zero substitution, preserving original brand aesthetics. "
-                "STATIC TRUCK & PERSISTENT BOX CHOREOGRAPHY (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally with flawless lip-sync as she walks forward from inside her boutique toward the street. "
-                "Directly in front of the store, a massive, giant black delivery truck with clean, bold 'TikTok' lettering written in bright white on its black body is ALREADY PARKED in reverse, completely stationary with its rear cargo doors ALREADY WIDE OPEN, revealing an interior completely packed and stacked wall-to-wall up to the ceiling with storage boxes. "
-                "Valentina reaches the glass door, manually pushes it open with her hands, and walks straight up to the truck. She picks up a single storage box. "
-                "STRICT PERSISTENCE RULE: Throughout the entire duration of the video, the storage box remains physically present and firmly held in her hands without ever disappearing, vanishing, or morphing. She opens the box steadily while holding it, lifts a matching item directly out of the box while keeping the box visible in her grip, displays the product clearly to the camera, and concludes her sales pitch. "
-                "IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. Fixed realistic background, organic human movement.\n\n"
-                "\"Olha, gente... acabou de chegar o estoque aqui na Loja da Valentina. A gente vai trabalhar só com esse produto, porque ele é recordista de vendas e de muita qualidade! Clica aqui no carrinho laranja embaixo para garantir o seu.\"\n\n"
-                "Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, AI morphing transition, soft blending, product switching, changing product model at the end, sudden jump cuts, rapid unrealistic pacing, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, text captions, generated writing, UI graphics, watermarks, distorted brand, altered design, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI, walking backward, truck moving, doors opening, box disappearing, box vanishing, item morphing into hand."
-            )
-        else:
-            prompt_texto = (
-                f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
-                f"STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus on clear product demonstration, showing details clearly. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations. "
-                f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone. "
-                f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
-                f"Strict 1:1 pixel lock and rigid product match with zero substitution. "
-                f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera delivering a strong magnetic hook, pacing her speech evenly across the full 10 seconds while interacting directly with the item.\n\n"
-                f"\"Olha, gente, meninas, olha aqui o que chegou agora na Loja da Valentina! Chegou todo esse estoque exclusivo. A gente vai trabalhar só com essa marca porque está vendendo muito. Clica no carrinho laranja aqui embaixo e garanta a sua, que esse estoque chegou agora e vai estar de promoção!\"\n\n"
-                f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
-            )
-            
-        str_app.session_state.db_estilos[i] = {
-            "titulo": titulo_texto,
-            "prompt": prompt_texto
-        }
+        t, p = obter_identidade_original(i)
+        str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
 
 if "form_version" not in str_app.session_state:
     str_app.session_state.form_version = 0
 
+if "id_estilo_selecionado" not in str_app.session_state:
+    str_app.session_state.id_estilo_selecionado = 0
+
 def limpar_apenas_formulario():
     str_app.session_state.form_version += 1
-    for k in ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos", "sel_estilo_edit", "m_1", "prod_1", "p_1"]:
+    str_app.session_state.id_estilo_selecionado = 0
+    for k in ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos", "m_1", "prod_1", "p_1"]:
         if k in str_app.session_state:
             del str_app.session_state[k]
 
@@ -269,7 +273,7 @@ with c_grid3:
 
 with str_app.container(border=True):
     str_app.markdown("🎬 **SELECIONAR ESTILOS PARA GRADE DIÁRIA**")
-    lista_titulos_geral = [str_app.session_state.db_estilos[i]["titulo"] for i in str_app.session_state.db_estilos]
+    lista_titulos_geral = [str_app.session_state.db_estilos[i]["titulo"] for i in sorted(str_app.session_state.db_estilos.keys())]
     estilos_selecionados = str_app.multiselect(
         "Selecione",
         options=lista_titulos_geral,
@@ -278,28 +282,39 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR / EXCLUSÃO RÁPIDA DE ESTILOS DIRETO NA SEÇÃO DO SELETOR
-with str_app.expander("⚙️ Gerenciar / Excluir Estilos da Grade", expanded=False):
+# GERENCIADOR COM 3 PASTINHAS: EDITAR, RESTAURAR E EXCLUIR DEFINITIVO
+with str_app.expander("⚙️ Gerenciar / Editar / Restaurar Estilos", expanded=False):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo cadastrado.")
     else:
-        for est_id, dados_est in list(str_app.session_state.db_estilos.items()):
-            col_txt, col_edit, col_del = str_app.columns([6, 1.5, 1.5])
+        for est_id in sorted(list(str_app.session_state.db_estilos.keys())):
+            dados_est = str_app.session_state.db_estilos[est_id]
+            col_txt, col_edit, col_rest, col_del = str_app.columns([4.5, 1.2, 1.2, 1.2])
+            
             with col_txt:
-                str_app.markdown(f"<span style='font-size:12px;'>{dados_est['titulo']}</span>", unsafe_allow_html=True)
+                str_app.markdown(f"<span style='font-size:11px;'>#{est_id} - {dados_est['titulo']}</span>", unsafe_allow_html=True)
+            
             with col_edit:
-                if str_app.button("✏️", key=f"btn_edit_quick_{est_id}"):
-                    str_app.session_state[f"sel_estilo_edit_{v}"] = est_id
+                if str_app.button("✏️ Editar", key=f"btn_edit_{est_id}"):
+                    str_app.session_state.id_estilo_selecionado = est_id
                     str_app.rerun()
+            
+            with col_rest:
+                if str_app.button("🔄 Restaurar", key=f"btn_rest_{est_id}"):
+                    t_orig, p_orig = obter_identidade_original(est_id)
+                    str_app.session_state.db_estilos[est_id] = {"titulo": t_orig, "prompt": p_orig}
+                    str_app.success(f"Estilo #{est_id} restaurado!")
+                    str_app.rerun()
+            
             with col_del:
-                if str_app.button("🗑️", key=f"btn_del_quick_{est_id}"):
+                if str_app.button("🗑️ Excluir", key=f"btn_del_{est_id}"):
                     del str_app.session_state.db_estilos[est_id]
                     str_app.success(f"Estilo #{est_id} excluído!")
                     str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Com opção 0 limpa)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Com estado seguro e blindado)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -309,25 +324,33 @@ with str_app.container(border=True):
         str_app.markdown("🔢 **ESTILO**")
         
         str_app.markdown('<div style="max-width: 190px;">', unsafe_allow_html=True)
-        opcoes_estilos = [0] + list(str_app.session_state.db_estilos.keys())
+        opcoes_estilos = [0] + sorted(list(str_app.session_state.db_estilos.keys()))
+        
+        if str_app.session_state.id_estilo_selecionado not in opcoes_estilos:
+            str_app.session_state.id_estilo_selecionado = 0
+            
         slot_num_edit = str_app.selectbox(
             "Estilo", 
             options=opcoes_estilos, 
+            index=opcoes_estilos.index(str_app.session_state.id_estilo_selecionado),
             format_func=lambda x: "Selecione..." if x == 0 else str(x),
             label_visibility="collapsed", 
-            key=f"sel_estilo_edit_{v}"
+            key="select_editor_estilo_ativo"
         )
+        
+        if slot_num_edit != str_app.session_state.id_estilo_selecionado:
+            str_app.session_state.id_estilo_selecionado = slot_num_edit
+
         str_app.markdown('</div>', unsafe_allow_html=True)
         
         str_app.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
         
-        # Botão Salvar Alteração
         str_app.markdown('<div style="max-width: 190px;">', unsafe_allow_html=True)
         if str_app.button("💾 Salvar Alteração"):
             if slot_num_edit == 0:
                 str_app.warning("⚠️ Selecione um estilo válido.")
             else:
-                current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
+                current_val = str_app.session_state.get("prompt_text_editor_box", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
                 str_app.session_state.db_estilos[slot_num_edit]["prompt"] = current_val
                 str_app.success(f"Estilo #{slot_num_edit} salvo!")
         str_app.markdown('</div>', unsafe_allow_html=True)
@@ -335,11 +358,11 @@ with str_app.container(border=True):
     with col_dir:
         str_app.markdown("📝 **CÓDIGO DO PROMPT**")
         if slot_num_edit == 0 or slot_num_edit not in str_app.session_state.db_estilos:
-            prompt_ativo = "Selecione um estilo numérico ao lado para visualizar e editar o código do prompt."
+            prompt_ativo = "Selecione um estilo numérico ao lado ou clique em '✏️ Editar' acima para visualizar e editar o código."
         else:
             prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
             
-        novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
+        novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key="prompt_text_editor_box", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
@@ -373,7 +396,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
-# 5. BOTÕES CENTRALIZADOS EXATAMENTE NO MEIO (Lado a lado, milimetricamente alinhados)
+# 5. BOTÕES CENTRALIZADOS EXATAMENTE NO MEIO
 col_esq_vazio, col_btn1, col_btn2, col_dir_vazio = str_app.columns([1, 2, 2, 1])
 
 with col_btn1:
@@ -388,7 +411,7 @@ if gerar_clicado:
     if not produto_nome:
         str_app.warning("⚠️ Informe o nome do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
-        str_app.warning("⚠️ Envie todas las fotos.")
+        str_app.warning("⚠️ Envie todas as fotos.")
     elif not estilos_selecionados:
         str_app.warning("⚠️ Selecione pelo menos 1 estilo.")
     else:
