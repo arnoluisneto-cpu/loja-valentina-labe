@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM BANNER IMPACTANTE E SELETOR COMPACTO
+# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO PERFEITO E BANNER IMPACTANTE
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -34,32 +34,34 @@ str_app.markdown("""
         color: #ffffff !important;
     }
     
-    /* Banner do Topo Reformulado: Maior, Mais Largo, Letras Grossas e Sombra Neon Impactante */
+    /* Banner do Topo: Título Gigante, Pesado, com Sombra Forte e Subtítulo Menor */
     .hero-banner {
-        background: linear-gradient(135deg, #130d22 0%, #1f123d 100%);
+        background: linear-gradient(135deg, #130d22 0%, #20133f 100%);
         border: 2.5px solid #00FF66;
-        padding: 18px 20px;
+        padding: 20px;
         border-radius: 10px;
         text-align: center;
         margin-bottom: 12px;
-        box-shadow: 0px 0px 25px rgba(0, 255, 102, 0.45);
+        box-shadow: 0px 0px 30px rgba(0, 255, 102, 0.45);
     }
     .hero-title {
-        font-size: 30px;
-        font-weight: 900;
+        font-size: 34px !important;
+        font-weight: 900 !important;
         letter-spacing: 4px;
         color: #ffffff !important;
-        text-shadow: 0 0 16px rgba(0, 255, 102, 0.8), 0 0 30px rgba(138, 43, 226, 0.5);
-        margin: 0;
+        text-shadow: 0 0 18px rgba(0, 255, 102, 0.9), 0 0 35px rgba(138, 43, 226, 0.7);
+        margin: 0 !important;
+        line-height: 1.2;
     }
     .hero-subtitle {
         color: #00FF66 !important;
-        font-size: 10px;
-        font-weight: 700;
-        margin-top: 5px;
-        margin-bottom: 0;
-        letter-spacing: 2.5px;
+        font-size: 9px !important;
+        font-weight: 700 !important;
+        margin-top: 8px !important;
+        margin-bottom: 0 !important;
+        letter-spacing: 2px;
         text-transform: uppercase;
+        opacity: 0.9;
     }
     
     /* Campos gerais e selects */
@@ -72,9 +74,9 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* TRAVA CIRÚRGICA: REDUÇÃO MÁXIMA DA LARGURA DO SELETOR DE ESTILO */
+    /* TRAVA CIRÚRGICA: REDUÇÃO RIGOROSA DA LARGURA DO SELETOR DE ESTILO PARA ENCAIXAR COM O BOTÃO */
     div[data-testid="stSelectbox"] {
-        max-width: 150px !important;
+        max-width: 115px !important;
     }
     
     div[data-baseweb="select"]:has(input[aria-autocomplete="list"]) > div,
@@ -87,7 +89,7 @@ str_app.markdown("""
         max-height: 36px !important;
         padding-top: 2px !important;
         padding-bottom: 2px !important;
-        width: 150px !important;
+        width: 115px !important;
     }
     
     div[data-baseweb="select"] span, div[data-baseweb="select"] svg {
@@ -170,7 +172,7 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 1. TOPO DA APLICAÇÃO (Banner Novo: Impactante, Largo e com Fonte Grossa)
+# 1. TOPO DA APLICAÇÃO (Banner Novo: Título Gigante e Estiloso)
 str_app.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
@@ -248,7 +250,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Seletor compacto alinhado ao botão)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Seletor compacto alinhado perfeitamente ao botão)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
