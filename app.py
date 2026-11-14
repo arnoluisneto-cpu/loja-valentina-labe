@@ -233,15 +233,15 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR APENAS COM EXCLUIR E RESTAURAR (LÁ EM CIMA)
+# GERENCIADOR COM APENAS RESTAURAR E EXCLUIR DEFINITIVO
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo na memória.")
-        if str_app.button("🔄 RECRIAR TODOS OS 20 ESTILOS"):
+        if str_app.button("🔄 RESTAURAR ESTILOS INICIAIS"):
             for i in range(1, 21):
                 t, p = obter_identidade_original(i)
                 str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
-            str_app.success("Todos os 20 estilos recriados com sucesso!")
+            str_app.success("Estilos restaurados com sucesso!")
             str_app.rerun()
     else:
         ids_disp = sorted(list(str_app.session_state.db_estilos.keys()))
@@ -258,10 +258,10 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
         col_r1, col_r2 = str_app.columns(2)
         
         with col_r1:
-            if str_app.button("🔄 RESTAURAR ESTILO"):
+            if str_app.button("🔄 RESTAURAR"):
                 t_orig, p_orig = obter_identidade_original(estilo_escolhido)
                 str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
-                str_app.success(f"Estilo #{estilo_escolhido} restaurado para o original de fábrica!")
+                str_app.success(f"Estilo #{estilo_escolhido} restaurado ao original de fábrica!")
                 str_app.rerun()
                 
         with col_r2:
@@ -269,14 +269,6 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
                 del str_app.session_state.db_estilos[estilo_escolhido]
                 str_app.warning(f"Estilo #{estilo_escolhido} excluído permanentemente!")
                 str_app.rerun()
-                
-        if str_app.button("➕ RECRIAR TODOS OS 20 ESTILOS NA GRADE"):
-            for i in range(1, 21):
-                if i not in str_app.session_state.db_estilos:
-                    t, p = obter_identidade_original(i)
-                    str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
-            str_app.success("Todos os estilos de 1 a 20 restaurados/recriados!")
-            str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
@@ -324,7 +316,7 @@ with str_app.container(border=True):
                 str_app.success(f"🎉 Novo Estilo #{novo_id} inserido com sucesso na grade!")
                 str_app.rerun()
     else:
-        str_app.write("Nenhum estilo disponível. Recriar estilos necessário.")
+        str_app.write("Nenhum estilo disponível. Use 'Restaurar' acima se necessário.")
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
