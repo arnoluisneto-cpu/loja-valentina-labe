@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM UPLOADERS LIMPOS E GRADE PADRONIZADA
+# ESTÉTICA DE ALTO LUXO COM UPLOADS LIMPOS E ALINHADOS LADO A LADO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -85,7 +85,14 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* Ocultar o texto de tamanho e formato dos uploader boxes para ficarem limpos */
+    /* REMOÇÃO TOTAL DOS TEXTOS DE TAMANHO E FORMATO DOS UPLOADS */
+    div[data-testid="stFileUploader"] small, 
+    div[data-testid="stFileUploader"] section div div span,
+    div[data-testid="stFileUploader"] section div div {
+        color: #ffffff !important;
+    }
+    
+    /* Ocultar rigorosamente o texto de 200MB / formato */
     div[data-testid="stFileUploader"] small {
         display: none !important;
     }
@@ -235,41 +242,35 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Grade de 5 Blocos Padronizados em Cards)
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Organizados em 2 Linhas Limpas e Padronizadas)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
-    # Linha 1: Blocos 1, 2 e 3 (Nome, Categoria e Foto Modelo)
-    c_b1, c_b2, c_b3 = str_app.columns(3)
-    
-    with c_b1:
+    # Linha 1: Nome do Produto e Categoria
+    c_l1_1, c_l1_2 = str_app.columns(2)
+    with c_l1_1:
         str_app.markdown("🏷️ **NOME PRODUTO / SKU**")
         produto_nome = str_app.text_input("Nome", placeholder="Ex: Sandália Gigil...", label_visibility="collapsed")
-        
-    with c_b2:
+    with c_l1_2:
         str_app.markdown("📂 **CATEGORIA**")
         tipo_produto = str_app.selectbox("Categoria", ["Calçado / Tênis / Sandália", "Acessório", "Vestuário", "Bolsa", "Outros"], label_visibility="collapsed")
-        
-    with c_b3:
-        str_app.markdown("👩 **FOTO MODELO (1:1)**")
-        foto_modelo = str_app.file_uploader("Foto Modelo", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
 
     str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
-    # Linha 2: Blocos 4 e 5 (Foto Peça e Foto Produto centralizada no meio)
-    c_b4, c_b5, c_b6 = str_app.columns(3)
+    # Linha 2: As 3 fotos perfeitamente alinhadas lado a lado (Foto Modelo, Foto Produto e Foto Peça)
+    c_f1, c_f2, c_f3 = str_app.columns(3)
     
-    with c_b4:
-        str_app.markdown("🔒 **FOTO PEÇA (PIXEL LOCK)**")
-        foto_peca = str_app.file_uploader("Foto Peça", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
+    with c_f1:
+        str_app.markdown("👩 **FOTO MODELO (1:1)**")
+        foto_modelo = str_app.file_uploader("Foto Modelo", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
         
-    with c_b5:
+    with c_f2:
         str_app.markdown("📷 **FOTO PRODUTO**")
         foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key="prod_1", label_visibility="collapsed")
         
-    with c_b6:
-        # Coluna de espaçamento simétrico para centralizar perfeitamente o 5º bloco
-        str_app.markdown("")
+    with c_f3:
+        str_app.markdown("🔒 **FOTO PEÇA (PIXEL LOCK)**")
+        foto_peca = str_app.file_uploader("Foto Peça", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
