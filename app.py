@@ -275,32 +275,23 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR COM CAMPO DE SENHA E BOTÃO DE VALIDAÇÃO
+# GERENCIADOR COM VALIDAÇÃO LIMPA (SEM MENSAGENS PERMANENTES)
 SENHA_MESTRE = "vidalooka2"
 
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Restrita)", expanded=True):
-    col_s1, col_s2, col_s3 = str_app.columns([2, 1, 1])
+    col_s1, col_s2 = str_app.columns([3, 1])
     
     with col_s1:
         str_app.markdown("🔐 **SENHA ADMINISTRATIVA**")
         senha_digitada = str_app.text_input("Senha", placeholder="Digite a senha...", type="password", label_visibility="collapsed", key="input_senha_adm")
     
     with col_s2:
-        str_app.markdown("🛡️ **VALIDAR**")
+        str_app.markdown("🛡️ **AÇÃO**")
         if str_app.button("🔓 VALIDAR"):
             if senha_digitada == SENHA_MESTRE:
                 str_app.session_state.acesso_liberado = True
-                str_app.success("✅ Acesso liberado!")
             else:
                 str_app.session_state.acesso_liberado = False
-                str_app.error("❌ Senha incorreta!")
-
-    with col_s3:
-        str_app.markdown("📌 **STATUS**")
-        if str_app.session_state.acesso_liberado:
-            str_app.markdown("<span style='color: #00FF66; font-weight:700;'>Liberado ✅</span>", unsafe_allow_html=True)
-        else:
-            str_app.markdown("<span style='color: #ff4d4d; font-weight:700;'>Bloqueado 🔒</span>", unsafe_allow_html=True)
 
     str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
@@ -368,8 +359,6 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Res
                 str_app.success(f"🗑️ Estilo {estilo_escolhido} excluído e guardado na fila para restauração exata!")
                 time.sleep(0.8)
                 str_app.rerun()
-    else:
-        str_app.markdown("<p style='color: #ff4d4d; font-size: 12px; text-align: center;'>🔒 Digite a senha administrativa e clique em <b>VALIDAR</b> para liberar as opções de gerenciamento, restauração e exclusão de estilos.</p>", unsafe_allow_html=True)
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
