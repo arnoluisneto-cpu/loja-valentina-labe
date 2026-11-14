@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM A CAIXINHA DO EDITOR ALINHADA AO BOTÃO
+# ESTÉTICA DE ALTO LUXO COM O BOTÃO DE EXCLUIR ESTILO INTEGRADO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -87,7 +87,7 @@ str_app.markdown("""
         text-overflow: clip !important;
     }
 
-    /* CORREÇÃO DO MENU DE ESTILOS (Rolagem garantida para mostrar até o Estilo 20) */
+    /* CORREÇÃO DO MENU DE ESTILOS (Rolagem garantida) */
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
         background-color: #161026 !important;
         color: #ffffff !important;
@@ -110,7 +110,7 @@ str_app.markdown("""
     
     .stTextInput input, .stSelectbox select { color: #ffffff !important; font-size: 13px !important; }
     
-    /* ELIMINAÇÃO TOTAL DOS AVISOS DE TAMANHO (200MB / FORMATOS) */
+    /* ELIMINAÇÃO TOTAL DOS AVISOS DE TAMANHO */
     div[data-testid="stFileUploader"] small,
     div[data-testid="stFileUploader"] span:nth-of-type(2),
     div[data-testid="stFileUploader"] div:has(> small),
@@ -164,7 +164,7 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# GESTÃO INTELIGENTE DE ESTADO
+# GESTÃO INTELIGENTE DE ESTADO DOS 20 ESTILOS
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     
@@ -273,14 +273,14 @@ with str_app.container(border=True):
     estilos_selecionados = str_app.multiselect(
         "Selecione",
         options=lista_titulos_geral,
-        default=[str_app.session_state.db_estilos[20]["titulo"]],
+        default=[str_app.session_state.db_estilos[20]["titulo"]] if 20 in str_app.session_state.db_estilos else [],
         label_visibility="collapsed",
         key=f"multi_estilos_{v}"
     )
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Caixinha de estilo dimensionada exatamente ao botão de salvar)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Com opção 0 limpa e botão de excluir estilo)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -289,9 +289,7 @@ with str_app.container(border=True):
     with col_esq:
         str_app.markdown("🔢 **ESTILO**")
         
-        # Limitador de largura idêntico ao botão de salvar logo abaixo
         str_app.markdown('<div style="max-width: 190px;">', unsafe_allow_html=True)
-        
         opcoes_estilos = [0] + list(str_app.session_state.db_estilos.keys())
         slot_num_edit = str_app.selectbox(
             "Estilo", 
@@ -302,27 +300,40 @@ with str_app.container(border=True):
         )
         str_app.markdown('</div>', unsafe_allow_html=True)
         
-        str_app.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
+        str_app.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
         
-        # Botão de salvar dimensionado na mesma proporção exata
+        # Botão Salvar Alteração
         str_app.markdown('<div style="max-width: 190px;">', unsafe_allow_html=True)
         if str_app.button("💾 Salvar Alteração"):
             if slot_num_edit == 0:
-                str_app.warning("⚠️ Selecione um estilo válido para salvar.")
+                str_app.warning("⚠️ Selecione um estilo válido.")
             else:
                 current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
                 str_app.session_state.db_estilos[slot_num_edit]["prompt"] = current_val
                 str_app.success(f"Estilo #{slot_num_edit} salvo!")
         str_app.markdown('</div>', unsafe_allow_html=True)
 
+        str_app.markdown("<div style='height: 4px;'></div>", unsafe_allow_html=True)
+
+        # Botão Excluir Estilo Selecionado
+        str_app.markdown('<div style="max-width: 190px;">', unsafe_allow_html=True)
+        if str_app.button("🗑️ Excluir Estilo"):
+            if slot_num_edit == 0 or slot_num_edit not in str_app.session_state.db_estilos:
+                str_app.warning("⚠️ Selecione um estilo válido para excluir.")
+            else:
+                del str_app.session_state.db_estilos[slot_num_edit]
+                str_app.success(f"Estilo #{slot_num_edit} excluído com sucesso!")
+                str_app.rerun()
+        str_app.markdown('</div>', unsafe_allow_html=True)
+
     with col_dir:
         str_app.markdown("📝 **CÓDIGO DO PROMPT**")
         if slot_num_edit == 0 or slot_num_edit not in str_app.session_state.db_estilos:
-            prompt_ativo = "Selecione um estilo numérico ao lado para visualizar e editar o código do prompt."
+            prompt_ativo = "Selecione um estilo numérico ao lado para visualizar e editar o código do prompt, ou excluí-lo."
         else:
             prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
             
-        novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
+        novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=155, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
@@ -378,7 +389,7 @@ if gerar_clicado:
         agora = datetime.now().strftime("%H:%M:%S")
         str_app.success(f"✅ Gerados {len(estilos_selecionados)} prompts às {agora} para '{produto_nome}'.")
         
-        mapa_prompts = {str_app.session_state.db_estilos[i]["titulo"]: str_app.session_state.db_estilos[i]["prompt"] for i in str_app.session_state.db_estilos}
+        mapa_prompts = {str_app.session_state.db_estilos[i]["titulo"]: str_app.session_state.db_estilos[i]["prompt"] for i in str_app.session_state.db_estilos if i in str_app.session_state.db_estilos}
         
         for idx, estilo_titulo in enumerate(estilos_selecionados):
             prompt_numero = idx + 1
