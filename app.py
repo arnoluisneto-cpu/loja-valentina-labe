@@ -223,6 +223,9 @@ if "form_version" not in str_app.session_state:
 if "estilo_ativo_idx" not in str_app.session_state:
     str_app.session_state.estilo_ativo_idx = 1
 
+if "acesso_liberado" not in str_app.session_state:
+    str_app.session_state.acesso_liberado = False
+
 def limpar_apenas_formulario():
     str_app.session_state.form_version += 1
     for k in ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos", "m_1", "prod_1", "p_1"]:
@@ -272,24 +275,36 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR COM CAIXA DE SENHA SIMPLES (123)
-SENHA_MESTRE = "123"  # Senha simples e direta para uso rápido
+# GERENCIADOR COM CAMPO DE SENHA E BOTÃO DE VALIDAÇÃO
+SENHA_MESTRE = "vidalooka2"
 
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Restrita)", expanded=True):
-    col_s1, col_s2 = str_app.columns([2, 1])
+    col_s1, col_s2, col_s3 = str_app.columns([2, 1, 1])
+    
     with col_s1:
-        str_app.markdown("🔐 **SENHA ADMINISTRATIVA (Digite: 123)**")
-        senha_digitada = str_app.text_input("Senha", placeholder="Digite 123...", label_visibility="collapsed", key="input_senha_adm")
+        str_app.markdown("🔐 **SENHA ADMINISTRATIVA**")
+        senha_digitada = str_app.text_input("Senha", placeholder="Digite a senha...", type="password", label_visibility="collapsed", key="input_senha_adm")
+    
     with col_s2:
-        str_app.markdown("🛡️ **STATUS ACESSO**")
-        if senha_digitada == SENHA_MESTRE:
+        str_app.markdown("🛡️ **VALIDAR**")
+        if str_app.button("🔓 VALIDAR"):
+            if senha_digitada == SENHA_MESTRE:
+                str_app.session_state.acesso_liberado = True
+                str_app.success("✅ Acesso liberado!")
+            else:
+                str_app.session_state.acesso_liberado = False
+                str_app.error("❌ Senha incorreta!")
+
+    with col_s3:
+        str_app.markdown("📌 **STATUS**")
+        if str_app.session_state.acesso_liberado:
             str_app.markdown("<span style='color: #00FF66; font-weight:700;'>Liberado ✅</span>", unsafe_allow_html=True)
         else:
             str_app.markdown("<span style='color: #ff4d4d; font-weight:700;'>Bloqueado 🔒</span>", unsafe_allow_html=True)
 
     str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-    if senha_digitada == SENHA_MESTRE:
+    if str_app.session_state.acesso_liberado:
         col_ger1, col_ger2 = str_app.columns(2)
         
         with col_ger1:
@@ -354,7 +369,7 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Res
                 time.sleep(0.8)
                 str_app.rerun()
     else:
-        str_app.markdown("<p style='color: #ff4d4d; font-size: 12px; text-align: center;'>🔒 Digite a senha <b>123</b> acima para liberar as opções de gerenciamento, restauração e exclusão de estilos.</p>", unsafe_allow_html=True)
+        str_app.markdown("<p style='color: #ff4d4d; font-size: 12px; text-align: center;'>🔒 Digite a senha administrativa e clique em <b>VALIDAR</b> para liberar as opções de gerenciamento, restauração e exclusão de estilos.</p>", unsafe_allow_html=True)
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
