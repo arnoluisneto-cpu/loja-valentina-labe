@@ -233,7 +233,7 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR COM APENAS RESTAURAR E EXCLUIR DEFINITIVO
+# GERENCIADOR (TOPO): APENAS RESTAURAR E EXCLUIR DEFINITIVO
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo na memória.")
@@ -261,7 +261,7 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
             if str_app.button("🔄 RESTAURAR"):
                 t_orig, p_orig = obter_identidade_original(estilo_escolhido)
                 str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
-                str_app.success(f"Estilo #{estilo_escolhido} restaurado ao original de fábrica!")
+                str_app.success(f"Estilo #{estilo_escolhido} restaurado para o original de fábrica!")
                 str_app.rerun()
                 
         with col_r2:
@@ -272,8 +272,8 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# EDITOR DE PROMPT COM SALVAR E INSERIR NOVO PROMPT LADO A LADO
-str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
+# EDITOR DE PROMPT E INSERÇÃO DE NOVO ESTILO
+str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR & INSERÇÃO DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
     opcoes_editor = sorted(list(str_app.session_state.db_estilos.keys())) if str_app.session_state.db_estilos else []
@@ -293,30 +293,45 @@ with str_app.container(border=True):
         if slot_num_edit != str_app.session_state.estilo_ativo_idx:
             str_app.session_state.estilo_ativo_idx = slot_num_edit
 
+        # Campos para identificação e código do estilo selecionado
+        titulo_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["titulo"]
         prompt_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
 
-        texto_editado_usuario = str_app.text_area("Editar Código", value=prompt_atual_estilo, height=160, key="caixa_texto_prompt_direta")
+        novo_titulo_editado = str_app.text_input("Tema / Título do Estilo", value=titulo_atual_estilo, key=f"titulo_input_{slot_num_edit}")
+        texto_editado_usuario = str_app.text_area("Código do Prompt", value=prompt_atual_estilo, height=160, key=f"prompt_textarea_{slot_num_edit}")
         
         str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
         
-        # Botões Salvar e Inserir Novo Prompt Lado a Lado
-        col_s1, col_s2 = str_app.columns(2)
-        
-        with col_s1:
-            if str_app.button("💾 SALVAR ALTERAÇÃO"):
-                str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
-                str_app.success(f"✅ Alterações do Estilo #{slot_num_edit} salvas com sucesso!")
+        if str_app.button("💾 SALVAR ALTERAÇÃO"):
+            str_app.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
+            str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
+            str_app.success(f"✅ Estilo #{slot_num_edit} salvo com sucesso!")
+            str_app.rerun()
+
+    str_app.markdown("<div style='margin: 12px 0; border-top: 1px solid #8A2BE2;'></div>", unsafe_allow_html=True)
+    
+    # SEÇÃO DEDICADA PARA INSERIR NOVO PROMPT COM SEQUENCIA EXATA
+    str_app.markdown("➕ **INSERIR NOVO PROMPT NA SEQUÊNCIA**")
+    
+    novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", placeholder="Ex: Estilo 21: POV Mão abrindo embalagem...", key="novo_titulo_criacao")
+    novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=140, key="novo_prompt_criacao")
+    
+    if str_app.button("📥 INSERIR E SALVAR NA SEQUÊNCIA"):
+        if not novo_titulo_input or not novo_prompt_input:
+            str_app.warning("⚠️ Preencha o Título e o Código do novo prompt.")
+        else:
+            # Descobre o próximo número sequencial exato (preenchendo buracos ou continuando o último)
+            proximo_id = 1
+            while proximo_id in str_app.session_state.db_estilos:
+                proximo_id += 1
                 
-        with col_s2:
-            if str_app.button("➕ INSERIR NOVO PROMPT"):
-                novo_id = max(str_app.session_state.db_estilos.keys()) + 1 if str_app.session_state.db_estilos else 1
-                titulo_novo = f"Estilo {novo_id}: Novo Estilo Personalizado Valentina"
-                str_app.session_state.db_estilos[novo_id] = {"titulo": titulo_novo, "prompt": texto_editado_usuario}
-                str_app.session_state.estilo_ativo_idx = novo_id
-                str_app.success(f"🎉 Novo Estilo #{novo_id} inserido com sucesso na grade!")
-                str_app.rerun()
-    else:
-        str_app.write("Nenhum estilo disponível. Use 'Restaurar' acima se necessário.")
+            str_app.session_state.db_estilos[proximo_id] = {
+                "titulo": novo_titulo_input,
+                "prompt": novo_prompt_input
+            }
+            str_app.session_state.estilo_ativo_idx = proximo_id
+            str_app.success(f"🎉 Novo Estilo #{proximo_id} inserido com sucesso na sequência!")
+            str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
