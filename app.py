@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO (BLINDADA E INTACTA)
+# ESTÉTICA DE ALTO LUXO COM A CAIXINHA DO EDITOR ALINHADA AO BOTÃO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -164,7 +164,7 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# GESTÃO INTELIGENTE DE ESTADO (PRESERVA OS ESTILOS, LIMPA APENAS O FORMULÁRIO)
+# GESTÃO INTELIGENTE DE ESTADO
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     
@@ -230,7 +230,6 @@ if "form_version" not in str_app.session_state:
     str_app.session_state.form_version = 0
 
 def limpar_apenas_formulario():
-    # Incrementa a versão para destruir e recriar limpos todos os inputs e uploader de fotos
     str_app.session_state.form_version += 1
     for k in ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos", "sel_estilo_edit", "m_1", "prod_1", "p_1"]:
         if k in str_app.session_state:
@@ -281,7 +280,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Caixinha de estilo dimensionada exatamente ao botão de salvar)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -289,20 +288,40 @@ with str_app.container(border=True):
 
     with col_esq:
         str_app.markdown("🔢 **ESTILO**")
-        str_app.markdown('<div style="max-width: 200px;">', unsafe_allow_html=True)
-        slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed", key=f"sel_estilo_edit_{v}")
+        
+        # Limitador de largura idêntico ao botão de salvar logo abaixo
+        str_app.markdown('<div style="max-width: 190px;">', unsafe_allow_html=True)
+        
+        opcoes_estilos = [0] + list(str_app.session_state.db_estilos.keys())
+        slot_num_edit = str_app.selectbox(
+            "Estilo", 
+            options=opcoes_estilos, 
+            format_func=lambda x: "Selecione..." if x == 0 else str(x),
+            label_visibility="collapsed", 
+            key=f"sel_estilo_edit_{v}"
+        )
         str_app.markdown('</div>', unsafe_allow_html=True)
         
         str_app.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
         
+        # Botão de salvar dimensionado na mesma proporção exata
+        str_app.markdown('<div style="max-width: 190px;">', unsafe_allow_html=True)
         if str_app.button("💾 Salvar Alteração"):
-            current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
-            str_app.session_state.db_estilos[slot_num_edit]["prompt"] = current_val
-            str_app.success(f"Estilo #{slot_num_edit} salvo!")
+            if slot_num_edit == 0:
+                str_app.warning("⚠️ Selecione um estilo válido para salvar.")
+            else:
+                current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
+                str_app.session_state.db_estilos[slot_num_edit]["prompt"] = current_val
+                str_app.success(f"Estilo #{slot_num_edit} salvo!")
+        str_app.markdown('</div>', unsafe_allow_html=True)
 
     with col_dir:
         str_app.markdown("📝 **CÓDIGO DO PROMPT**")
-        prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
+        if slot_num_edit == 0 or slot_num_edit not in str_app.session_state.db_estilos:
+            prompt_ativo = "Selecione um estilo numérico ao lado para visualizar e editar o código do prompt."
+        else:
+            prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
+            
         novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
