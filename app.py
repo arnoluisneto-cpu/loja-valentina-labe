@@ -18,7 +18,6 @@ str_app.markdown("""
         font-family: 'Inter', sans-serif !important;
     }
     
-    /* Botões compactos elegantes */
     .stButton>button, div[data-testid="stFileUploader"] button {
         background-color: #00FF66 !important;
         color: #000000 !important;
@@ -34,7 +33,6 @@ str_app.markdown("""
         color: #ffffff !important;
     }
     
-    /* Banner do Topo */
     .hero-banner {
         background: linear-gradient(135deg, #130d22 0%, #20133f 100%);
         border: 2.5px solid #00FF66;
@@ -64,7 +62,6 @@ str_app.markdown("""
         opacity: 0.9;
     }
     
-    /* Campos gerais e selects */
     input, select, div[data-baseweb="select"] > div {
         background-color: #161026 !important;
         color: #ffffff !important;
@@ -74,18 +71,7 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    div[data-testid="stSelectbox"] {
-        width: 100% !important;
-    }
-    div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
-        padding-right: 15px !important;
-    }
-    div[data-testid="stSelectbox"] span {
-        white-space: nowrap !important;
-        overflow: visible !important;
-        text-overflow: clip !important;
-    }
-
+    div[data-testid="stSelectbox"] { width: 100% !important; }
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
         background-color: #161026 !important;
         color: #ffffff !important;
@@ -105,34 +91,6 @@ str_app.markdown("""
         overflow-y: scroll !important;
     }
     
-    .stTextInput input, .stSelectbox select { color: #ffffff !important; font-size: 13px !important; }
-    
-    div[data-testid="stFileUploader"] small,
-    div[data-testid="stFileUploader"] span:nth-of-type(2),
-    div[data-testid="stFileUploader"] div:has(> small),
-    section[aria-label="File uploader"] small {
-        display: none !important;
-        visibility: hidden !important;
-        height: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    div[data-testid="stFileUploader"] {
-        background-color: #161026 !important;
-        border: 1px solid #00FF66 !important;
-        border-radius: 6px !important;
-        padding: 6px !important;
-        margin-bottom: 2px !important;
-    }
-    div[data-testid="stFileUploader"] section { background-color: #161026 !important; padding: 4px !important; }
-    div[data-testid="stFileUploader"] span {
-        color: #ffffff !important;
-        font-size: 11px !important;
-    }
-    
-    ::placeholder { color: #b0bec5 !important; opacity: 1 !important; }
-    
     .metric-card {
         background-color: #161026 !important;
         border: 1px solid #8A2BE2 !important;
@@ -140,7 +98,6 @@ str_app.markdown("""
         border-radius: 8px;
         margin-bottom: 8px;
     }
-    
     .tag-estilo {
         background-color: #00FF66 !important;
         color: #000000 !important;
@@ -151,7 +108,6 @@ str_app.markdown("""
         display: inline-block;
         margin-bottom: 6px;
     }
-    
     h1, h2, h3, label, .stMarkdown {
         color: #ffffff !important;
         font-family: 'Inter', sans-serif !important;
@@ -175,7 +131,7 @@ def obter_identidade_original(i):
         10: ("Estilo 10: Provador Expresso de Oferta Relâmpago", "Ritmo acelerado, troca dinâmica e foco em conversão imediata de estoque limitado e preço promocional."),
         11: ("Estilo 11: Acessório & Movimento Urbano", "Destaque dinâmico para a utilidade e acabamento do item em trânsito pela cidade."),
         12: ("Estilo 12: Conjunto Tricô Aconchegante (Macro Texturas)", "Foco em macro-texturas de tramas fechadas e toque suave para dias amenos."),
-        13: ("Estilo 13: Look Noite & Balada com Luz Dramática", "Iluminação night sofisticada e moderna, destacando peças acetinadas e brilhantes sob reflexos de neon."),
+        13: ("Estilo 13: Look Noite & Balada com Luz Dramática", "Iluminação noturna sofisticada e moderna, destacando peças acetinadas e brilhantes sob reflexos de neon."),
         14: ("Estilo 14: Estilo Chunky Platform & Atitude Streetwear", "Foco em design robusto, estilo urbano moderno e atitude jovem para o público do TikTok."),
         15: ("Estilo 15: Peça Delicate (Close de Festa & Elegância)", "Detalhes delicados e acabamento refinado para eventos sociais e ocasiões especiais."),
         16: ("Estilo 16: Colete Alfaiataria & Camadas Elegantes", "Estilo moderno de sobreposições, demonstrando sofisticação para compor looks versáteis."),
@@ -215,7 +171,7 @@ def obter_identidade_original(i):
         )
     return titulo_texto, prompt_texto
 
-# GESTÃO INTELIGENTE DE ESTADO DOS ESTILOS
+# GESTÃO DE ESTADOS
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     for i in range(1, 21):
@@ -225,6 +181,9 @@ if "db_estilos" not in str_app.session_state:
 if "form_version" not in str_app.session_state:
     str_app.session_state.form_version = 0
 
+if "estilo_ativo_idx" not in str_app.session_state:
+    str_app.session_state.estilo_ativo_idx = 1
+
 def limpar_apenas_formulario():
     str_app.session_state.form_version += 1
     for k in ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos", "m_1", "prod_1", "p_1"]:
@@ -233,7 +192,7 @@ def limpar_apenas_formulario():
 
 v = str_app.session_state.form_version
 
-# 1. TOPO DA APLICAÇÃO (Banner Impactante)
+# TOPO
 str_app.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
@@ -243,7 +202,7 @@ str_app.markdown("""
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 2. SEÇÃO 1: PAINEL DE CONTROLE RÁPIDO
+# PAINEL DE CONTROLE RÁPIDO
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>⚡ PAINEL DE CONTROLE RÁPIDO</p>", unsafe_allow_html=True)
 
 c_grid1, c_grid2, c_grid3 = str_app.columns(3)
@@ -265,7 +224,7 @@ with c_grid3:
 
 with str_app.container(border=True):
     str_app.markdown("🎬 **SELECIONAR ESTILOS PARA GRADE DIÁRIA**")
-    lista_titulos_geral = [str_app.session_state.db_estilos[i]["titulo"] for i in sorted(str_app.session_state.db_estilos.keys())]
+    lista_titulos_geral = [str_app.session_state.db_estilos[i]["titulo"] for i in sorted(str_app.session_state.db_estilos.keys())] if str_app.session_state.db_estilos else []
     estilos_selecionados = str_app.multiselect(
         "Selecione",
         options=lista_titulos_geral,
@@ -274,99 +233,81 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR UNIFICADO 100% BLINDADO (Com botões de ação isolados e funcionais)
-with str_app.expander("⚙️ Gerenciar / Editar / Restaurar / Excluir Estilos", expanded=True):
+# GERENCIADOR DIRETO E BLINDADO (Comando por Botões Nativos)
+with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
     if not str_app.session_state.db_estilos:
-        str_app.write("Nenhum estilo cadastrado na memória.")
-        if str_app.button("🔄 Restaurar Todos os 20 Estilos Originais"):
+        str_app.write("Nenhum estilo na memória.")
+        if str_app.button("🔄 RECRIAR TODOS OS 20 ESTILOS"):
             for i in range(1, 21):
                 t, p = obter_identidade_original(i)
                 str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
-            str_app.success("Todos os 20 estilos foram recriados com sucesso!")
+            str_app.success("Todos os 20 estilos recriados com sucesso!")
             str_app.rerun()
     else:
-        ids_disponiveis = sorted(list(str_app.session_state.db_estilos.keys()))
+        ids_disp = sorted(list(str_app.session_state.db_estilos.keys()))
         
         estilo_escolhido = str_app.selectbox(
-            "Selecione o Estilo para Gerenciar",
-            options=ids_disponiveis,
+            "Selecione o Estilo",
+            options=ids_disp,
             format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
-            key="selectbox_gerenciador_estilos_principal"
+            key="selectbox_gerenciador_direto"
         )
         
         str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
         
         col_b1, col_b2, col_b3 = str_app.columns(3)
         
-        with col_b1:
-            if str_app.button("🔄 RESTAURAR PADRÃO"):
-                t_orig, p_orig = obter_identidade_original(estilo_escolhido)
-                str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
-                str_app.success(f"Estilo #{estilo_escolhido} restaurado para o original!")
-                str_app.rerun()
-                
-        with col_b2:
-            if str_app.button("🗑️ EXCLUIR ESTILO"):
-                del str_app.session_state.db_estilos[estilo_escolhido]
-                str_app.warning(f"Estilo #{estilo_escolhido} excluído da grade!")
-                str_app.rerun()
-                
-        with col_b3:
-            if str_app.button("➕ RECRIAR TODOS (1-20)"):
-                for i in range(1, 21):
-                    if i not in str_app.session_state.db_estilos:
-                        t, p = obter_identidade_original(i)
-                        str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
-                str_app.success("Grade completa de 1 a 20 restaurada!")
-                str_app.rerun()
+        if col_b1.button("🔄 RESTAURAR ESTILO"):
+            t_orig, p_orig = obter_identidade_original(estilo_escolhido)
+            str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
+            str_app.success(f"Estilo #{estilo_escolhido} restaurado ao original!")
+            str_app.rerun()
+            
+        if col_b2.button("🗑️ EXCLUIR ESTILO"):
+            del str_app.session_state.db_estilos[estilo_escolhido]
+            str_app.warning(f"Estilo #{estilo_escolhido} excluído!")
+            str_app.rerun()
+            
+        if col_b3.button("➕ RECRIAR TODOS"):
+            for i in range(1, 21):
+                if i not in str_app.session_state.db_estilos:
+                    t, p = obter_identidade_original(i)
+                    str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
+            str_app.success("Grade de 1 a 20 restaurada!")
+            str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Direto e Integrado)
+# EDITOR DE PROMPT UNIFICADO E DIRETO
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
-    col_esq, col_dir = str_app.columns([1, 2])
-
-    with col_esq:
-        str_app.markdown("🔢 **ESCOLHER ESTILO PARA EDITAR**")
-        
-        str_app.markdown('<div style="max-width: 190px;">', unsafe_allow_html=True)
-        opcoes_editor = [0] + sorted(list(str_app.session_state.db_estilos.keys())) if str_app.session_state.db_estilos else [0]
-        
-        slot_num_edit = str_app.selectbox(
-            "Estilo", 
-            options=opcoes_editor, 
-            format_func=lambda x: "Selecione..." if x == 0 else f"Estilo #{x}",
-            label_visibility="collapsed", 
-            key="select_editor_estilo_direto"
-        )
-        str_app.markdown('</div>', unsafe_allow_html=True)
-        
-        str_app.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
-        
-        str_app.markdown('<div style="max-width: 190px;">', unsafe_allow_html=True)
-        if str_app.button("💾 Salvar Alteração"):
-            if slot_num_edit == 0:
-                str_app.warning("⚠️ Selecione um estilo válido.")
-            else:
-                novo_texto = str_app.session_state.get("caixa_texto_prompt_usuario", "")
-                str_app.session_state.db_estilos[slot_num_edit]["prompt"] = novo_texto
-                str_app.success(f"Alterações do Estilo #{slot_num_edit} salvas com sucesso!")
-        str_app.markdown('</div>', unsafe_allow_html=True)
-
-    with col_dir:
-        str_app.markdown("📝 **CÓDIGO DO PROMPT COMPLETO**")
-        if slot_num_edit == 0 or slot_num_edit not in str_app.session_state.db_estilos:
-            prompt_ativo = "Selecione um número de estilo no menu ao lado para carregar, visualizar e editar o texto completo do prompt aqui."
-        else:
-            prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
+    opcoes_editor = sorted(list(str_app.session_state.db_estilos.keys())) if str_app.session_state.db_estilos else []
+    
+    if opcoes_editor:
+        if str_app.session_state.estilo_ativo_idx not in opcoes_editor:
+            str_app.session_state.estilo_ativo_idx = opcoes_editor[0]
             
-        texto_editado_usuario = str_app.text_area("Editar Código", value=prompt_ativo, height=140, key="caixa_texto_prompt_usuario", label_visibility="collapsed")
+        slot_num_edit = str_app.selectbox(
+            "Selecione o Estilo para Editar", 
+            options=opcoes_editor, 
+            format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
+            key="select_editor_direto_id"
+        )
+        
+        prompt_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
+
+        texto_editado_usuario = str_app.text_area("Editar Código", value=prompt_atual_estilo, height=160, key="caixa_texto_prompt_direta")
+        
+        if str_app.button("💾 SALVAR ALTERAÇÃO DO PROMPT"):
+            str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
+            str_app.success(f"✅ Alterações do Estilo #{slot_num_edit} salvas com sucesso!")
+    else:
+        str_app.write("Nenhum estilo disponível para edição. Clique em 'Recriar Todos' acima.")
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS
+# DADOS DO PRODUTO & UPLOADS
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -396,7 +337,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
-# 5. BOTÕES CENTRALIZADOS EXATAMENTE NO MEIO
+# BOTÕES CENTRALIZADOS
 col_esq_vazio, col_btn1, col_btn2, col_dir_vazio = str_app.columns([1, 2, 2, 1])
 
 with col_btn1:
