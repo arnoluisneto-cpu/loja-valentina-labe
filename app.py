@@ -218,7 +218,7 @@ if "fila_exclusoes" not in str_app.session_state:
     str_app.session_state.fila_exclusoes = []
 
 if "form_version" not in str_app.session_state:
-    str_app.session_state.form_version = 0
+    str_app.session_version = 0
 
 if "estilo_ativo_idx" not in str_app.session_state:
     str_app.session_state.estilo_ativo_idx = 1
@@ -228,9 +228,7 @@ if "acesso_liberado" not in str_app.session_state:
 
 def limpar_apenas_formulario():
     str_app.session_state.form_version += 1
-    for k in ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos", "m_1", "prod_1", "p_1"]:
-        if k in str_app.session_state:
-            del str_app.session_state[k]
+    str_app.session_state.acesso_liberado = False
 
 v = str_app.session_state.form_version
 
@@ -283,11 +281,11 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Res
     
     with col_s1:
         str_app.markdown("🔐 **SENHA ADMINISTRATIVA**")
-        senha_digitada = str_app.text_input("Senha", placeholder="Digite a senha...", type="password", label_visibility="collapsed", key="input_senha_adm")
+        senha_digitada = str_app.text_input("Senha", placeholder="Digite a senha...", type="password", label_visibility="collapsed", key=f"input_senha_adm_{v}")
     
     with col_s2:
         str_app.markdown("🛡️ **AÇÃO**")
-        if str_app.button("🔓 VALIDAR"):
+        if str_app.button("🔓 VALIDAR", key=f"btn_validar_{v}"):
             if senha_digitada == SENHA_MESTRE:
                 str_app.session_state.acesso_liberado = True
             else:
@@ -304,7 +302,7 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Res
                 proximo_a_voltar = str_app.session_state.fila_exclusoes[0]
                 texto_botao_restaurar = f"🔄 RESTAURAR ESTILO {proximo_a_voltar}"
 
-            if str_app.button(texto_botao_restaurar):
+            if str_app.button(texto_botao_restaurar, key=f"btn_rest_prox_{v}"):
                 if str_app.session_state.fila_exclusoes:
                     id_para_restaurar = str_app.session_state.fila_exclusoes.pop(0)
                     
@@ -320,7 +318,7 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Res
                     str_app.info("ℹ️ Não há nenhum estilo na fila de restauração (nenhum apagado recentemente).")
 
         with col_ger2:
-            if str_app.button("🔄 RESTAURAR TODOS OS 20"):
+            if str_app.button("🔄 RESTAURAR TODOS OS 20", key=f"btn_rest_all_{v}"):
                 with str_app.spinner("🔄 Restaurando grade completa de 1 a 20..."):
                     time.sleep(0.4)
                     str_app.session_state.db_estilos = {}
@@ -343,12 +341,12 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Res
                 "Selecione o Estilo para Excluir",
                 options=ids_disp,
                 format_func=lambda x: f"Estilo {x} - {str_app.session_state.db_estilos[x]['titulo']}",
-                key="selectbox_gerenciador_topo"
+                key=f"selectbox_gerenciador_topo_{v}"
             )
             
             str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
             
-            if str_app.button("🗑️ EXCLUIR ESTILO SELECIONADO"):
+            if str_app.button("🗑️ EXCLUIR ESTILO SELECIONADO", key=f"btn_exc_estilo_{v}"):
                 with str_app.spinner(f"🗑️ Excluindo Estilo {estilo_escolhido}..."):
                     time.sleep(0.3)
                     if estilo_escolhido not in str_app.session_state.fila_exclusoes:
@@ -366,7 +364,7 @@ str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 todos_ids_existentes = list(str_app.session_state.db_estilos.keys())
 proximo_id_sugerido = (max(todos_ids_existentes) + 1) if todos_ids_existentes else 1
 
-modo_operacao = str_app.radio("Modo de Operação", ["✏️ Editar Estilo Existente", f"➕ Inserir Novo (Estilo {proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed")
+modo_operacao = str_app.radio("Modo de Operação", ["✏️ Editar Estilo Existente", f"➕ Inserir Novo (Estilo {proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed", key=f"modo_op_{v}")
 
 str_app.markdown(f"<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>{modo_operacao.upper()}</p>", unsafe_allow_html=True)
 
@@ -383,22 +381,21 @@ with str_app.container(border=True):
                 options=opcoes_editor, 
                 index=opcoes_editor.index(str_app.session_state.estilo_ativo_idx) if str_app.session_state.estilo_ativo_idx in opcoes_editor else 0,
                 format_func=lambda x: f"Estilo {x} - {str_app.session_state.db_estilos[x]['titulo']}",
-                key="select_editor_direto_id"
+                key=f"select_editor_direto_id_{v}"
             )
             
             if slot_num_edit != str_app.session_state.estilo_ativo_idx:
                 str_app.session_state.estilo_ativo_idx = slot_num_edit
 
-            # Puxa automaticamente os textos salvos para as caixinhas para que você possa editá-los
             titulo_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["titulo"]
             prompt_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
 
-            novo_titulo_editado = str_app.text_input("Tema / Título do Estilo", value=titulo_atual_estilo, key=f"titulo_input_{slot_num_edit}")
-            texto_editado_usuario = str_app.text_area("Código do Prompt", value=prompt_atual_estilo, height=160, key=f"prompt_textarea_{slot_num_edit}")
+            novo_titulo_editado = str_app.text_input("Tema / Título do Estilo", value=titulo_atual_estilo, key=f"titulo_input_{slot_num_edit}_{v}")
+            texto_editado_usuario = str_app.text_area("Código do Prompt", value=prompt_atual_estilo, height=160, key=f"prompt_textarea_{slot_num_edit}_{v}")
             
             str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
             
-            if str_app.button("💾 SALVAR ALTERAÇÃO"):
+            if str_app.button("💾 SALVAR ALTERAÇÃO", key=f"btn_salvar_{slot_num_edit}_{v}"):
                 if not novo_titulo_editado or not texto_editado_usuario:
                     str_app.warning("⚠️ Preencha o Título e o Código do prompt antes de salvar.")
                 else:
@@ -412,12 +409,12 @@ with str_app.container(border=True):
         else:
             str_app.write("Nenhum estilo disponível.")
     else:
-        novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value="", placeholder="Ex: Novo Estilo Personalizado...", key="campo_novo_titulo_valencia_fixo")
-        novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=160, key="campo_novo_prompt_valencia_fixo")
+        novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value="", placeholder="Ex: Novo Estilo Personalizado...", key=f"campo_novo_titulo_valencia_fixo_{v}")
+        novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=160, key=f"campo_novo_prompt_valencia_fixo_{v}")
         
         str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
         
-        if str_app.button("📥 INSERIR E SALVAR NO FINAL"):
+        if str_app.button("📥 INSERIR E SALVAR NO FINAL", key=f"btn_inserir_novo_{v}"):
             if not novo_titulo_input or not novo_prompt_input:
                 str_app.warning("⚠️ Preencha o Título e o Código do novo prompt.")
             else:
@@ -468,10 +465,10 @@ str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 col_esq_vazio, col_btn1, col_btn2, col_dir_vazio = str_app.columns([1, 2, 2, 1])
 
 with col_btn1:
-    gerar_clicado = str_app.button("🚀 GERAR PROMPTS")
+    gerar_clicado = str_app.button("🚀 GERAR PROMPTS", key=f"btn_gerar_{v}")
 
 with col_btn2:
-    str_app.button("🔄 LIMPAR TUDO", on_click=limpar_apenas_formulario)
+    str_app.button("🔄 LIMPAR TUDO", on_click=limpar_apenas_formulario, key=f"btn_limpar_tudo_{v}")
 
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
 
