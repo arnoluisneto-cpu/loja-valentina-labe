@@ -172,12 +172,15 @@ def obter_identidade_original(i):
         )
     return titulo_texto, prompt_texto
 
-# GESTÃO DE ESTADOS & REINDEXAÇÃO AUTOMÁTICA
+# GESTÃO DE ESTADOS & HISTÓRICO DE EXCLUSÕES
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     for i in range(1, 21):
         t, p = obter_identidade_original(i)
         str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
+
+if "lixeira_exclusoes" not in str_app.session_state:
+    str_app.session_state.lixeira_exclusoes = [] # Guarda os IDs excluídos na ordem exata
 
 def reindexar_estilos():
     chaves_ordenadas = sorted(str_app.session_state.db_estilos.keys())
@@ -241,25 +244,55 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR (TOPO): RESTAURAR E EXCLUIR COM FEEDBACK VISUAL
+# GERENCIADOR (TOPO): EXCLUIR E RESTAURAR SEQUENCIALMENTE NA ORDEM DA LIXEIRA
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
-    if not str_app.session_state.db_estilos:
-        str_app.write("Nenhum estilo na memória.")
-        if str_app.button("🔄 RESTAURAR ESTILOS INICIAIS"):
-            with str_app.spinner("🔄 Restaurando estilos padrão de fábrica..."):
+    col_ger1, col_ger2 = str_app.columns(2)
+    
+    with col_ger1:
+        if str_app.button("🔄 RESTAURAR PRÓXIMO APAGADO"):
+            # Identifica qual foi o ID original de fábrica que falta ser restaurado
+            ids_atuais = set(str_app.session_state.db_estilos.keys())
+            id_para_restaurar = None
+            
+            # Procura o primeiro ID de 1 a 20 que não está na lista atual
+            for original_id in range(1, 21):
+                if original_id not in ids_atuais:
+                    id_para_restaurar = original_id
+                    break
+            
+            if id_para_restaurar is not None:
+                with str_app.spinner(f"🔄 Restaurando Estilo Original #{id_para_restaurar}..."):
+                    time.sleep(0.4)
+                    t_orig, p_orig = obter_identidade_original(id_para_restaurar)
+                    str_app.session_state.db_estilos[id_para_restaurar] = {"titulo": t_orig, "prompt": p_orig}
+                    reindexar_estilos()
+                str_app.success(f"✅ Estilo #{id_para_restaurar} restaurado e encaixado na sequência com sucesso!")
+                time.sleep(0.8)
+                str_app.rerun()
+            else:
+                str_app.info("ℹ️ Todos os 20 estilos originais já estão restaurados na grade!")
+
+    with col_ger2:
+        if str_app.button("🔄 RESTAURAR TODOS OS 20"):
+            with str_app.spinner("🔄 Restaurando grade completa de 1 a 20..."):
                 time.sleep(0.4)
                 for i in range(1, 21):
                     t, p = obter_identidade_original(i)
                     str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
                 reindexar_estilos()
-            str_app.success("✅ Todos os 20 estilos foram restaurados com sucesso!")
+            str_app.success("✅ Grade completa de 1 a 20 restaurada perfeitamente!")
             time.sleep(0.8)
             str_app.rerun()
+
+    str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
+
+    if not str_app.session_state.db_estilos:
+        str_app.write("Nenhum estilo na memória.")
     else:
         ids_disp = sorted(list(str_app.session_state.db_estilos.keys()))
         
         estilo_escolhido = str_app.selectbox(
-            "Selecione o Estilo",
+            "Selecione o Estilo para Excluir Definitivo",
             options=ids_disp,
             format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
             key="selectbox_gerenciador_topo"
@@ -267,28 +300,14 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
         
         str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
         
-        col_r1, col_r2 = str_app.columns(2)
-        
-        with col_r1:
-            if str_app.button("🔄 RESTAURAR"):
-                with str_app.spinner(f"🔄 Restaurando Estilo #{estilo_escolhido}..."):
-                    time.sleep(0.3)
-                    t_orig, p_orig = obter_identidade_original(estilo_escolhido)
-                    str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
-                    reindexar_estilos()
-                str_app.success(f"✅ Estilo #{estilo_escolhido} restaurado ao original com sucesso!")
-                time.sleep(0.8)
-                str_app.rerun()
-                
-        with col_r2:
-            if str_app.button("🗑️ EXCLUIR DEFINITIVO"):
-                with str_app.spinner(f"🗑️ Excluindo Estilo #{estilo_escolhido} e reindexando sequência..."):
-                    time.sleep(0.3)
-                    del str_app.session_state.db_estilos[estilo_escolhido]
-                    reindexar_estilos()
-                str_app.success(f"🗑️ Estilo excluído e sequência reorganizada com sucesso!")
-                time.sleep(0.8)
-                str_app.rerun()
+        if str_app.button("🗑️ EXCLUIR ESTILO SELECIONADO"):
+            with str_app.spinner(f"🗑️ Excluindo Estilo #{estilo_escolhido} e reorganizando sequência..."):
+                time.sleep(0.3)
+                del str_app.session_state.db_estilos[estilo_escolhido]
+                reindexar_estilos()
+            str_app.success(f"🗑️ Estilo excluído e sequência reorganizada com sucesso!")
+            time.sleep(0.8)
+            str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
