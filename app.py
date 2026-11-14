@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO PERFEITO DO SELETOR E BOTÃO
+# ESTÉTICA DE ALTO LUXO COM NOMECLATURA LIMPA DOS ESTILOS
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -74,7 +74,7 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* CORREÇÃO DO DROPDOWN DO DIRETOR SKIN (Texto inteiro visível) */
+    /* CORREÇÃO DO DROPDOWN DO DIRETOR SKIN */
     div[data-testid="stSelectbox"] {
         width: 100% !important;
     }
@@ -87,7 +87,7 @@ str_app.markdown("""
         text-overflow: clip !important;
     }
 
-    /* CORREÇÃO DO MENU DE ESTILOS (Adiciona barra de rolagem para aparecer o Estilo 20 completo) */
+    /* CORREÇÃO DO MENU DE ESTILOS (Rolagem para o Estilo 20) */
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
         background-color: #161026 !important;
         color: #ffffff !important;
@@ -95,36 +95,6 @@ str_app.markdown("""
         font-size: 13px !important;
         max-height: 280px !important;
         overflow-y: auto !important;
-    }
-    
-    /* TRAVA CIRÚRGICA EXATA: LARGURA DO SELETOR DE ESTILO IGUAL AO BOTÃO SALVAR */
-    div[data-testid="stVerticalBlock"] > div:nth-child(2) div[data-testid="stSelectbox"],
-    div.row-widget.stSelectbox {
-        max-width: 100% !important;
-    }
-    
-    /* Força o seletor do Editor de Prompt a ter largura idêntica ao botão de salvar */
-    div[data-baseweb="select"]:has(input[aria-autocomplete="list"]) {
-        width: 100% !important;
-    }
-    
-    div[data-baseweb="select"]:has(input[aria-autocomplete="list"]) > div,
-    div[data-baseweb="select"] > div:first-child {
-        background-color: #00FF66 !important;
-        color: #000000 !important;
-        border: none !important;
-        font-weight: 700 !important;
-        min-height: 34px !important;
-        max-height: 36px !important;
-        padding-top: 2px !important;
-        padding-bottom: 2px !important;
-        width: 100% !important;
-    }
-    
-    div[data-baseweb="select"] span, div[data-baseweb="select"] svg {
-        color: #000000 !important;
-        fill: #000000 !important;
-        font-weight: 700 !important;
     }
     
     /* Textarea com rolagem interna travada */
@@ -202,7 +172,7 @@ str_app.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# Inicializar os 20 estilos com a estrutura completa
+# Inicializar os 20 estilos com a estrutura completa (Nomes limpos sem hashtag no final)
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     for i in range(1, 21):
@@ -233,7 +203,7 @@ if "db_estilos" not in str_app.session_state:
                 f"\"Olha, gente, meninas, olha aqui o que chegou agora na Loja da Valentina! Chegou todo esse estoque exclusivo. A gente vai trabalhar só com essa marca porque está vendendo muito. Clica no carrinho laranja aqui embaixo e garanta a sua, que esse estoque chegou agora e vai estar de promoção!\"\n\n"
                 f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
             )
-            titulo_texto = f"Estilo {i}: Padrão Loja da Valentina #{i}"
+            titulo_texto = f"Estilo {i}: Padrão Loja da Valentina"
             
         str_app.session_state.db_estilos[i] = {
             "titulo": titulo_texto,
@@ -272,7 +242,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Seletor perfeitamente alinhado e igual ao botão salvar)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Com o seletor travado na largura exata do botão salvar)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -280,7 +250,11 @@ with str_app.container(border=True):
 
     with col_esq:
         str_app.markdown("🔢 **ESTILO**")
+        
+        # Container com largura exata do botão de salvar
+        str_app.markdown('<div style="max-width: 200px;">', unsafe_allow_html=True)
         slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed")
+        str_app.markdown('</div>', unsafe_allow_html=True)
         
         str_app.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
         
