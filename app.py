@@ -116,32 +116,32 @@ str_app.markdown("""
 # Inicializar os 20 estilos com nomes reais, únicos e descritivos
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {
-        1: {"titulo": "1. Caminhão e Van do TikTok Shop Chegando", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        2: {"titulo": "2. POV Acordando na Cama (Morning Routine)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        3: {"titulo": "3. POV Arrumando o Closet / Selecionando Peças", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        4: {"titulo": "4. POV Imersivo (Olhando para Baixo nos Pés)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        5: {"titulo": "5. Corpo Inteiro na Rua (Caminhando no Calçadão)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        6: {"titulo": "6. Frente ao Espelho (Mirror Selfie)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        7: {"titulo": "7. Giro Dinâmico 360° (Mostrando Caimento)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        8: {"titulo": "8. Close Macro Cirúrgico (Detalhes e Textura)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        9: {"titulo": "9. Unboxing Surpresa em Cima da Mesa", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        10: {"titulo": "10. Transição Rápida de Looks", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        11: {"titulo": "11. Vlog de Rotina Diária Estilo Lifestyle", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        12: {"titulo": "12. Review Sincero Boca a Boca", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        13: {"titulo": "13. Provador Rápido de Loja Física", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        14: {"titulo": "14. Trend do Sofá / Almofada", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        15: {"titulo": "15. POV Dirigindo o Carro", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        16: {"titulo": "16. POV Café da Manhã na Mesa Posta", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        17: {"titulo": "17. Challenge de Transição: Look Casual para Luxo", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        18: {"titulo": "18. Unboxing Rasgando Pacote do TikTok Shop", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
-        19: {"titulo": "19. POV Van de Entregas Chegando na Loja de Vidro", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        1: {"titulo": "Estilo 1: Caminhão e Van do TikTok Shop Chegando", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        2: {"titulo": "Estilo 2: POV Acordando na Cama (Morning Routine)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        3: {"titulo": "Estilo 3: POV Arrumando o Closet / Selecionando Peças", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        4: {"titulo": "Estilo 4: POV Imersivo (Olhando para Baixo nos Pés)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        5: {"titulo": "Estilo 5: Corpo Inteiro na Rua (Caminhando no Calçadão)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        6: {"titulo": "Estilo 6: Frente ao Espelho (Mirror Selfie)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        7: {"titulo": "Estilo 7: Giro Dinâmico 360° (Mostrando Caimento)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        8: {"titulo": "Estilo 8: Close Macro Cirúrgico (Detalhes e Textura)", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        9: {"titulo": "Estilo 9: Unboxing Surpresa em Cima da Mesa", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        10: {"titulo": "Estilo 10: Transição Rápida de Looks", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        11: {"titulo": "Estilo 11: Vlog de Rotina Diária Estilo Lifestyle", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        12: {"titulo": "Estilo 12: Review Sincero Boca a Boca", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        13: {"titulo": "Estilo 13: Provador Rápido de Loja Física", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        14: {"titulo": "Estilo 14: Trend do Sofá / Almofada", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        15: {"titulo": "Estilo 15: POV Dirigindo o Carro", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        16: {"titulo": "Estilo 16: POV Café da Manhã na Mesa Posta", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        17: {"titulo": "Estilo 17: Challenge de Transition: Look Casual para Luxo", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        18: {"titulo": "Estilo 18: Unboxing Rasgando Pacote do TikTok Shop", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
+        19: {"titulo": "Estilo 19: POV Van de Entregas Chegando na Loja de Vidro", "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video..."},
         20: {
-            "titulo": "20. POV Caminhão Preto Gigante Parado com Portas Abertas e Valentina",
+            "titulo": "Estilo 20: POV Caminhão Preto Gigante Parado com Portas Abertas e Valentina",
             "prompt": "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus exclusively on footwear display, showing shoes clearly on feet, highlighting heel height and comfort. Strictly binding uploaded model reference face/body and isolated exact reference pixels of 'SANDALIA MARCA GIGIL SALTO BLOCO COR PRETA' with zero alterations, zero modifications to the product structure, details, or brand. Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. Rigid product lock: exact 'SANDALIA MARCA GIGIL SALTO BLOCO COR PRETA' matching reference image with zero substitution, preserving original brand aesthetics. STATIC TRUCK & PERSISTENT BOX CHOREOGRAPHY (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally with flawless lip-sync as she walks forward from inside her boutique toward the street. Directly in front of the store, a massive, giant black delivery truck with clean, bold \"TikTok\" lettering written in bright white on its black body is ALREADY PARKED in reverse, completely stationary with its rear cargo doors ALREADY WIDE OPEN, revealing an interior completely packed and stacked wall-to-wall up to the ceiling with storage boxes of the 'SANDALIA MARCA GIGIL SALTO BLOCO COR PRETA' (Brand Gigi). Valentina reaches the glass door, manually pushes it open with her hands, and walks straight up to the truck. She picks up a single storage box. STRICT PERSISTENCE RULE: Throughout the entire duration of the video, the storage box remains physically present and firmly held in her hands without ever disappearing, vanishing, or morphing. She opens the box steadily while holding it, lifts a matching pair of 'SANDALIA MARCA GIGIL SALTO BLOCO COR PRETA' directly out of the box while keeping the box visible in her grip, displays the footwear clearly to the camera, and concludes her sales pitch. IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. Fixed realistic background, organic human movement.\n\n\"Olha, gente... acabou de chegar o estoque aqui na Loja da Valentina. A gente vai trabalhar só com essa sandália, porque ela é recordista de vendas e de muita qualidade! Clica aqui no carrinho laranja embaixo para garantir a sua.\"\n\nAbsolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, AI morphing transition, soft blending, product switching, changing product model at the end, sudden jump cuts, rapid unrealistic pacing, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, text captions, generated writing, UI graphics, watermarks, distorted brand, altered design, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI, walking backward, truck moving, doors opening, box disappearing, box vanishing, item morphing into hand."
         }
     }
 
-# 2. SELETORES DO TOPO (Compactos)
+# 2. SELETORES DO TOPO
 c_top1, c_top2 = str_app.columns(2)
 with c_top1:
     diretor_skin = str_app.selectbox("DIRETOR SKIN", ["BOY (Elite Director)", "UGC LIFESTYLE"])
@@ -150,7 +150,7 @@ with c_top2:
 
 str_app.markdown("---")
 
-# 3. SELEÇÃO PARA A GRADE DE GERAÇÃO (Com os nomes reais visíveis)
+# 3. SELEÇÃO PARA A GRADE DE GERAÇÃO
 lista_titulos_geral = [str_app.session_state.db_estilos[i]["titulo"] for i in str_app.session_state.db_estilos]
 estilos_selecionados = str_app.multiselect(
     "🎬 SELECIONE OS ESTILOS PARA GERAR NA GRADE DIÁRIA",
@@ -160,26 +160,19 @@ estilos_selecionados = str_app.multiselect(
 
 str_app.markdown("---")
 
-# 4. EDITOR ÚNICO E LIMPO DE PROMPT (Embaixo, direto ao ponto)
-str_app.markdown("### ✏️ EDITAR PROMPT DO ESTILO")
-str_app.info("💡 Escolha o número do estilo abaixo e edite o prompt diretamente na caixinha.")
+# 4. CAMPO ÚNICO E LIMPO DE EDIÇÃO (Sem textos extras)
+slot_num_edit = str_app.selectbox("Número do Estilo", options=list(str_app.session_state.db_estilos.keys()))
 
-col_edit1, col_edit2 = str_app.columns([1, 3])
-with col_edit1:
-    slot_num_edit = str_app.selectbox("Nº do Estilo", options=list(str_app.session_state.db_estilos.keys()))
-with col_edit2:
-    str_app.markdown(f"<p style='margin-top: 28px; font-weight:600; color: #00FF66;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
+prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
+novo_prompt_digitado = str_app.text_area("Código do Prompt", value=prompt_ativo, height=150, key=f"prompt_clean_{slot_num_edit}")
 
-prompt_atual_editando = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
-novo_prompt_digitado = str_app.text_area("Código do Prompt", value=prompt_atual_editando, height=140, key=f"prompt_box_{slot_num_edit}")
-
-if str_app.button("💾 Salvar Alteração do Estilo"):
+if str_app.button("Salvar Alteração do Estilo"):
     str_app.session_state.db_estilos[slot_num_edit]["prompt"] = novo_prompt_digitado
-    str_app.success(f"✅ Estilo #{slot_num_edit} atualizado com sucesso!")
+    str_app.success(f"Estilo #{slot_num_edit} atualizado com sucesso!")
 
 str_app.markdown("---")
 
-# 5. ENTRADAS DO PRODUTO (Limpo e Organizado)
+# 5. ENTRADAS DO PRODUTO
 col_input1, col_input2 = str_app.columns(2)
 
 with col_input1:
