@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM IDENTIDADES ÚNICAS E EXCLUSIVAS PARA CADA ESTILO
+# ESTÉTICA DE ALTO LUXO COM EDITOR DE PROMPT LIMPO E SEM TEXTO DUPLICADO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -176,7 +176,6 @@ str_app.markdown("""
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     
-    # Dicionario oficial com nomes próprios e identidades dedicadas para cada um dos 20 estilos
     identidades_estilos = {
         1: ("Estilo 1: Sandália Recordista de Vendas", "Foco total na apresentação detalhada de calçados nos pés, destacando conforto, saltos e acabamento premium com CTA agressiva para o carrinho laranja."),
         2: ("Estilo 2: Unboxing Luxo e Revelação de Estoque", "Abertura dinâmica mostrando caixas exclusivas chegando na Loja da Valentina, gerando escassez e desejo imediato."),
@@ -267,7 +266,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Com a caixinha de estilo perfeitamente alinhada ao botão Salvar)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Sem o texto duplicado embaixo da caixinha)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
