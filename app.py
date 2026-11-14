@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM O RESET 100% FUNCIONAL
+# ESTÉTICA DE ALTO LUXO COM BOTÕES CENTRALIZADOS E RESET INFALÍVEL
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -164,16 +164,18 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# GERENCIAMENTO DE ESTADO PARA LIMPEZA TOTAL DOS INPUTS
-if "trigger_limpeza" not in str_app.session_state:
-    str_app.session_state.trigger_limpeza = False
+# CONTROLE DE VERSÃO DE ESTADO PARA FORÇAR O RESET DOS INPUTS
+if "form_version" not in str_app.session_state:
+    str_app.session_state.form_version = 0
 
 def acionar_limpeza():
-    # Limpa valores de texto e seleções da sessão
-    keys_para_limpar = ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos"]
-    for k in keys_para_limpar:
+    str_app.session_state.form_version += 1
+    # Limpa explicitamente todas as chaves dinâmicas da sessão
+    for k in ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos"]:
         if k in str_app.session_state:
             del str_app.session_state[k]
+
+v = str_app.session_state.form_version
 
 # 1. TOPO DA APLICAÇÃO (Banner Impactante)
 str_app.markdown("""
@@ -255,12 +257,12 @@ c_grid1, c_grid2, c_grid3 = str_app.columns(3)
 with c_grid1:
     with str_app.container(border=True):
         str_app.markdown("🎬 **DIRETOR SKIN**")
-        diretor_skin = str_app.selectbox("Skin", ["BOY (Elite Director)", "UGC LIFESTYLE"], label_visibility="collapsed", key="sel_skin")
+        diretor_skin = str_app.selectbox("Skin", ["BOY (Elite Director)", "UGC LIFESTYLE"], label_visibility="collapsed", key=f"sel_skin_{v}")
 
 with c_grid2:
     with str_app.container(border=True):
         str_app.markdown("📱 **PROPORÇÃO**")
-        proporcao = str_app.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"], label_visibility="collapsed", key="sel_prop")
+        proporcao = str_app.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"], label_visibility="collapsed", key=f"sel_prop_{v}")
 
 with c_grid3:
     with str_app.container(border=True):
@@ -275,7 +277,7 @@ with str_app.container(border=True):
         options=lista_titulos_geral,
         default=[str_app.session_state.db_estilos[20]["titulo"]],
         label_visibility="collapsed",
-        key="multi_estilos"
+        key=f"multi_estilos_{v}"
     )
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
@@ -291,7 +293,7 @@ with str_app.container(border=True):
         
         # Container com largura idêntica ao botão de salvar
         str_app.markdown('<div style="max-width: 200px;">', unsafe_allow_html=True)
-        slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed", key="sel_estilo_edit")
+        slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed", key=f"sel_estilo_edit_{v}")
         str_app.markdown('</div>', unsafe_allow_html=True)
         
         str_app.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -315,10 +317,10 @@ with str_app.container(border=True):
     c_l1_1, c_l1_2 = str_app.columns(2)
     with c_l1_1:
         str_app.markdown("🏷️ **NOME PRODUTO / SKU**")
-        produto_nome = str_app.text_input("Nome", placeholder="Ex: Sandália Gigil...", label_visibility="collapsed", key="input_nome_produto")
+        produto_nome = str_app.text_input("Nome", placeholder="Ex: Sandália Gigil...", label_visibility="collapsed", key=f"input_nome_produto_{v}")
     with c_l1_2:
         str_app.markdown("📂 **CATEGORIA**")
-        tipo_produto = str_app.selectbox("Categoria", ["Calçado / Tênis / Sandália", "Acessório", "Vestuário", "Bolsa", "Outros"], label_visibility="collapsed", key="sel_categoria")
+        tipo_produto = str_app.selectbox("Categoria", ["Calçado / Tênis / Sandália", "Acessório", "Vestuário", "Bolsa", "Outros"], label_visibility="collapsed", key=f"sel_categoria_{v}")
 
     str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
@@ -326,26 +328,26 @@ with str_app.container(border=True):
     
     with c_f1:
         str_app.markdown("👩 **FOTO MODELO**")
-        foto_modelo = str_app.file_uploader("Foto Modelo", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
+        foto_modelo = str_app.file_uploader("Foto Modelo", type=["jpg", "jpeg", "png"], key=f"m_1_{v}", label_visibility="collapsed")
         
     with c_f2:
         str_app.markdown("📷 **FOTO PRODUTO**")
-        foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key="prod_1", label_visibility="collapsed")
+        foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key=f"prod_1_{v}", label_visibility="collapsed")
         
     with c_f3:
         str_app.markdown("🔍 **FOTO ZOOM**")
-        foto_peca = str_app.file_uploader("Foto Zoom", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
+        foto_peca = str_app.file_uploader("Foto Zoom", type=["jpg", "jpeg", "png"], key=f"p_1_{v}", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
-# 5. BOTÕES DE AÇÃO FINAL LADO A LADO (Gerar Prompts e Limpar Tudo)
-col_b1, col_b2 = str_app.columns(2)
+# 5. BOTÕES CENTRALIZADOS EXATAMENTE NO MEIO (Lado a lado, colados com espaçamento milimétrico)
+col_esq_vazio, col_btn1, col_btn2, col_dir_vazio = str_app.columns([1, 2, 2, 1])
 
-with col_b1:
+with col_btn1:
     gerar_clicado = str_app.button("🚀 GERAR PROMPTS")
 
-with col_b2:
-    btn_limpar = str_app.button("🔄 LIMPAR TUDO", on_click=acionar_limpeza)
+with col_btn2:
+    str_app.button("🔄 LIMPAR TUDO", on_click=acionar_limpeza)
 
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
 
