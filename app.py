@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO BLINDADA (UPLOADS 100% LIMPOS, SEM TEXTOS DE MB/FORMATO)
+# ESTÉTICA DE ALTO LUXO COM EDITOR DE PROMPT PADRONIZADO E VERDE NEON
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -18,7 +18,7 @@ str_app.markdown("""
         font-family: 'Inter', sans-serif !important;
     }
     
-    /* Botões compactos elegantes */
+    /* Botões e seletores compactos elegantes com fundo verde neon */
     .stButton>button, div[data-testid="stFileUploader"] button {
         background-color: #00FF66 !important;
         color: #000000 !important;
@@ -53,13 +53,35 @@ str_app.markdown("""
         margin: 0;
     }
     
-    /* Campos e selects compactos */
+    /* Campos gerais e selects */
     input, select, div[data-baseweb="select"] > div {
         background-color: #161026 !important;
         color: #ffffff !important;
         border: 1px solid #00FF66 !important;
         border-radius: 6px !important;
         min-height: 32px !important;
+        font-size: 13px !important;
+    }
+    
+    /* ESTILIZAÇÃO CIRÚRGICA DO SELETOR DE ESTILO (Fundo Verde Neon igual ao Botão Salvar) */
+    div[data-baseweb="select"]:has(input[aria-autocomplete="list"]) > div,
+    div[data-baseweb="select"] > div:first-child {
+        background-color: #00FF66 !important;
+        color: #000000 !important;
+        border: none !important;
+        font-weight: 700 !important;
+    }
+    
+    div[data-baseweb="select"] span, div[data-baseweb="select"] svg {
+        color: #000000 !important;
+        fill: #000000 !important;
+        font-weight: 700 !important;
+    }
+    
+    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
+        background-color: #161026 !important;
+        color: #ffffff !important;
+        border: 1.5px solid #00FF66 !important;
         font-size: 13px !important;
     }
     
@@ -75,17 +97,8 @@ str_app.markdown("""
     }
     
     .stTextInput input, .stSelectbox select { color: #ffffff !important; font-size: 13px !important; }
-    div[data-baseweb="select"] span { color: #ffffff !important; font-size: 13px !important; }
-    div[data-baseweb="select"] svg { fill: #00FF66 !important; }
     
-    div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
-        background-color: #161026 !important;
-        color: #ffffff !important;
-        border: 1.5px solid #00FF66 !important;
-        font-size: 13px !important;
-    }
-    
-    /* ELIMINAÇÃO TOTAL E CIRÚRGICA DOS AVISOS DE TAMANHO (200MB / FORMATOS) */
+    /* ELIMINAÇÃO TOTAL DOS AVISOS DE TAMANHO (200MB / FORMATOS) */
     div[data-testid="stFileUploader"] small,
     div[data-testid="stFileUploader"] span:nth-of-type(2),
     div[data-testid="stFileUploader"] div:has(> small),
@@ -217,7 +230,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Com os dois botões verdes idênticos e alinhados)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -225,10 +238,11 @@ with str_app.container(border=True):
 
     with col_esq:
         str_app.markdown("🔢 **ESTILO**")
+        # Opções de 1 a 20 para escolha limpa
         slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed")
-        str_app.markdown(f"<p style='font-size: 10px; font-weight:600; color: #00FF66; margin: 4px 0;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
         
-        str_app.markdown("<div style='height: 38px;'></div>", unsafe_allow_html=True)
+        # Espaçador milimétrico para igualar a altura exata da caixa de texto à direita
+        str_app.markdown("<div style='height: 52px;'></div>", unsafe_allow_html=True)
         
         if str_app.button("💾 Salvar Alteração"):
             current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
@@ -242,11 +256,10 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Totalmente limpos e alinhados)
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Limpos e alinhados)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
-    # Linha 1: Nome do Produto e Categoria
     c_l1_1, c_l1_2 = str_app.columns(2)
     with c_l1_1:
         str_app.markdown("🏷️ **NOME PRODUTO / SKU**")
@@ -257,7 +270,6 @@ with str_app.container(border=True):
 
     str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
-    # Linha 2: As 3 fotos limpas e perfeitamente alinhadas lado a lado
     c_f1, c_f2, c_f3 = str_app.columns(3)
     
     with c_f1:
