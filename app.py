@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO MILIMÉTRICO REFINADO
+# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO FINAL PERFEITO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -209,17 +209,17 @@ estilos_selecionados = str_app.multiselect(
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Perfeitamente nivelado lado a lado)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Alinhamento perfeito, sem o 'Nº' e com os dois blocos padronizados)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 col_esq, col_dir = str_app.columns([1, 2])
 
 with col_esq:
-    slot_num_edit = str_app.selectbox("Nº", options=list(str_app.session_state.db_estilos.keys()))
-    str_app.markdown(f"<p style='font-size: 10px; font-weight:600; color: #00FF66; margin: 4px 0;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
+    slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed")
+    str_app.markdown(f"<p style='font-size: 10px; font-weight:600; color: #00FF66; margin: 2px 0;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
     
     # Espaçamento estético calibrado para nivelar exatamente com a base da caixa de prompt ao lado
-    str_app.markdown("<div style='height: 42px;'></div>", unsafe_allow_html=True)
+    str_app.markdown("<div style='height: 48px;'></div>", unsafe_allow_html=True)
     
     if str_app.button("💾 Salvar Alteração"):
         current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
@@ -227,10 +227,8 @@ with col_esq:
         str_app.success(f"Estilo #{slot_num_edit} salvo!")
 
 with col_dir:
-    # Espaçador superior invisível para nivelar o topo exato da caixa com o topo do selectbox da esquerda
-    str_app.markdown("<div style='height: 22px;'></div>", unsafe_allow_html=True)
     prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
-    novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
+    novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}")
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
