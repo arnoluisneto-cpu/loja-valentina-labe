@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO FINAL PERFEITO
+# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO MILIMÉTRICO FINAL
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -81,11 +81,11 @@ str_app.markdown("""
     div[data-baseweb="popover"], div[data-baseweb="menu"], ul[data-baseweb="menu"] {
         background-color: #161026 !important;
         color: #ffffff !important;
-        border: 1px solid #00FF66 !important;
+        border: 1.5px solid #00FF66 !important;
         font-size: 13px !important;
     }
     
-    /* Uploaders compactos */
+    /* Uploaders compactos idênticos */
     div[data-testid="stFileUploader"] {
         background-color: #161026 !important;
         border: 1px solid #00FF66 !important;
@@ -209,7 +209,7 @@ estilos_selecionados = str_app.multiselect(
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Alinhamento perfeito, sem o 'Nº' e com os dois blocos padronizados)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Perfeitamente nivelado e padronizado)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 col_esq, col_dir = str_app.columns([1, 2])
@@ -218,8 +218,8 @@ with col_esq:
     slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed")
     str_app.markdown(f"<p style='font-size: 10px; font-weight:600; color: #00FF66; margin: 2px 0;'>{str_app.session_state.db_estilos[slot_num_edit]['titulo']}</p>", unsafe_allow_html=True)
     
-    # Espaçamento estético calibrado para nivelar exatamente com a base da caixa de prompt ao lado
-    str_app.markdown("<div style='height: 48px;'></div>", unsafe_allow_html=True)
+    # Espaçamento estético exato para nivelar com a base da caixa ao lado
+    str_app.markdown("<div style='height: 52px;'></div>", unsafe_allow_html=True)
     
     if str_app.button("💾 Salvar Alteração"):
         current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
@@ -228,11 +228,11 @@ with col_esq:
 
 with col_dir:
     prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
-    novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}")
+    novo_prompt_digitado = str_app.text_area("Editar Código do Prompt", value=prompt_ativo, height=140, key=f"prompt_full_{slot_num_edit}", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Perfeitamente nivelados simetricamente)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 col_input1, col_input2 = str_app.columns(2)
@@ -245,12 +245,10 @@ with col_input1:
     foto_produto_analise = str_app.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key="prod_1", label_visibility="collapsed")
     
 with col_input2:
-    str_app.markdown("<div style='height: 2px;'></div>", unsafe_allow_html=True)
     str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px;'>Foto Modelo (1:1)</p>", unsafe_allow_html=True)
     foto_modelo = str_app.file_uploader("Foto Modelo (1:1)", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
     
-    str_app.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
-    str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px;'>Foto Peça (Pixel Lock)</p>", unsafe_allow_html=True)
+    str_app.markdown("<p style='font-size:12px; font-weight:600; margin-bottom:2px; margin-top: 14px;'>Foto Peça (Pixel Lock)</p>", unsafe_allow_html=True)
     foto_peca = str_app.file_uploader("Foto Peça (Pixel Lock)", type=["jpg", "jpeg", "png"], key="p_1", label_visibility="collapsed")
 
 str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
