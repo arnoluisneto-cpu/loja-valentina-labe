@@ -278,41 +278,42 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR BLINDADO COM SELEÇÃO DIRETA (100% FUNCIONAL PARA EDITAR, RESTAURAR E EXCLUIR)
-with str_app.expander("⚙️ Gerenciar / Editar / Restaurar Estilos", expanded=True):
+# GERENCIADOR COM BOTÕES DIRETOS E IMEDIATOS (100% FUNCIONAIS)
+with str_app.expander("⚙️ Gerenciar / Editar / Restaurar / Excluir Estilos", expanded=True):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo cadastrado.")
     else:
         ids_disponiveis = sorted(list(str_app.session_state.db_estilos.keys()))
         
-        c_sel_est, c_acao_est = str_app.columns([2, 1])
+        c_sel_est = str_app.columns(1)[0]
         with c_sel_est:
             estilo_gerenciar_escolhido = str_app.selectbox(
-                "Escolha o Estilo",
+                "Escolha o Estilo para Gerenciar",
                 options=ids_disponiveis,
-                format_func=lambda x: f"#{x} - {str_app.session_state.db_estilos[x]['titulo']}",
-                label_visibility="collapsed"
-            )
-        with c_acao_est:
-            acao_escolhida = str_app.selectbox(
-                "Ação",
-                options=["Selecione a Ação...", "✏️ Editar Estilo", "🔄 Restaurar Padrão", "🗑️ Excluir Definitivo"],
-                label_visibility="collapsed"
+                format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
+                key="select_estilo_gerenciamento_direto"
             )
             
-        if str_app.button("Executar Ação no Estilo"):
-            if acao_escolhida == "Selecione a Ação...":
-                str_app.warning("⚠️ Selecione uma ação válida.")
-            elif "Editar" in acao_escolhida:
+        str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
+        
+        # Botões de ação diretos e instantâneos lado a lado
+        cb_edit, cb_rest, cb_del = str_app.columns(3)
+        
+        with cb_edit:
+            if str_app.button("✏️ EDITAR ESTILO"):
                 str_app.session_state.id_estilo_selecionado = estilo_gerenciar_escolhido
                 str_app.success(f"✅ Estilo #{estilo_gerenciar_escolhido} carregado no Editor abaixo!")
                 str_app.rerun()
-            elif "Restaurar" in acao_escolhida:
+                
+        with cb_rest:
+            if str_app.button("🔄 RESTAURAR PADRÃO"):
                 t_orig, p_orig = obter_identidade_original(estilo_gerenciar_escolhido)
                 str_app.session_state.db_estilos[estilo_gerenciar_escolhido] = {"titulo": t_orig, "prompt": p_orig}
                 str_app.success(f"🔄 Estilo #{estilo_gerenciar_escolhido} restaurado com sucesso!")
                 str_app.rerun()
-            elif "Excluir" in acao_escolhida:
+                
+        with cb_del:
+            if str_app.button("🗑️ EXCLUIR DEFINITIVO"):
                 del str_app.session_state.db_estilos[estilo_gerenciar_escolhido]
                 str_app.success(f"🗑️ Estilo #{estilo_gerenciar_escolhido} excluído definitivamente!")
                 str_app.rerun()
@@ -363,7 +364,7 @@ with str_app.container(border=True):
     with col_dir:
         str_app.markdown("📝 **CÓDIGO DO PROMPT**")
         if slot_num_edit == 0 or slot_num_edit not in str_app.session_state.db_estilos:
-            prompt_ativo = "Selecione um estilo numérico ao lado ou use o menu acima para carregar e editar."
+            prompt_ativo = "Selecione um estilo numérico ao lado ou escolha acima no gerenciador para carregar e editar."
         else:
             prompt_ativo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
             
