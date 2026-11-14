@@ -226,6 +226,10 @@ if "estilo_ativo_idx" not in str_app.session_state:
 if "acesso_liberado" not in str_app.session_state:
     str_app.session_state.acesso_liberado = False
 
+# Controle de limpeza inicial dos campos de edição para abrirem vazios
+if "ultimo_estilo_editado" not in str_app.session_state:
+    str_app.session_state.ultimo_estilo_editado = None
+
 def limpar_apenas_formulario():
     str_app.session_state.form_version += 1
     for k in ["input_nome_produto", "sel_categoria", "sel_skin", "sel_prop", "multi_estilos", "m_1", "prod_1", "p_1"]:
@@ -275,7 +279,7 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR COM VALIDAÇÃO LIMPA (SEM MENSAGENS PERMANENTES)
+# GERENCIADOR COM VALIDAÇÃO LIMPA
 SENHA_MESTRE = "vidalooka2"
 
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Restrita)", expanded=True):
@@ -362,7 +366,7 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Res
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# MODO DE OPERAÇÃO UNIFICADO (EDITAR OU INSERIR NO FINAL)
+# MODO DE OPERAÇÃO UNIFICADO (EDITAR OU INSERIR NO FINAL - ABERTURA LIMPA/VAZIA)
 todos_ids_existentes = list(str_app.session_state.db_estilos.keys())
 proximo_id_sugerido = (max(todos_ids_existentes) + 1) if todos_ids_existentes else 1
 
@@ -388,27 +392,29 @@ with str_app.container(border=True):
             
             if slot_num_edit != str_app.session_state.estilo_ativo_idx:
                 str_app.session_state.estilo_ativo_idx = slot_num_edit
+                str_app.session_state.ultimo_estilo_editado = slot_num_edit
 
-            titulo_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["titulo"]
-            prompt_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
-
-            novo_titulo_editado = str_app.text_input("Tema / Título do Estilo", value=titulo_atual_estilo, key=f"titulo_input_{slot_num_edit}")
-            texto_editado_usuario = str_app.text_area("Código do Prompt", value=prompt_atual_estilo, height=160, key=f"prompt_textarea_{slot_num_edit}")
+            # Campos abrem limpos para digitação sem texto pré-carregado
+            novo_titulo_editado = str_app.text_input("Tema / Título do Estilo", value="", placeholder="Digite o novo título ou tema...", key=f"titulo_input_{slot_num_edit}")
+            texto_editado_usuario = str_app.text_area("Código do Prompt", value="", placeholder="Digite ou cole o novo código do prompt aqui...", height=160, key=f"prompt_textarea_{slot_num_edit}")
             
             str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
             
             if str_app.button("💾 SALVAR ALTERAÇÃO"):
-                with str_app.spinner(f"💾 Salvando alterações do Estilo {slot_num_edit}..."):
-                    time.sleep(0.4)
-                    str_app.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
-                    str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
-                str_app.success(f"✨ Estilo {slot_num_edit} alterado e salvo com sucesso!")
-                time.sleep(0.8)
-                str_app.rerun()
+                if not novo_titulo_editado or not texto_editado_usuario:
+                    str_app.warning("⚠️ Preencha o Título e o Código do prompt antes de salvar.")
+                else:
+                    with str_app.spinner(f"💾 Salvando alterações do Estilo {slot_num_edit}..."):
+                        time.sleep(0.4)
+                        str_app.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
+                        str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
+                    str_app.success(f"✨ Estilo {slot_num_edit} alterado e salvo com sucesso!")
+                    time.sleep(0.8)
+                    str_app.rerun()
         else:
             str_app.write("Nenhum estilo disponível.")
     else:
-        novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="campo_novo_titulo_valencia_fixo")
+        novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value="", placeholder="Ex: Novo Estilo Personalizado...", key="campo_novo_titulo_valencia_fixo")
         novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=160, key="campo_novo_prompt_valencia_fixo")
         
         str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
