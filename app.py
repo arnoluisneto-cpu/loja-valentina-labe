@@ -218,7 +218,7 @@ if "fila_exclusoes" not in str_app.session_state:
     str_app.session_state.fila_exclusoes = []
 
 if "form_version" not in str_app.session_state:
-    str_app.session_version = 0
+    str_app.session_state.form_version = 0
 
 if "estilo_ativo_idx" not in str_app.session_state:
     str_app.session_state.estilo_ativo_idx = 1
@@ -272,15 +272,14 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR COM CAIXA DE SENHA (CADEADO)
-SENHA_MESTRE = "valentina123"  # Defina sua senha comercial aqui
+# GERENCIADOR COM CAIXA DE SENHA SIMPLES (123)
+SENHA_MESTRE = "123"  # Senha simples e direta para uso rápido
 
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Restrita)", expanded=True):
-    # Caixinha com o cadeado ao lado/acima
     col_s1, col_s2 = str_app.columns([2, 1])
     with col_s1:
-        str_app.markdown("🔐 **SENHA ADMINISTRATIVA**")
-        senha_digitada = str_app.text_input("Senha", type="password", placeholder="Digite a senha...", label_visibility="collapsed", key="input_senha_adm")
+        str_app.markdown("🔐 **SENHA ADMINISTRATIVA (Digite: 123)**")
+        senha_digitada = str_app.text_input("Senha", placeholder="Digite 123...", label_visibility="collapsed", key="input_senha_adm")
     with col_s2:
         str_app.markdown("🛡️ **STATUS ACESSO**")
         if senha_digitada == SENHA_MESTRE:
@@ -355,7 +354,7 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Res
                 time.sleep(0.8)
                 str_app.rerun()
     else:
-        str_app.markdown("<p style='color: #ff4d4d; font-size: 12px; text-align: center;'>🔒 Digite a senha correta acima para liberar as opções de gerenciamento, restauração e exclusão de estilos.</p>", unsafe_allow_html=True)
+        str_app.markdown("<p style='color: #ff4d4d; font-size: 12px; text-align: center;'>🔒 Digite a senha <b>123</b> acima para liberar as opções de gerenciamento, restauração e exclusão de estilos.</p>", unsafe_allow_html=True)
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
