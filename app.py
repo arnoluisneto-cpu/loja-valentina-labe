@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM CORREÇÃO DOS DROPDOWNS (SCROLL NO MULTISELECT E LARGURA NO SKIN)
+# ESTÉTICA DE ALTO LUXO COM ALINHAMENTO PERFEITO DO SELETOR E BOTÃO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -74,7 +74,7 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* CORREÇÃO DO DROPDOWN DO DIRETOR SKIN (Texto inteiro visível e com espaço) */
+    /* CORREÇÃO DO DROPDOWN DO DIRETOR SKIN (Texto inteiro visível) */
     div[data-testid="stSelectbox"] {
         width: 100% !important;
     }
@@ -97,9 +97,15 @@ str_app.markdown("""
         overflow-y: auto !important;
     }
     
-    /* TRAVA CIRÚRGICA: LARGURA DO SELETOR DE ESTILO DO EDITOR DE PROMPT */
-    div.row-widget.stSelectbox:has(input[aria-autocomplete="list"]) {
-        max-width: 115px !important;
+    /* TRAVA CIRÚRGICA EXATA: LARGURA DO SELETOR DE ESTILO IGUAL AO BOTÃO SALVAR */
+    div[data-testid="stVerticalBlock"] > div:nth-child(2) div[data-testid="stSelectbox"],
+    div.row-widget.stSelectbox {
+        max-width: 100% !important;
+    }
+    
+    /* Força o seletor do Editor de Prompt a ter largura idêntica ao botão de salvar */
+    div[data-baseweb="select"]:has(input[aria-autocomplete="list"]) {
+        width: 100% !important;
     }
     
     div[data-baseweb="select"]:has(input[aria-autocomplete="list"]) > div,
@@ -112,7 +118,7 @@ str_app.markdown("""
         max-height: 36px !important;
         padding-top: 2px !important;
         padding-bottom: 2px !important;
-        width: 115px !important;
+        width: 100% !important;
     }
     
     div[data-baseweb="select"] span, div[data-baseweb="select"] svg {
@@ -188,7 +194,7 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# 1. TOPO DA APLICAÇÃO (Banner Novo: Título Gigante e Estiloso)
+# 1. TOPO DA APLICAÇÃO (Banner Impactante)
 str_app.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
@@ -266,7 +272,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Seletor compacto alinhado perfeitamente ao botão)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Seletor perfeitamente alinhado e igual ao botão salvar)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
