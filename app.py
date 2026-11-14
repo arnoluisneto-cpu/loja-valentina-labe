@@ -282,67 +282,68 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# EDITOR DE PROMPT E INSERÇÃO DE NOVO ESTILO
-str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR & INSERÇÃO DE PROMPT</p>", unsafe_allow_html=True)
+# ÚNICA CAIXA UNIFICADA: EDITOR E INSERÇÃO DE PROMPT
+proximo_id_sugerido = (max(str_app.session_state.db_estilos.keys()) + 1) if str_app.session_state.db_estilos else 1
+modo_operacao = str_app.radio("Modo de Operação", ["✏️ Editar Estilo Existente", f"➕ Inserir Novo (Estilo #{proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed")
+
+str_app.markdown(f"<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>{modo_operacao.upper()}</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
     opcoes_editor = sorted(list(str_app.session_state.db_estilos.keys())) if str_app.session_state.db_estilos else []
     
-    if opcoes_editor:
-        if str_app.session_state.estilo_ativo_idx not in opcoes_editor:
-            str_app.session_state.estilo_ativo_idx = opcoes_editor[0]
+    if "Editar" in modo_operacao:
+        if opcoes_editor:
+            if str_app.session_state.estilo_ativo_idx not in opcoes_editor:
+                str_app.session_state.estilo_ativo_idx = opcoes_editor[0]
+                
+            slot_num_edit = str_app.selectbox(
+                "Selecione o Estilo para Editar", 
+                options=opcoes_editor, 
+                index=opcoes_editor.index(str_app.session_state.estilo_ativo_idx) if str_app.session_state.estilo_ativo_idx in opcoes_editor else 0,
+                format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
+                key="select_editor_direto_id"
+            )
             
-        slot_num_edit = str_app.selectbox(
-            "Selecione o Estilo para Editar", 
-            options=opcoes_editor, 
-            index=opcoes_editor.index(str_app.session_state.estilo_ativo_idx) if str_app.session_state.estilo_ativo_idx in opcoes_editor else 0,
-            format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
-            key="select_editor_direto_id"
-        )
-        
-        if slot_num_edit != str_app.session_state.estilo_ativo_idx:
-            str_app.session_state.estilo_ativo_idx = slot_num_edit
+            if slot_num_edit != str_app.session_state.estilo_ativo_idx:
+                str_app.session_state.estilo_ativo_idx = slot_num_edit
 
-        titulo_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["titulo"]
-        prompt_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
+            titulo_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["titulo"]
+            prompt_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
 
-        novo_titulo_editado = str_app.text_input("Tema / Título do Estilo", value=titulo_atual_estilo, key=f"titulo_input_{slot_num_edit}")
-        texto_editado_usuario = str_app.text_area("Código do Prompt", value=prompt_atual_estilo, height=160, key=f"prompt_textarea_{slot_num_edit}")
+            novo_titulo_editado = str_app.text_input("Tema / Título do Estilo", value=titulo_atual_estilo, key=f"titulo_input_{slot_num_edit}")
+            texto_editado_usuario = str_app.text_area("Código do Prompt", value=prompt_atual_estilo, height=160, key=f"prompt_textarea_{slot_num_edit}")
+            
+            str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
+            
+            if str_app.button("💾 SALVAR ALTERAÇÃO"):
+                str_app.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
+                str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
+                str_app.success(f"✅ Estilo #{slot_num_edit} salvo com sucesso!")
+                str_app.rerun()
+        else:
+            str_app.write("Nenhum estilo disponível.")
+    else:
+        # Modo Inserir Novo no Final da Sequência
+        novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="campo_novo_titulo_valencia_fixo")
+        novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=160, key="campo_novo_prompt_valencia_fixo")
         
         str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
         
-        if str_app.button("💾 SALVAR ALTERAÇÃO"):
-            str_app.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
-            str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
-            str_app.success(f"✅ Estilo #{slot_num_edit} salvo com sucesso!")
-            str_app.rerun()
-
-    str_app.markdown("<div style='margin: 12px 0; border-top: 1px solid #8A2BE2;'></div>", unsafe_allow_html=True)
-    
-    # SEÇÃO DEDICADA PARA INSERIR NOVO PROMPT EXCLUSIVAMENTE NO FINAL (Ex: 21, 22, 23...)
-    proximo_id_sugerido = (max(str_app.session_state.db_estilos.keys()) + 1) if str_app.session_state.db_estilos else 1
-    
-    str_app.markdown(f"➕ **INSERIR NOVO PROMPT NO FINAL (PRÓXIMO: Estilo #{proximo_id_sugerido})**")
-    
-    novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="campo_novo_titulo_valencia_fixo")
-    novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=140, key="campo_novo_prompt_valencia_fixo")
-    
-    if str_app.button("📥 INSERIR E SALVAR NO FINAL"):
-        if not novo_titulo_input or not novo_prompt_input:
-            str_app.warning("⚠️ Preencha o Título e o Código do novo prompt.")
-        else:
-            # Pega o maior ID existente de forma estrita e soma 1 para garantir que nunca sobrescreva o 1
-            max_id = max(str_app.session_state.db_estilos.keys()) if str_app.session_state.db_estilos else 0
-            novo_id = max_id + 1
-            
-            str_app.session_state.db_estilos[novo_id] = {
-                "titulo": novo_titulo_input,
-                "prompt": novo_prompt_input
-            }
-            reindexar_estilos()
-            str_app.session_state.estilo_ativo_idx = novo_id
-            str_app.success(f"🎉 Novo Estilo #{novo_id} inserido com sucesso no final da sequência!")
-            str_app.rerun()
+        if str_app.button("📥 INSERIR E SALVAR NO FINAL"):
+            if not novo_titulo_input or not novo_prompt_input:
+                str_app.warning("⚠️ Preencha o Título e o Código do novo prompt.")
+            else:
+                max_id = max(str_app.session_state.db_estilos.keys()) if str_app.session_state.db_estilos else 0
+                novo_id = max_id + 1
+                
+                str_app.session_state.db_estilos[novo_id] = {
+                    "titulo": novo_titulo_input,
+                    "prompt": novo_prompt_input
+                }
+                reindexar_estilos()
+                str_app.session_state.estilo_ativo_idx = novo_id
+                str_app.success(f"🎉 Novo Estilo #{novo_id} inserido com sucesso no final da sequência!")
+                str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
