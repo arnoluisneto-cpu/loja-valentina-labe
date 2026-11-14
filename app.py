@@ -233,8 +233,8 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR DIRETO E BLINDADO (Comando por Botões Nativos)
-with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
+# GERENCIADOR COM OS BOTÕES EXATOS: EDITAR, RESTAURAR E EXCLUIR DEFINITIVO
+with str_app.expander("⚙️ Gerenciar / Editar / Restaurar / Excluir Estilos", expanded=True):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo na memória.")
         if str_app.button("🔄 RECRIAR TODOS OS 20 ESTILOS"):
@@ -257,23 +257,20 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
         
         col_b1, col_b2, col_b3 = str_app.columns(3)
         
-        if col_b1.button("🔄 RESTAURAR ESTILO"):
+        if col_b1.button("✏️ EDITAR"):
+            str_app.session_state.estilo_ativo_idx = estilo_escolhido
+            str_app.success(f"Estilo #{estilo_escolhido} carregado no Editor abaixo!")
+            str_app.rerun()
+            
+        if col_b2.button("🔄 RESTAURAR"):
             t_orig, p_orig = obter_identidade_original(estilo_escolhido)
             str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
             str_app.success(f"Estilo #{estilo_escolhido} restaurado ao original!")
             str_app.rerun()
             
-        if col_b2.button("🗑️ EXCLUIR ESTILO"):
+        if col_b3.button("🗑️ EXCLUIR DEFINITIVO"):
             del str_app.session_state.db_estilos[estilo_escolhido]
-            str_app.warning(f"Estilo #{estilo_escolhido} excluído!")
-            str_app.rerun()
-            
-        if col_b3.button("➕ RECRIAR TODOS"):
-            for i in range(1, 21):
-                if i not in str_app.session_state.db_estilos:
-                    t, p = obter_identidade_original(i)
-                    str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
-            str_app.success("Grade de 1 a 20 restaurada!")
+            str_app.warning(f"Estilo #{estilo_escolhido} excluído permanentemente!")
             str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
@@ -291,10 +288,15 @@ with str_app.container(border=True):
         slot_num_edit = str_app.selectbox(
             "Selecione o Estilo para Editar", 
             options=opcoes_editor, 
+            index=opcoes_editor.index(str_app.session_state.estilo_ativo_idx) if str_app.session_state.estilo_ativo_idx in opcoes_editor else 0,
             format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
             key="select_editor_direto_id"
         )
         
+        # Atualiza o índice ativo se o usuário mexer manualmente no selectbox do editor
+        if slot_num_edit != str_app.session_state.estilo_ativo_idx:
+            str_app.session_state.estilo_ativo_idx = slot_num_edit
+
         prompt_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
 
         texto_editado_usuario = str_app.text_area("Editar Código", value=prompt_atual_estilo, height=160, key="caixa_texto_prompt_direta")
@@ -303,7 +305,7 @@ with str_app.container(border=True):
             str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
             str_app.success(f"✅ Alterações do Estilo #{slot_num_edit} salvas com sucesso!")
     else:
-        str_app.write("Nenhum estilo disponível para edição. Clique em 'Recriar Todos' acima.")
+        str_app.write("Nenhum estilo disponível. Recriar estilos necessário.")
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
