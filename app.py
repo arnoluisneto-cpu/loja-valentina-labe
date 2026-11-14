@@ -180,7 +180,7 @@ if "db_estilos" not in str_app.session_state:
         str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
 
 if "fila_exclusoes" not in str_app.session_state:
-    str_app.session_state.fila_exclusoes = [] # Guarda a ordem exata em que os IDs foram apagados
+    str_app.session_state.fila_exclusoes = []
 
 if "form_version" not in str_app.session_state:
     str_app.session_state.form_version = 0
@@ -237,7 +237,7 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR (TOPO): EXCLUIR E RESTAURAR NA ORDEM EXATA DE EXCLUSÃO
+# GERENCIADOR (TOPO): EXCLUIR E RESTAURAR NA ORDEM EXATA DE EXCLUSÃO (SEM HASHTAG)
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
     col_ger1, col_ger2 = str_app.columns(2)
     
@@ -245,19 +245,18 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
         texto_botao_restaurar = "🔄 RESTAURAR PRÓXIMO APAGADO"
         if str_app.session_state.fila_exclusoes:
             proximo_a_voltar = str_app.session_state.fila_exclusoes[0]
-            texto_botao_restaurar = f"🔄 RESTAURAR ESTILO #{proximo_a_voltar}"
+            texto_botao_restaurar = f"🔄 RESTAURAR ESTILO {proximo_a_voltar}"
 
         if str_app.button(texto_botao_restaurar):
             if str_app.session_state.fila_exclusoes:
-                # Pega exatamente o primeiro ID que foi apagado (FIFO)
                 id_para_restaurar = str_app.session_state.fila_exclusoes.pop(0)
                 
-                with str_app.spinner(f"🔄 Restaurando Estilo #{id_para_restaurar} em sua numeração original..."):
+                with str_app.spinner(f"🔄 Restaurando Estilo {id_para_restaurar} em sua numeração original..."):
                     time.sleep(0.4)
                     t_orig, p_orig = obter_identidade_original(id_para_restaurar)
                     str_app.session_state.db_estilos[id_para_restaurar] = {"titulo": t_orig, "prompt": p_orig}
                 
-                str_app.success(f"✅ Estilo #{id_para_restaurar} retornado com sucesso para a numeração {id_para_restaurar}!")
+                str_app.success(f"✅ Estilo {id_para_restaurar} retornado com sucesso para a numeração {id_para_restaurar}!")
                 time.sleep(0.8)
                 str_app.rerun()
             else:
@@ -286,33 +285,31 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
         estilo_escolhido = str_app.selectbox(
             "Selecione o Estilo para Excluir",
             options=ids_disp,
-            format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
+            format_func=lambda x: f"Estilo {x} - {str_app.session_state.db_estilos[x]['titulo']}",
             key="selectbox_gerenciador_topo"
         )
         
         str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
         
         if str_app.button("🗑️ EXCLUIR ESTILO SELECIONADO"):
-            with str_app.spinner(f"🗑️ Excluindo Estilo #{estilo_escolhido}..."):
+            with str_app.spinner(f"🗑️ Excluindo Estilo {estilo_escolhido}..."):
                 time.sleep(0.3)
-                # Salva na fila de exclusões a ordem exata em que foi apagado
                 if estilo_escolhido not in str_app.session_state.fila_exclusoes:
                     str_app.session_state.fila_exclusoes.append(estilo_escolhido)
                 
                 del str_app.session_state.db_estilos[estilo_escolhido]
             
-            str_app.success(f"🗑️ Estilo #{estilo_escolhido} excluído e guardado na fila para restauração exata!")
+            str_app.success(f"🗑️ Estilo {estilo_escolhido} excluído e guardado na fila para restauração exata!")
             time.sleep(0.8)
             str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
 # MODO DE OPERAÇÃO UNIFICADO (EDITAR OU INSERIR NO FINAL)
-# Para novos inseridos criados manualmente além do 20, calculamos o próximo ID livre acima do 20
 todos_ids_existentes = list(str_app.session_state.db_estilos.keys())
 proximo_id_sugerido = (max(todos_ids_existentes) + 1) if todos_ids_existentes else 1
 
-modo_operacao = str_app.radio("Modo de Operação", ["✏️ Editar Estilo Existente", f"➕ Inserir Novo (Estilo #{proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed")
+modo_operacao = str_app.radio("Modo de Operação", ["✏️ Editar Estilo Existente", f"➕ Inserir Novo (Estilo {proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed")
 
 str_app.markdown(f"<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>{modo_operacao.upper()}</p>", unsafe_allow_html=True)
 
@@ -328,7 +325,7 @@ with str_app.container(border=True):
                 "Selecione o Estilo para Editar", 
                 options=opcoes_editor, 
                 index=opcoes_editor.index(str_app.session_state.estilo_ativo_idx) if str_app.session_state.estilo_ativo_idx in opcoes_editor else 0,
-                format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
+                format_func=lambda x: f"Estilo {x} - {str_app.session_state.db_estilos[x]['titulo']}",
                 key="select_editor_direto_id"
             )
             
@@ -344,17 +341,16 @@ with str_app.container(border=True):
             str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
             
             if str_app.button("💾 SALVAR ALTERAÇÃO"):
-                with str_app.spinner(f"💾 Salvando alterações do Estilo #{slot_num_edit}..."):
+                with str_app.spinner(f"💾 Salvando alterações do Estilo {slot_num_edit}..."):
                     time.sleep(0.4)
                     str_app.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
                     str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
-                str_app.success(f"✨ Estilo #{slot_num_edit} alterado e salvo com sucesso!")
+                str_app.success(f"✨ Estilo {slot_num_edit} alterado e salvo com sucesso!")
                 time.sleep(0.8)
                 str_app.rerun()
         else:
             str_app.write("Nenhum estilo disponível.")
     else:
-        # Modo Inserir Novo (apenas para novos criados além dos originais)
         novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="campo_novo_titulo_valencia_fixo")
         novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=160, key="campo_novo_prompt_valencia_fixo")
         
@@ -364,14 +360,14 @@ with str_app.container(border=True):
             if not novo_titulo_input or not novo_prompt_input:
                 str_app.warning("⚠️ Preencha o Título e o Código do novo prompt.")
             else:
-                with str_app.spinner(f"📥 Inserindo Estilo #{proximo_id_sugerido}..."):
+                with str_app.spinner(f"📥 Inserindo Estilo {proximo_id_sugerido}..."):
                     time.sleep(0.4)
                     str_app.session_state.db_estilos[proximo_id_sugerido] = {
                         "titulo": novo_titulo_input,
                         "prompt": novo_prompt_input
                     }
                     str_app.session_state.estilo_ativo_idx = proximo_id_sugerido
-                str_app.success(f"🎉 Novo Estilo #{proximo_id_sugerido} inserido com sucesso!")
+                str_app.success(f"🎉 Novo Estilo {proximo_id_sugerido} inserido com sucesso!")
                 time.sleep(0.8)
                 str_app.rerun()
 
@@ -436,7 +432,7 @@ if gerar_clicado:
             horario_postagem = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
             prompt_ativo_slot = mapa_prompts.get(estilo_titulo, "Prompt não encontrado.")
 
-            str_app.markdown(f"### 🎬 Prompt #{prompt_numero} • {horario_postagem}")
+            str_app.markdown(f"### 🎬 Prompt {prompt_numero} • {horario_postagem}")
             str_app.markdown(
                 '<div class="metric-card">'
                 f'<span class="tag-estilo">{estilo_titulo}</span><br>',
