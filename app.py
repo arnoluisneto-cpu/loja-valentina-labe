@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM O BOTÃO DE RESET INTELIGENTE INTEGRADO
+# ESTÉTICA DE ALTO LUXO COM O BOTÃO DE RESET FUNCIONAL E BLINDADO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -164,16 +164,11 @@ str_app.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# LÓGICA DE RESET INTELIGENTE (LIMPEZA DE ESTADO)
-if "reset_trigger" not in str_app.session_state:
-    str_app.session_state.reset_trigger = False
-
-if str_app.session_state.get("fazer_reset", False):
+# FUNÇÃO DE CALLBACK PARA LIMPAR O APP SEM REINICIAR A PÁGINA EXTERNAMENTE
+def reiniciar_aplicativo():
     for key in list(str_app.session_state.keys()):
-        if key not in ["db_estilos"]:
+        if key != "db_estilos":
             del str_app.session_state[key]
-    str_app.session_state.fazer_reset = False
-    str_app.rerun()
 
 # 1. TOPO DA APLICAÇÃO (Banner Impactante)
 str_app.markdown("""
@@ -183,12 +178,10 @@ str_app.markdown("""
     </div>
 """, unsafe_allow_html=True)
 
-# BOTÃO DE REINICIAR / LIMPAR CAMPOS DENTRO DO APP
+# BOTÃO DE REINICIAR / LIMPAR CAMPOS COM CALLBACK DIRETO
 col_res1, col_res2, col_res3 = str_app.columns([2, 2, 2])
 with col_res2:
-    if str_app.button("🔄 Limpar Tudo / Novo Produto"):
-        str_app.session_state.fazer_reset = True
-        str_app.rerun()
+    str_app.button("🔄 Limpar Tudo / Novo Produto", on_click=reiniciar_aplicativo)
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
@@ -262,12 +255,12 @@ c_grid1, c_grid2, c_grid3 = str_app.columns(3)
 with c_grid1:
     with str_app.container(border=True):
         str_app.markdown("🎬 **DIRETOR SKIN**")
-        diretor_skin = str_app.selectbox("Skin", ["BOY (Elite Director)", "UGC LIFESTYLE"], label_visibility="collapsed")
+        diretor_skin = str_app.selectbox("Skin", ["BOY (Elite Director)", "UGC LIFESTYLE"], label_visibility="collapsed", key="sel_skin")
 
 with c_grid2:
     with str_app.container(border=True):
         str_app.markdown("📱 **PROPORÇÃO**")
-        proporcao = str_app.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"], label_visibility="collapsed")
+        proporcao = str_app.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"], label_visibility="collapsed", key="sel_prop")
 
 with c_grid3:
     with str_app.container(border=True):
@@ -281,12 +274,13 @@ with str_app.container(border=True):
         "Selecione",
         options=lista_titulos_geral,
         default=[str_app.session_state.db_estilos[20]["titulo"]],
-        label_visibility="collapsed"
+        label_visibility="collapsed",
+        key="multi_estilos"
     )
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Caixinha limpa e perfeitamente alinhada ao botão Salvar)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Caixinha limpa e alinhada ao botão Salvar)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -297,7 +291,7 @@ with str_app.container(border=True):
         
         # Container com largura idêntica ao botão de salvar
         str_app.markdown('<div style="max-width: 200px;">', unsafe_allow_html=True)
-        slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed")
+        slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed", key="sel_estilo_edit")
         str_app.markdown('</div>', unsafe_allow_html=True)
         
         str_app.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
@@ -321,10 +315,10 @@ with str_app.container(border=True):
     c_l1_1, c_l1_2 = str_app.columns(2)
     with c_l1_1:
         str_app.markdown("🏷️ **NOME PRODUTO / SKU**")
-        produto_nome = str_app.text_input("Nome", placeholder="Ex: Sandália Gigil...", label_visibility="collapsed")
+        produto_nome = str_app.text_input("Nome", placeholder="Ex: Sandália Gigil...", label_visibility="collapsed", key="input_nome_produto")
     with c_l1_2:
         str_app.markdown("📂 **CATEGORIA**")
-        tipo_produto = str_app.selectbox("Categoria", ["Calçado / Tênis / Sandália", "Acessório", "Vestuário", "Bolsa", "Outros"], label_visibility="collapsed")
+        tipo_produto = str_app.selectbox("Categoria", ["Calçado / Tênis / Sandália", "Acessório", "Vestuário", "Bolsa", "Outros"], label_visibility="collapsed", key="sel_categoria")
 
     str_app.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
