@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM EDITOR DE PROMPT PADRONIZADO E VERDE NEON
+# ESTÉTICA DE ALTO LUXO (COM CORREÇÃO DE ALTURA DO SELETOR E BOTÃO SALVAR)
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -18,7 +18,7 @@ str_app.markdown("""
         font-family: 'Inter', sans-serif !important;
     }
     
-    /* Botões e seletores compactos elegantes com fundo verde neon */
+    /* Botões compactos elegantes */
     .stButton>button, div[data-testid="stFileUploader"] button {
         background-color: #00FF66 !important;
         color: #000000 !important;
@@ -63,13 +63,17 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* ESTILIZAÇÃO CIRÚRGICA DO SELETOR DE ESTILO (Fundo Verde Neon igual ao Botão Salvar) */
+    /* REDUÇÃO EXATA DA ALTURA DO SELETOR DE ESTILO (para ficar menor e compacto) */
     div[data-baseweb="select"]:has(input[aria-autocomplete="list"]) > div,
     div[data-baseweb="select"] > div:first-child {
         background-color: #00FF66 !important;
         color: #000000 !important;
         border: none !important;
         font-weight: 700 !important;
+        min-height: 30px !important;
+        max-height: 34px !important;
+        padding-top: 0px !important;
+        padding-bottom: 0px !important;
     }
     
     div[data-baseweb="select"] span, div[data-baseweb="select"] svg {
@@ -230,7 +234,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Com os dois botões verdes idênticos e alinhados)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Com o seletor compacto e o botão salvar puxados para cima)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -238,11 +242,10 @@ with str_app.container(border=True):
 
     with col_esq:
         str_app.markdown("🔢 **ESTILO**")
-        # Opções de 1 a 20 para escolha limpa
         slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed")
         
-        # Espaçador milimétrico para igualar a altura exata da caixa de texto à direita
-        str_app.markdown("<div style='height: 52px;'></div>", unsafe_allow_html=True)
+        # Espaçamento reduzido milimetricamente para o botão salvar colar logo abaixo
+        str_app.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
         
         if str_app.button("💾 Salvar Alteração"):
             current_val = str_app.session_state.get(f"prompt_full_{slot_num_edit}", str_app.session_state.db_estilos[slot_num_edit]["prompt"])
@@ -256,7 +259,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Limpos e alinhados)
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Com "FOTO MODELO" limpa, sem o "(1:1)")
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -273,7 +276,7 @@ with str_app.container(border=True):
     c_f1, c_f2, c_f3 = str_app.columns(3)
     
     with c_f1:
-        str_app.markdown("👩 **FOTO MODELO (1:1)**")
+        str_app.markdown("👩 **FOTO MODELO**")
         foto_modelo = str_app.file_uploader("Foto Modelo", type=["jpg", "jpeg", "png"], key="m_1", label_visibility="collapsed")
         
     with c_f2:
