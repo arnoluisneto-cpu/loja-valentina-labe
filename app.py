@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM CORREÇÃO CIRÚRGICA DA LARGURA DO SELETOR
+# ESTÉTICA DE ALTO LUXO COM TRAVA DE LARGURA EXATA PARA O SELETOR DE ESTILO
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -63,9 +63,9 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* TRAVA CIRÚRGICA PARA LIMITAR A LARGURA DO SELETOR DE ESTILO AO MESMO TAMANHO DO BOTÃO */
+    /* TRAVA CIRÚRGICA: LIMITA A LARGURA E ALTURA DO SELETOR DE ESTILO PARA FICAR IGUAL AO BOTÃO SALVAR */
     div[data-testid="stSelectbox"] {
-        max-width: 100% !important;
+        max-width: 180px !important;
     }
     
     div[data-baseweb="select"]:has(input[aria-autocomplete="list"]) > div,
@@ -78,7 +78,7 @@ str_app.markdown("""
         max-height: 36px !important;
         padding-top: 2px !important;
         padding-bottom: 2px !important;
-        width: 100% !important;
+        width: 180px !important;
     }
     
     div[data-baseweb="select"] span, div[data-baseweb="select"] svg {
@@ -239,7 +239,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Com controle rígido de largura e simetria)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Com o seletor travado na largura exata do botão salvar)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -249,7 +249,7 @@ with str_app.container(border=True):
         str_app.markdown("🔢 **ESTILO**")
         slot_num_edit = str_app.selectbox("Estilo", options=list(str_app.session_state.db_estilos.keys()), label_visibility="collapsed")
         
-        # Espaçamento milimétrico ajustado para colar o botão salvar perfeitamente embaixo
+        # Espaçamento milimétrico ajustado
         str_app.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
         
         if str_app.button("💾 Salvar Alteração"):
