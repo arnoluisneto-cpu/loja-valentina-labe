@@ -7,7 +7,7 @@ str_app.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO COM BOTÕES E SELETORES PERFEITAMENTE SIMÉTRICOS
+# ESTÉTICA DE ALTO LUXO COM CORREÇÃO CIRÚRGICA DA LARGURA DO SELETOR
 str_app.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap');
@@ -63,7 +63,11 @@ str_app.markdown("""
         font-size: 13px !important;
     }
     
-    /* PADRONIZAÇÃO EXATA DO SELETOR DE ESTILO PARA O MESMO TAMANHO DO BOTÃO SALVAR */
+    /* TRAVA CIRÚRGICA PARA LIMITAR A LARGURA DO SELETOR DE ESTILO AO MESMO TAMANHO DO BOTÃO */
+    div[data-testid="stSelectbox"] {
+        max-width: 100% !important;
+    }
+    
     div[data-baseweb="select"]:has(input[aria-autocomplete="list"]) > div,
     div[data-baseweb="select"] > div:first-child {
         background-color: #00FF66 !important;
@@ -74,6 +78,7 @@ str_app.markdown("""
         max-height: 36px !important;
         padding-top: 2px !important;
         padding-bottom: 2px !important;
+        width: 100% !important;
     }
     
     div[data-baseweb="select"] span, div[data-baseweb="select"] svg {
@@ -234,7 +239,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 3. SEÇÃO 2: EDITOR DE PROMPT (Com os dois quadradinhos perfeitamente padronizados)
+# 3. SEÇÃO 2: EDITOR DE PROMPT (Com controle rígido de largura e simetria)
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -259,7 +264,7 @@ with str_app.container(border=True):
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS (Com "FOTO MODELO" limpa)
+# 4. SEÇÃO 3: DADOS DO PRODUTO & UPLOADS
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
