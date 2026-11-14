@@ -233,8 +233,8 @@ with str_app.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR COM AÇÃO POR SELECTBOX + BOTÃO ÚNICO DE EXECUÇÃO (GARANTIA TOTAL)
-with str_app.expander("⚙️ Gerenciar / Editar / Restaurar / Excluir Estilos", expanded=True):
+# GERENCIADOR APENAS COM EXCLUIR E RESTAURAR (LÁ EM CIMA)
+with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo na memória.")
         if str_app.button("🔄 RECRIAR TODOS OS 20 ESTILOS"):
@@ -246,34 +246,26 @@ with str_app.expander("⚙️ Gerenciar / Editar / Restaurar / Excluir Estilos",
     else:
         ids_disp = sorted(list(str_app.session_state.db_estilos.keys()))
         
-        c_est, c_ac = str_app.columns([2, 2])
-        with c_est:
-            estilo_escolhido = str_app.selectbox(
-                "Estilo",
-                options=ids_disp,
-                format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
-                key="selectbox_gerenciador_estilo"
-            )
-        with c_ac:
-            acao_escolhida = str_app.selectbox(
-                "Ação",
-                options=["✏️ Editar Estilo", "🔄 Restaurar Padrão", "🗑️ Excluir Definitivo"],
-                key="selectbox_gerenciador_acao"
-            )
-            
+        estilo_escolhido = str_app.selectbox(
+            "Selecione o Estilo",
+            options=ids_disp,
+            format_func=lambda x: f"Estilo #{x} - {str_app.session_state.db_estilos[x]['titulo']}",
+            key="selectbox_gerenciador_topo"
+        )
+        
         str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
         
-        if str_app.button("⚡ EXECUTAR AÇÃO SELECIONADA"):
-            if "Editar" in acao_escolhida:
-                str_app.session_state.estilo_ativo_idx = estilo_escolhido
-                str_app.success(f"Estilo #{estilo_escolhido} carregado no Editor abaixo com sucesso!")
-                str_app.rerun()
-            elif "Restaurar" in acao_escolhida:
+        col_r1, col_r2 = str_app.columns(2)
+        
+        with col_r1:
+            if str_app.button("🔄 RESTAURAR ESTILO"):
                 t_orig, p_orig = obter_identidade_original(estilo_escolhido)
                 str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
                 str_app.success(f"Estilo #{estilo_escolhido} restaurado para o original de fábrica!")
                 str_app.rerun()
-            elif "Excluir" in acao_escolhida:
+                
+        with col_r2:
+            if str_app.button("🗑️ EXCLUIR DEFINITIVO"):
                 del str_app.session_state.db_estilos[estilo_escolhido]
                 str_app.warning(f"Estilo #{estilo_escolhido} excluído permanentemente!")
                 str_app.rerun()
@@ -288,7 +280,7 @@ with str_app.expander("⚙️ Gerenciar / Editar / Restaurar / Excluir Estilos",
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# EDITOR DE PROMPT UNIFICADO E DIRETO
+# EDITOR DE PROMPT COM SALVAR E INSERIR NOVO PROMPT LADO A LADO
 str_app.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>✏️ EDITOR DE PROMPT</p>", unsafe_allow_html=True)
 
 with str_app.container(border=True):
@@ -313,9 +305,24 @@ with str_app.container(border=True):
 
         texto_editado_usuario = str_app.text_area("Editar Código", value=prompt_atual_estilo, height=160, key="caixa_texto_prompt_direta")
         
-        if str_app.button("💾 SALVAR ALTERAÇÃO DO PROMPT"):
-            str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
-            str_app.success(f"✅ Alterações do Estilo #{slot_num_edit} salvas com sucesso!")
+        str_app.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
+        
+        # Botões Salvar e Inserir Novo Prompt Lado a Lado
+        col_s1, col_s2 = str_app.columns(2)
+        
+        with col_s1:
+            if str_app.button("💾 SALVAR ALTERAÇÃO"):
+                str_app.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
+                str_app.success(f"✅ Alterações do Estilo #{slot_num_edit} salvas com sucesso!")
+                
+        with col_s2:
+            if str_app.button("➕ INSERIR NOVO PROMPT"):
+                novo_id = max(str_app.session_state.db_estilos.keys()) + 1 if str_app.session_state.db_estilos else 1
+                titulo_novo = f"Estilo {novo_id}: Novo Estilo Personalizado Valentina"
+                str_app.session_state.db_estilos[novo_id] = {"titulo": titulo_novo, "prompt": texto_editado_usuario}
+                str_app.session_state.estilo_ativo_idx = novo_id
+                str_app.success(f"🎉 Novo Estilo #{novo_id} inserido com sucesso na grade!")
+                str_app.rerun()
     else:
         str_app.write("Nenhum estilo disponível. Recriar estilos necessário.")
 
