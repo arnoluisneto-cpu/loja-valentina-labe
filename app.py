@@ -171,12 +171,20 @@ def obter_identidade_original(i):
         )
     return titulo_texto, prompt_texto
 
-# GESTÃO DE ESTADOS
+# GESTÃO DE ESTADOS & REINDEXAÇÃO AUTOMÁTICA
 if "db_estilos" not in str_app.session_state:
     str_app.session_state.db_estilos = {}
     for i in range(1, 21):
         t, p = obter_identidade_original(i)
         str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
+
+def reindexar_estilos():
+    """Garante que a sequência numérica comece sempre do 1 sem nenhum vão."""
+    chaves_ordenadas = sorted(str_app.session_state.db_estilos.keys())
+    novo_db = {}
+    for novo_idx, velha_chave in enumerate(chaves_ordenadas, start=1):
+        novo_db[novo_idx] = str_app.session_state.db_estilos[velha_chave]
+    str_app.session_state.db_estilos = novo_db
 
 if "form_version" not in str_app.session_state:
     str_app.session_state.form_version = 0
@@ -228,12 +236,12 @@ with str_app.container(border=True):
     estilos_selecionados = str_app.multiselect(
         "Selecione",
         options=lista_titulos_geral,
-        default=[str_app.session_state.db_estilos[20]["titulo"]] if 20 in str_app.session_state.db_estilos else [],
+        default=[str_app.session_state.db_estilos[len(str_app.session_state.db_estilos)]["titulo"]] if len(str_app.session_state.db_estilos) > 0 else [],
         label_visibility="collapsed",
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR (TOPO): APENAS RESTAURAR E EXCLUIR DEFINITIVO
+# GERENCIADOR (TOPO): RESTAURAR E EXCLUIR DEFINITIVO COM REINDEXAÇÃO
 with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded=True):
     if not str_app.session_state.db_estilos:
         str_app.write("Nenhum estilo na memória.")
@@ -241,6 +249,7 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
             for i in range(1, 21):
                 t, p = obter_identidade_original(i)
                 str_app.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
+            reindexar_estilos()
             str_app.success("Estilos restaurados com sucesso!")
             str_app.rerun()
     else:
@@ -261,13 +270,15 @@ with str_app.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos", expanded
             if str_app.button("🔄 RESTAURAR"):
                 t_orig, p_orig = obter_identidade_original(estilo_escolhido)
                 str_app.session_state.db_estilos[estilo_escolhido] = {"titulo": t_orig, "prompt": p_orig}
-                str_app.success(f"Estilo #{estilo_escolhido} restaurado para o original de fábrica!")
+                reindexar_estilos()
+                str_app.success(f"Estilo #{estilo_escolhido} restaurado ao original de fábrica!")
                 str_app.rerun()
                 
         with col_r2:
             if str_app.button("🗑️ EXCLUIR DEFINITIVO"):
                 del str_app.session_state.db_estilos[estilo_escolhido]
-                str_app.warning(f"Estilo #{estilo_escolhido} excluído permanentemente!")
+                reindexar_estilos()  # Reorganiza automaticamente para não deixar vazios (ex: 1, 2, 3...)
+                str_app.warning("Estilo excluído e sequência reorganizada perfeitamente!")
                 str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
@@ -293,7 +304,6 @@ with str_app.container(border=True):
         if slot_num_edit != str_app.session_state.estilo_ativo_idx:
             str_app.session_state.estilo_ativo_idx = slot_num_edit
 
-        # Campos para identificação e código do estilo selecionado
         titulo_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["titulo"]
         prompt_atual_estilo = str_app.session_state.db_estilos[slot_num_edit]["prompt"]
 
@@ -313,24 +323,23 @@ with str_app.container(border=True):
     # SEÇÃO DEDICADA PARA INSERIR NOVO PROMPT COM SEQUENCIA EXATA
     str_app.markdown("➕ **INSERIR NOVO PROMPT NA SEQUÊNCIA**")
     
-    novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", placeholder="Ex: Estilo 21: POV Mão abrindo embalagem...", key="novo_titulo_criacao")
+    proximo_id_sugerido = len(str_app.session_state.db_estilos) + 1 if str_app.session_state.db_estilos else 1
+    
+    novo_titulo_input = str_app.text_input("Título / Tema do Novo Prompt", value=f"Estilo {proximo_id_sugerido}: Novo Estilo Personalizado Valentina", key="novo_titulo_criacao")
     novo_prompt_input = str_app.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=140, key="novo_prompt_criacao")
     
     if str_app.button("📥 INSERIR E SALVAR NA SEQUÊNCIA"):
         if not novo_titulo_input or not novo_prompt_input:
             str_app.warning("⚠️ Preencha o Título e o Código do novo prompt.")
         else:
-            # Descobre o próximo número sequencial exato (preenchendo buracos ou continuando o último)
-            proximo_id = 1
-            while proximo_id in str_app.session_state.db_estilos:
-                proximo_id += 1
-                
+            proximo_id = len(str_app.session_state.db_estilos) + 1
             str_app.session_state.db_estilos[proximo_id] = {
                 "titulo": novo_titulo_input,
                 "prompt": novo_prompt_input
             }
+            reindexar_estilos()
             str_app.session_state.estilo_ativo_idx = proximo_id
-            str_app.success(f"🎉 Novo Estilo #{proximo_id} inserido com sucesso na sequência!")
+            str_app.success(f"🎉 Novo Estilo inserido com sucesso na sequência!")
             str_app.rerun()
 
 str_app.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
