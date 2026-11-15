@@ -1,12 +1,17 @@
 import json
 import os
+import streamlit as st
 
-# Arquivo único e permanente no disco para guardar TODOS os prompts sem limite
+# Configuração inicial do Streamlit
+st.set_page_config(
+    page_title="Laboratórios Valentina", page_icon="💜", layout="wide"
+)
+
+# Arquivo permanente no disco para guardar os prompts sem limite
 DB_FILE = "moldes_salvos.json"
 
 
 def carregar_moldes_do_disco():
-  """Carrega todos os moldes salvos do disco de forma permanente."""
   if os.path.exists(DB_FILE):
     try:
       with open(DB_FILE, "r", encoding="utf-8") as f:
@@ -19,7 +24,6 @@ def carregar_moldes_do_disco():
 
 
 def persistir_moldes_no_disco(moldes_dict):
-  """Salva ou apaga definitivamente no disco, aceitando quantidade infinita."""
   with open(DB_FILE, "w", encoding="utf-8") as f:
     json.dump(moldes_dict, f, ensure_ascii=False, indent=4)
 
@@ -28,8 +32,16 @@ def persistir_moldes_no_disco(moldes_dict):
 if "moldes" not in st.session_state:
   st.session_state.moldes = carregar_moldes_do_disco()
 
-# --- LÓGICA EXATA DE SALVAR E APAGAR DEFINITIVAMENTE ---
-# (Substitua a sua área de botões de salvar/apagar por esta estrutura abaixo)
+# --- INTERFACE DO APLICATIVO ---
+st.title("LABORATÓRIOS VALENTINA")
+st.markdown(
+    "**LOJA DA VALENTINA - AUTOMATIZAÇÃO DE LOJAS NO TIKTOK** 💜 | *Status Engine:"
+    " Ativo & Sincronizado* ⚡"
+)
+
+st.divider()
+
+st.subheader("🛠️ Gerenciamento de Moldes Técnicos (Infinito & Definitivo)")
 
 col1, col2 = st.columns(2)
 
@@ -42,7 +54,6 @@ with col1:
 
   if st.button("💾 Salvar Prompt Definitivamente", type="primary"):
     if nome_chave and conteudo_prompt:
-      # Adiciona ou atualiza na memória e joga direto para o arquivo físico no disco
       st.session_state.moldes[nome_chave] = conteudo_prompt
       persistir_moldes_no_disco(st.session_state.moldes)
       st.success(
@@ -59,15 +70,40 @@ with col2:
   )
 
   if st.session_state.moldes:
-    # Exibe todos os prompts salvos, permitindo gerenciar infinitos itens
     for k_nome in list(st.session_state.moldes.keys()):
       st.write(f"📌 **{k_nome}**")
       if st.button(f"🗑️ Apagar '{k_nome}'", key=f"del_inf_{k_nome}"):
-        # Remove definitivamente da sessão e atualiza o disco
         if k_nome in st.session_state.moldes:
           del st.session_state.moldes[k_nome]
           persistir_moldes_no_disco(st.session_state.moldes)
           st.success(f"Prompt '{k_nome}' apagado definitivamente do sistema.")
           st.rerun()
   else:
-    st.info("Nenhum prompt salvo no momento.")
+     st.info("Nenhum prompt salvo no momento.")
+
+st.divider()
+
+st.subheader("🎬 Gerador de Copys & Roteiros Dinâmicos")
+produto_input = st.text_input(
+    "Produto do Dia (Ex: Sandália trançada preta, Calça palazzo...)"
+)
+
+if st.button("🚀 Gerar Grade com Moldes Salvos"):
+  if produto_input and st.session_state.moldes:
+    st.success(
+        f"Gerando grade para **{produto_input}** usando os moldes salvos!"
+    )
+    for idx, (m_name, m_struct) in enumerate(
+        st.session_state.moldes.items(), 1
+    ):
+      st.markdown(f"--- \n **Take {idx} ({m_name}):**")
+      st.code(
+          f"ESTRUTURA TÉCNICA: {m_struct}\n\nFALA GERADA (PT-BR): 'Olha essa"
+          f" novidade incrível de {produto_input} que chegou na Loja da"
+          " Valentina! Corre no carrinho laranja para garantir a sua antes que"
+          " acabe!'"
+      )
+  elif not st.session_state.moldes:
+    st.warning("Adicione pelo menos um molde no sistema antes de gerar.")
+  else:
+    st.warning("Digite o nome do produto para gerar.")
