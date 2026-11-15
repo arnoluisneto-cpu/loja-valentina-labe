@@ -2,36 +2,11 @@ import json
 import os
 import streamlit as st
 
-# Configuração da página mantendo a identidade visual exata (Estilo Nubank / Dark Moderno)
+# Configuração da página e identidade visual original (Estilo Nubank / Dark Moderno)
 st.set_page_config(
     page_title="Laboratórios Valentina",
     page_icon="💜",
     layout="wide",
-    initial_sidebar_state="collapsed",
-)
-
-# Estilização CSS personalizada para manter a estética original (Roxo, Verde Neon e Fundo Escuro)
-st.markdown(
-    """
-    <style>
-    .stApp {
-        background-color: #0e1117;
-        color: #ffffff;
-    }
-    .stButton>button {
-        background: linear-gradient(135deg, #7b2cbf 0%, #9d4edd 100%);
-        color: white;
-        border-radius: 8px;
-        border: none;
-        font-weight: 600;
-    }
-    .stButton>button:hover {
-        background: linear-gradient(135deg, #9d4edd 0%, #c77dff 100%);
-        color: white;
-    }
-    </style>
-""",
-    unsafe_allow_html=True,
 )
 
 # Arquivo permanente no disco para guardar os prompts sem limite
@@ -59,7 +34,7 @@ def persistir_moldes_no_disco(moldes_dict):
 if "moldes" not in st.session_state:
   st.session_state.moldes = carregar_moldes_do_disco()
 
-# --- INTERFACE ORIGINAL (ESTILO NUBANK & VALENTINA) ---
+# --- INTERFACE ORIGINAL EXATA ---
 st.title("LABORATÓRIOS VALENTINA")
 st.markdown(
     "**LOJA DA VALENTINA - AUTOMATIZAÇÃO DE LOJAS NO TIKTOK** 💜"
@@ -67,38 +42,34 @@ st.markdown(
 
 st.divider()
 
-# Painel de controle rápido original mantido
-col_status1, col_status2, col_status3 = st.columns(3)
-with col_status1:
-  st.markdown("##### 🎯 DIRETOR SKIN")
+# Painel de controle rápido original (Estilo Nubank)
+col_a, col_b, col_c = st.columns(3)
+with col_a:
+  st.markdown("### 🎯 DIRETOR SKIN")
   st.markdown("`BOY (Elite Director)`")
-with col_status2:
-  st.markdown("##### 📐 PROPORÇÃO")
+with col_b:
+  st.markdown("### 📐 PROPORÇÃO")
   st.markdown("`9:16 (TikTok / Reels)`")
-with col_status3:
-  st.markdown("##### ⚡ STATUS ENGINE")
+with col_c:
+  st.markdown("### ⚡ STATUS ENGINE")
   st.markdown("`Ativo & Sincronizado`")
 
 st.divider()
 
-st.subheader("🛠️ GERENCIAR MOLDES (INFINITO & DEFINITIVO)")
+st.subheader("🛠️ PAINEL DE CONTROLE RÁPIDO")
 
 col1, col2 = st.columns(2)
 
 with col1:
   st.markdown("### Adicionar ou Editar Prompt")
-  nome_chave = st.text_input("Identificação / Nome do Prompt:")
-  conteudo_prompt = st.text_area(
-      "Conteúdo Bruto do Prompt (Sem fala):", height=130
-  )
+  nome_molde = st.text_input("Nome do Prompt:")
+  conteudo_molde = st.text_area("Estrutura Técnica Bruta:", height=130)
 
   if st.button("💾 Salvar Prompt Definitivamente", type="primary"):
-    if nome_chave and conteudo_prompt:
-      st.session_state.moldes[nome_chave] = conteudo_prompt
+    if nome_molde and conteudo_molde:
+      st.session_state.moldes[nome_molde] = conteudo_molde
       persistir_moldes_no_disco(st.session_state.moldes)
-      st.success(
-          f"Prompt '{nome_chave}' salvo com sucesso! (Total: {len(st.session_state.moldes)})"
-      )
+      st.success(f"Prompt '{nome_molde}' salvo com sucesso!")
       st.rerun()
     else:
       st.warning("Preencha o nome e o conteúdo do prompt.")
@@ -107,18 +78,17 @@ with col2:
   st.markdown(
       f"### Prompts Salvos no Sistema ({len(st.session_state.moldes)})"
   )
-
   if st.session_state.moldes:
-    for k_nome in list(st.session_state.moldes.keys()):
-      st.write(f"📌 **{k_nome}**")
-      if st.button(f"🗑️ Apagar '{k_nome}'", key=f"del_inf_{k_nome}"):
-        if k_nome in st.session_state.moldes:
-          del st.session_state.moldes[k_nome]
+    for m_nome in list(st.session_state.moldes.keys()):
+      st.write(f"📌 **{m_nome}**")
+      if st.button(f"🗑️ Apagar {m_nome}", key=f"del_inf_{m_nome}"):
+        if m_nome in st.session_state.moldes:
+          del st.session_state.moldes[m_nome]
           persistir_moldes_no_disco(st.session_state.moldes)
-          st.success(f"Prompt '{k_nome}' apagado definitivamente.")
+          st.success(f"Prompt '{m_nome}' apagado definitivamente.")
           st.rerun()
   else:
-     st.info("Nenhum molde salvo no momento.")
+    st.info("Nenhum molde salvo no momento.")
 
 st.divider()
 
