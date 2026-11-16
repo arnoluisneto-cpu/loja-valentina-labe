@@ -1,5 +1,8 @@
 import json
 import os
+import random
+import urllib.request
+import urllib.error
 import streamlit as st
 from datetime import datetime
 import time
@@ -152,6 +155,110 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# MOTOR DE MODELAGEM DE COPY INÉDITA (ANTI-REPETIÇÃO)
+def modelar_copy_viral_local(produto, categoria, historico_sessao):
+    ganchos = [
+        f"Gente, para tudo e olha o acabamento desse {produto} que acabou de chegar aqui na Loja da Valentina!",
+        f"Meninas, vocês não têm noção do caimento real desse {produto} pessoalmente!",
+        f"Eu juro que eu não estava preparada para a qualidade absurda desse {produto}!",
+        f"Olha de pertinho os detalhes desse {produto} antes que acabe o lote de hoje!",
+        f"Finalmente chegou a reposição do {produto} mais pedido da Loja da Valentina!",
+        f"Se você estava esperando o momento certo para garantir o seu {produto}, olha isso aqui!",
+        f"Para tudo agora e repara no nível desse {produto} que liberamos no estoque!",
+        f"Gente, sério, olha como esse {produto} transforma qualquer produção em segundos!",
+        f"Vocês pediram tanto reposição desse {produto} que a gente trouxe direto para a vitrine!",
+        f"Olha o toque e o padrão desse {produto} que acabou de entrar na condição especial!"
+    ]
+    
+    desenvolvimento = [
+        "Ele tem um conforto absurdo, veste super bem e entrega um visual sofisticado sem esforço.",
+        "O material é impecável, super resistente e pensado para durar muito no seu dia a dia.",
+        "Cada detalhe foi feito com muito capricho, por isso ele virou recordista de pedidos por aqui.",
+        "É aquela peça coringa que valoriza o visual na hora e combina com absolutamente tudo.",
+        "A modelagem encaixa perfeitamente e traz uma leveza incrível desde o primeiro uso.",
+        "Não é à toa que todo mundo que recebe comenta da qualidade e já volta para pedir outro.",
+        "Ele une praticidade, elegância e um acabamento refinado que surpreende de perto.",
+        "A estrutura dele é firme, super confortável e deixa o look com cara de boutique de luxo."
+    ]
+    
+    ctas = [
+        "Clica agora no carrinho laranja aqui embaixo e garante o seu na Loja da Valentina antes que esgote!",
+        "Toca no carrinho laranja aqui no cantinho e aproveita enquanto ainda tem disponível no estoque!",
+        "Já clica no carrinho laranja aqui embaixo para garantir o seu com envio rápido da Loja da Valentina!",
+        "Corre no carrinho laranja aqui embaixo e garante o seu antes que esse lote acabe de novo!",
+        "Garante o seu agora clicando no carrinho laranja aqui embaixo na Loja da Valentina!",
+        "Aproveita que acabou de entrar e clica no carrinho laranja aqui embaixo para pedir o seu!"
+    ]
+    
+    tentativas = 0
+    copy_final = ""
+    while tentativas < 30:
+        g = random.choice(ganchos)
+        d = random.choice(desenvolvimento)
+        c = random.choice(ctas)
+        candidata = f'"{g} {d} {c}"'
+        if candidata not in historico_sessao:
+            copy_final = candidata
+            break
+        tentativas += 1
+        
+    if not copy_final:
+        copy_final = f'"{random.choice(ganchos)} {random.choice(desenvolvimento)} {random.choice(ctas)}"'
+        
+    historico_sessao.add(copy_final)
+    return copy_final
+
+def gerar_copy_ia_gemini(api_key, produto, categoria, estilo_titulo, variacao_num):
+    url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key.strip()}"
+    
+    instrucao_sistema = (
+        "Você é um Copywriter Sênior especialista em vídeos virais de alta conversão para TikTok Shop Brasil (Loja da Valentina). "
+        "Sua tarefa é MODELAR a estrutura psicológica dos vídeos virais atuais (Gancho de retenção -> "
+        "Destaque sensorial/benefício real -> Prova social/desejo -> CTA natural para o carrinho laranja), criando uma fala 100% ORIGINAL, "
+        "INÉDITA e NATURAL em Português do Brasil. "
+        "REGRAS OBRIGATÓRIAS: "
+        "1. NUNCA copie clichês idênticos ou textos engessados; crie uma variação autêntica, espontânea, como uma influenciadora brasileira falando para a câmera. "
+        "2. Duração exata de leitura: 8 a 10 segundos (entre 25 e 38 palavras no máximo). "
+        "3. Mencione naturalmente a 'Loja da Valentina' e o 'carrinho laranja' no final. "
+        "4. Conformidade estrita TikTok Shop: proibido promessas milagrosas ou linguagem agressiva enganosa. "
+        "5. Retorne APENAS a fala final entre aspas duplas, sem títulos, sem explicações e sem asteriscos."
+    )
+    
+    prompt_usuario = (
+        f"Crie a variação criativa #{variacao_num} totalmente diferente para:\n"
+        f"- Produto: {produto}\n"
+        f"- Categoria: {categoria}\n"
+        f"- Estilo visual: {estilo_titulo}\n"
+        f"Escreva apenas a fala falada pela criadora entre aspas:"
+    )
+    
+    payload = {
+        "contents": [{
+            "parts": [{"text": f"{instrucao_sistema}\n\n{prompt_usuario}"}]
+        }],
+        "generationConfig": {
+            "temperature": 0.95,
+            "maxOutputTokens": 150
+        }
+    }
+    
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST"
+    )
+    
+    with urllib.request.urlopen(req, timeout=12) as response:
+        res_data = json.loads(response.read().decode("utf-8"))
+        texto = res_data["candidates"][0]["content"]["parts"][0]["text"].strip()
+        texto = texto.replace("\n", " ").strip()
+        if not texto.startswith('"'):
+            texto = f'"{texto}'
+        if not texto.endswith('"'):
+            texto = f'{texto}"'
+        return texto
+
 # FÁBRICA DE IDENTIDADE ORIGINAL (PADRÃO 1 A 20)
 def obter_identidade_original(i):
     identidades_estilos = {
@@ -167,7 +274,7 @@ def obter_identidade_original(i):
         10: ("Estilo 10: Provador Expresso de Oferta Relâmpago", "Ritmo acelerado, troca dinâmica e foco em conversão imediata de estoque limitado e preço promocional."),
         11: ("Estilo 11: Destaque Dinâmico & Movimento Urbano", "Foco na utilidade e versatilidade do produto em trânsito pela cidade."),
         12: ("Estilo 12: Texturas Aconchegantes & Toque Suave", "Foco em macro-texturas, caimento flexível e toque agradável para o dia a dia."),
-        13: ("Estilo 13: Look Noite & Balada com Luz Dramática", "Iluminação nocturna sofisticada e moderna, destacando reflexos, brilho e acabamento sob neon."),
+        13: ("Estilo 13: Look Noite & Balada com Luz Dramática", "Iluminação noturna sofisticada e moderna, destacando reflexos, brilho e acabamento sob neon."),
         14: ("Estilo 14: Estilo Atitude Streetwear & Modernidade", "Foco em design autêntico, estilo urbano moderno e apelo jovem para o TikTok."),
         15: ("Estilo 15: Peça Delicate (Close de Ocasião & Elegância)", "Detalhes delicados e acabamento refinado para ocasiões especiais."),
         16: ("Estilo 16: Sobreposição & Camadas Versáteis", "Estilo moderno de composição, demonstrando versatilidade e encaixe perfeito."),
@@ -185,11 +292,20 @@ def obter_identidade_original(i):
             "STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Focus strictly on the exact product uploaded by the user with zero alterations, zero modifications to its structure, color, details, or brand. "
             "Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone, completely bare surface with zero attachments. "
             "Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. "
-            "CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally with flawless lip-sync as she walks forward from inside her boutique toward the street in one single fluid, continuous motion with zero jump cuts. "
+            "CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally in Brazilian Portuguese with flawless lip-sync as she walks forward from inside her boutique toward the street in one single fluid, continuous motion with zero jump cuts. "
             "Directly in front of the store, a massive, giant black delivery truck with clean, bold 'TikTok' lettering written in bright white on its black body is ALREADY PARKED in reverse, completely stationary with its rear cargo doors ALREADY WIDE OPEN, revealing an interior completely packed and stacked wall-to-wall up to the ceiling with storage boxes. "
             "Valentina reaches the glass door, manually pushes it open with her hands, and walks straight up to the truck. She picks up a single storage box. "
             "RIGID PIXEL PERSISTENCE RULE: Throughout the entire duration, the storage box and the exact product inside remain physically permanent, 100% rigid, and unalterable. Absolute zero morphing, zero flickering, zero fading, zero transparency, zero ghosting transitions, and zero disappearance during lifting or handling. The hand and product maintain continuous, unbroken physical contact. "
             "IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence."
+        )
+    elif i == 5:
+        prompt_texto = (
+            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
+            f"STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Faithfully match the exact product from the user-uploaded image with zero substitution, preserving original colors, textures, and details. "
+            f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone. "
+            f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock. "
+            f"SILENT VISUAL SHOWCASE (0-10s): Purely visual dynamic showcase without spoken dialogue, synced to upbeat viral rhythm, showing the product from multiple flattering angles with smooth camera glides. "
+            f"RIGID PIXEL PERSISTENCE RULE: The product maintains continuous, unbroken physical integrity, remaining 100% rigid, stable, and completely identical to the reference image. Absolute zero morphing, zero flickering, zero ghosting transitions, and zero object disappearance."
         )
     else:
         prompt_texto = (
@@ -197,13 +313,30 @@ def obter_identidade_original(i):
             f"STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Faithfully match the exact product from the user-uploaded image with zero substitution, preserving original colors, textures, and details. "
             f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone. "
             f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock. "
-            f"CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-10s): The video opens dynamically with the creator moving smoothly (e.g., standing up, turning, or walking in a single continuous fluid motion with zero jump cuts) while interacting directly with the item. "
+            f"CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-10s): The video opens dynamically with the creator moving smoothly (e.g., standing up, turning, or walking in a single continuous fluid motion with zero jump cuts) while speaking naturally in Brazilian Portuguese with flawless lip-sync and interacting directly with the item. "
             f"RIGID PIXEL PERSISTENCE RULE: The product maintains continuous, unbroken physical contact with the model's hand, remaining 100% rigid, stable, and completely identical to the reference image. Absolute zero morphing, zero flickering, zero ghosting transitions, and zero object disappearance. Pacing speech evenly across the full 10 seconds."
         )
     return titulo_texto, prompt_texto
 
-# PERSISTÊNCIA PERMANENTE NO DISCO (JSON) - SEM AUTO-RECRIAR SE FOR APAGADO DE PROPÓSITO
+# PERSISTÊNCIA PERMANENTE NO DISCO (JSON)
 DB_FILE = "moldes_salvos.json"
+CONFIG_FILE = "config_ia.json"
+
+def carregar_config_ia():
+    if os.path.exists(CONFIG_FILE):
+        try:
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                return json.load(f)
+        except Exception:
+            pass
+    return {"api_key": ""}
+
+def salvar_config_ia(cfg):
+    try:
+        with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+            json.dump(cfg, f, ensure_ascii=False, indent=4)
+    except Exception:
+        pass
 
 def carregar_db_disco():
     if os.path.exists(DB_FILE):
@@ -220,7 +353,6 @@ def carregar_db_disco():
         except Exception:
             pass
             
-    # Se o arquivo não existir na primeira execução, carrega o padrão. Se o usuário apagou tudo, retorna vazio.
     if not os.path.exists(DB_FILE):
         padrao = {}
         for i in range(1, 21):
@@ -241,11 +373,17 @@ def salvar_db_disco(db_dict):
 if "db_estilos" not in st.session_state:
     st.session_state.db_estilos = carregar_db_disco()
 
+if "config_ia" not in st.session_state:
+    st.session_state.config_ia = carregar_config_ia()
+
 if "form_version" not in st.session_state:
     st.session_state.form_version = 0
 
 if "acesso_liberado" not in st.session_state:
     st.session_state.acesso_liberado = False
+
+if "historico_copys" not in st.session_state:
+    st.session_state.historico_copys = set()
 
 def limpar_apenas_formulario():
     st.session_state.form_version += 1
@@ -280,8 +418,8 @@ with c_grid2:
 
 with c_grid3:
     with st.container(border=True):
-        st.markdown("⚡ **STATUS ENGINE**")
-        st.markdown("<span style='color: #00FF66; font-size: 11px; font-weight:700;'>Ativo & Sincronizado</span>", unsafe_allow_html=True)
+        st.markdown("🧠 **MOTOR DE COPY**")
+        modo_copy = st.selectbox("Motor Copy", ["IA Modeladora (Anti-Cópia Dinâmica)", "Fixo (Do molde salvo)"], label_visibility="collapsed", key=f"sel_copy_mode_{v}")
 
 with st.container(border=True):
     st.markdown("🎬 **SELECIONAR ESTILOS PARA GRADE DIÁRIA**")
@@ -299,7 +437,7 @@ with st.container(border=True):
 # ÁREA RESTRITA PROTEGIDA POR SENHA ADMINISTRATIVA
 SENHA_MESTRE = "vidalooka2"
 
-with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts (Área Restrita - Requer Senha)", expanded=False):
+with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts & Cérebro IA (Área Restrita - Requer Senha)", expanded=False):
     col_s1, col_s2 = st.columns([3, 1])
     
     with col_s1:
@@ -321,6 +459,26 @@ with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts (Área Restrita - 
     if st.session_state.acesso_liberado:
         st.markdown("<p style='color: #00FF66; font-weight: 700;'>🔓 MODO ADMINISTRADOR ATIVO</p>", unsafe_allow_html=True)
         
+        with st.container(border=True):
+            st.markdown("🧠 **CONEXÃO CÉREBRO IA (API GEMINI - OPCIONAL)**")
+            col_api1, col_api2 = st.columns([3, 1])
+            with col_api1:
+                nova_api_key = st.text_input(
+                    "Chave API Gemini",
+                    value=st.session_state.config_ia.get("api_key", ""),
+                    type="password",
+                    placeholder="Cole sua Gemini API Key aqui (opcional)...",
+                    label_visibility="collapsed",
+                    key=f"api_key_input_{v}"
+                )
+            with col_api2:
+                if st.button("💾 SALVAR CHAVE", key=f"btn_save_api_{v}"):
+                    st.session_state.config_ia["api_key"] = nova_api_key.strip()
+                    salvar_config_ia(st.session_state.config_ia)
+                    st.success("✅ Chave salva!")
+                    time.sleep(0.5)
+                    st.rerun()
+
         col_ger1, col_ger2 = st.columns(2)
         with col_ger1:
             if st.button("🗑️ ZERAR TODOS OS PROMPTS", key=f"btn_apagar_tudo_geral_{v}"):
@@ -333,7 +491,6 @@ with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts (Área Restrita - 
                 st.rerun()
 
         with col_ger2:
-            # Restaurar individual ou padrão caso queira
             estilo_a_restaurar = st.number_input("Nº do Estilo para Restaurar (1 a 20)", min_value=1, max_value=20, value=1, step=1, key=f"num_rest_{v}")
             if st.button("🔄 RESTAURAR ESTE ESTILO ESPECÍFICO", key=f"btn_rest_one_{v}"):
                 t_orig, p_orig = obter_identidade_original(estilo_a_restaurar)
@@ -379,7 +536,6 @@ with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts (Área Restrita - 
                             else:
                                 with st.spinner(f"💾 Salvando alterações no disco..."):
                                     time.sleep(0.4)
-                                    # ATUALIZA APENAS O SLOT ESCOLHIDO SEM DUPLICAR NEM SUBIR PARA O 1
                                     st.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
                                     st.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
                                     salvar_db_disco(st.session_state.db_estilos)
@@ -397,7 +553,7 @@ with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts (Área Restrita - 
                             time.sleep(0.8)
                             st.rerun()
                 else:
-                    st.info("Nenhum estilo disponível no momento. Insira um novo prompt abaixo.")
+                    st.info("Nenhum estilo disponível no momento.")
             else:
                 novo_id_manual = st.number_input("ID Numérico do Novo Estilo", min_value=1, value=proximo_id_sugerido, step=1, key=f"id_manual_{v}")
                 novo_titulo_input = st.text_input("Título / Tema do Novo Prompt", value="", placeholder="Ex: Meu Estilo Personalizado...", key=f"campo_novo_titulo_valencia_fixo_{v}")
@@ -431,7 +587,7 @@ with st.container(border=True):
     c_l1_1, c_l1_2 = st.columns(2)
     with c_l1_1:
         st.markdown("🏷️ **NOME PRODUTO / SKU**")
-        produto_nome = st.text_input("Nome", placeholder="Ex: Vestido Midi, Bolsa de Couro...", label_visibility="collapsed", key=f"input_nome_produto_{v}")
+        produto_nome = st.text_input("Nome", placeholder="Ex: Sandália Plataforma Preta, Calça Pantalona...", label_visibility="collapsed", key=f"input_nome_produto_{v}")
     with c_l1_2:
         st.markdown("📂 **CATEGORIA**")
         tipo_produto = st.selectbox("Categoria", ["Geral / Universal", "Calçado", "Vestuário", "Acessório", "Bolsa", "Outros"], label_visibility="collapsed", key=f"sel_categoria_{v}")
@@ -474,20 +630,50 @@ if gerar_clicado:
         st.warning("⚠️ Selecione pelo menos 1 estilo.")
     else:
         agora = datetime.now().strftime("%H:%M:%S")
-        st.success(f"✅ Gerados {len(estilos_selecionados)} prompts às {agora} para '{produto_nome}'.")
+        api_key_salva = st.session_state.config_ia.get("api_key", "").strip()
         
         mapa_prompts = {st.session_state.db_estilos[i]["titulo"]: st.session_state.db_estilos[i]["prompt"] for i in st.session_state.db_estilos if i in st.session_state.db_estilos}
         
-        for idx, estilo_titulo in enumerate(estilos_selecionados):
-            prompt_numero = idx + 1
-            horario_postagem = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
-            prompt_ativo_slot = mapa_prompts.get(estilo_titulo, "Prompt não encontrado.")
+        with st.spinner("🧠 Processando prompts e gerando falas dinâmicas..."):
+            st.success(f"✅ Gerados {len(estilos_selecionados)} prompts às {agora} para '{produto_nome}'.")
+            
+            for idx, estilo_titulo in enumerate(estilos_selecionados):
+                prompt_numero = idx + 1
+                horario_postagem = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
+                prompt_base = mapa_prompts.get(estilo_titulo, "Prompt não encontrado.")
+                
+                eh_estilo_mudo = "Sem Fala" in estilo_titulo or "SILENT VISUAL SHOWCASE" in prompt_base
+                
+                # SE O USUÁRIO ESCOLHER "Fixo" OU O MOLDE JÁ TIVER ASPAS FIXAS E ELE ESTIVER EDITADO COM FALA PRÓPRIA, MANTÉM.
+                # SE ESCOLHER "IA Modeladora", ele injeta fala nova dinâmica a cada clique!
+                if eh_estilo_mudo or ("Fixo" in modo_copy and '"' in prompt_base):
+                    prompt_final_montado = prompt_base
+                    copy_gerada_exibicao = "Fala fixa mantida do seu molde salvo."
+                else:
+                    fala_dinamica = ""
+                    if api_key_salva:
+                        try:
+                            fala_dinamica = gerar_copy_ia_gemini(
+                                api_key=api_key_salva,
+                                produto=produto_nome,
+                                categoria=tipo_produto,
+                                estilo_titulo=estilo_titulo,
+                                variacao_num=prompt_numero + random.randint(1, 999)
+                            )
+                        except Exception:
+                            fala_dinamica = modelar_copy_viral_local(produto_nome, tipo_produto, st.session_state.historico_copys)
+                    else:
+                        fala_dinamica = modelar_copy_viral_local(produto_nome, tipo_produto, st.session_state.historico_copys)
+                        
+                    copy_gerada_exibicao = fala_dinamica
+                    prompt_final_montado = f"{prompt_base}\n\n{fala_dinamica}"
 
-            st.markdown(f"### 🎬 Prompt {prompt_numero} • {horario_postagem}")
-            st.markdown(
-                '<div class="metric-card">'
-                f'<span class="tag-estilo">{estilo_titulo}</span><br>',
-                unsafe_allow_html=True
-            )
-            st.code(prompt_ativo_slot, language="text")
-            st.markdown('</div>', unsafe_allow_html=True)
+                st.markdown(f"### 🎬 Prompt {prompt_numero} • {horario_postagem}")
+                st.markdown(
+                    '<div class="metric-card">'
+                    f'<span class="tag-estilo">{estilo_titulo}</span><br>'
+                    f'<span style="color:#00FF66; font-size:11px;">🗣️ <b>Fala Gerada:</b> {copy_gerada_exibicao}</span>',
+                    unsafe_allow_html=True
+                )
+                st.code(prompt_final_montado, language="text")
+                st.markdown('</div>', unsafe_allow_html=True)
