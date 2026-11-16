@@ -152,44 +152,43 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# DICIONÁRIO MESTRE DE FÁBRICA (ORIGINAL DOS 20 ESTILOS)
+# DICIONÁRIO MESTRE UNIVERSAL (ADAPTÁVEL A QUALQUER PRODUTO ENVIADO)
 def obter_identidade_original(i):
     identidades_estilos = {
-        1: ("Estilo 1: POV Mão & Rasgando o Plástico de Proteção (ASMR)", "Foco tátil universal abrindo a embalagem e rasgando o plástico de proteção da peça com extrema nitidez e som imersivo."),
-        2: ("Estilo 2: POV Corpo Inteiro Caminhando na Calçada Urbana", "Câmera em movimento fluido acompanhando o produto de corpo inteiro (head-to-toe) ao ar livre sob luz natural."),
-        3: ("Estilo 3: POV Sentada no Provador de Luxo (Close Íntimo)", "Enquadramento elegante com a modelo sentada em provador sofisticado, detalhando o caimento e o tecido."),
-        4: ("Estilo 4: POV Giro 360 Graus em Frente ao Espelho", "Rotação e giros fluidos em frente ao espelho iluminado da boutique, exibindo todos os ângulos da peça."),
+        1: ("Estilo 1: POV Mão & Revelação Tátil do Produto (ASMR)", "Foco tátil universal manuseando a peça com extrema nitidez, texturas refinadas e som imersivo de abertura."),
+        2: ("Estilo 2: POV Corpo Inteiro em Movimento Dinâmico Urbano", "Câmera em movimento fluido acompanhando o produto de corpo inteiro (head-to-toe) ao ar livre sob luz natural."),
+        3: ("Estilo 3: POV Provador de Luxo (Close Íntimo)", "Enquadramento elegante detalhando o caimento exato, a modelagem e a textura da peça."),
+        4: ("Estilo 4: POV Giro 360 Graus em Frente ao Espelho", "Rotação e giros fluidos em frente ao espelho iluminado da boutique, exibindo todos os ângulos do item."),
         5: ("Estilo 5: POV Sem Fala com Trilha Viral & Transição Rápida", "Estilo puramente visual de altíssima retenção, sem diálogos, focado em cortes dinâmicos sincronizados com a batida da música."),
-        6: ("Estilo 6: POV Close Macro com Foco nos Detalhes", "Câmera de perto apontada diretamente para o produto, destacando texturas, acabamentos e diferenciais."),
-        7: ("Estilo 7: Look do Dia Executivo com Blazer (Estilo Virgínia)", "Estética corporativa de alto padrão transmitindo autoridade, poder e elegância profissional."),
-        8: ("Estilo 8: Look Verão & Frescor na Praça Externa", "Cenário ensolarado e vibrante, mostrando leveza e praticidade para dias quentes."),
+        6: ("Estilo 6: POV Close Macro com Foco nos Detalhes", "Câmera de perto apontada diretamente para o produto enviado, destacando acabamentos, costuras e diferenciais."),
+        7: ("Estilo 7: Look do Dia Executivo & Elegância (Estilo Virgínia)", "Estética de alto padrão transmitindo autoridade, sofisticação e caimento impecável."),
+        8: ("Estilo 8: Look Verão & Frescor na Praça Externa", "Cenário ensolarado e vibrante, mostrando leveza, versatilidade e praticidade."),
         9: ("Estilo 9: Estilo Clássico Imponente em Estúdio de Cinema", "Iluminação profissional de estúdio de cinema focada na imponência, postura e sofisticação máxima."),
         10: ("Estilo 10: Provador Expresso de Oferta Relâmpago", "Ritmo acelerado, troca dinâmica e foco em conversão imediata de estoque limitado e preço promocional."),
-        11: ("Estilo 11: Acessório & Movimento Urbano", "Destaque dinâmico para a utilidade e acabamento do item em trânsito pela cidade."),
-        12: ("Estilo 12: Conjunto Tricô Aconchegante (Macro Texturas)", "Foco em macro-texturas de tramas fechadas e toque suave para dias amenos."),
-        13: ("Estilo 13: Look Noite & Balada com Luz Dramática", "Iluminação noturna sofisticada e moderna, destacando peças acetinadas e brilhantes sob reflexos de neon."),
-        14: ("Estilo 14: Estilo Chunky Platform & Atitude Streetwear", "Foco em design robusto, estilo urbano moderno e atitude jovem para o público do TikTok."),
-        15: ("Estilo 15: Peça Delicate (Close de Festa & Elegância)", "Detalhes delicados e acabamento refinado para eventos sociais e ocasiões especiais."),
-        16: ("Estilo 16: Colete Alfaiataria & Camadas Elegantes", "Estilo moderno de sobreposições, demonstrando sofisticação para compor looks versáteis."),
-        17: ("Estilo 17: Short Saia / Envelope em Movimento Fluido", "Fluidez, leveza e segurança com passos ritmados e naturais."),
-        18: ("Estilo 18: Pantalona Jeans Premium (Cós Alto & Elegância)", "Caimento impecável e resistência de alfaiataria em plano aberto."),
-        19: ("Estilo 19: Slip On Prático (Calce Fácil Ágil)", "Demonstração rápida de agilidade, ideal para o público que busca praticidade sem perder a elegância."),
+        11: ("Estilo 11: Destaque Dinâmico & Movimento Urbano", "Foco na utilidade e versatilidade do produto em trânsito pela cidade."),
+        12: ("Estilo 12: Texturas Aconchegantes & Toque Suave", "Foco em macro-texturas, caimento flexível e toque agradável para o dia a dia."),
+        13: ("Estilo 13: Look Noite & Balada com Luz Dramática", "Iluminação noturna sofisticada e moderna, destacando reflexos, brilho e acabamento sob neon."),
+        14: ("Estilo 14: Estilo Atitude Streetwear & Modernidade", "Foco em design autêntico, estilo urbano moderno e apelo jovem para o TikTok."),
+        15: ("Estilo 15: Peça Delicate (Close de Ocasião & Elegância)", "Detalhes delicados e acabamento refinado para ocasiões especiais."),
+        16: ("Estilo 16: Sobreposição & Camadas Versáteis", "Estilo moderno de composição, demonstrando versatilidade e encaixe perfeito."),
+        17: ("Estilo 17: Movimento Fluido & Apresentação Dinâmica", "Fluidez, leveza e apresentação natural do produto em uso."),
+        18: ("Estilo 18: Peça Premium de Cós / Estrutura Alta & Elegância", "Caimento impecável e acabamento de alfaiataria em plano aberto."),
+        19: ("Estilo 19: Praticidade & Funcionalidade Ágil", "Demonstração rápida de agilidade e facilidade de uso para o público."),
         20: ("Estilo 20: POV Caminhão Preto Gigante do TikTok (Estoque Chegando)", "Cenário épico externo com caminhão gigante estacionado e portas abertas repletas de caixas da Loja da Valentina.")
     }
     
-    titulo_texto, desc_estilo = identidades_estilos.get(i, (f"Estilo {i}", "Estilo personalizado da Loja da Valentina."))
+    titulo_texto, desc_estilo = identidades_estilos.get(i, (f"Estilo {i}", "Estilo universal personalizado da Loja da Valentina."))
     
     if i == 20:
         prompt_texto = (
             "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. "
-            "STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus exclusively on product display, showing items clearly on model, highlighting quality and comfort. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations, zero modifications to the product structure, details, or brand. "
-            "Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone, completely bare clothing surface with zero attachments. "
+            "STRICT UNIVERSAL PRODUCT LOCK: Focus strictly on the exact product uploaded by the user with zero alterations, zero modifications to its structure, color, details, or brand. "
+            "Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone, completely bare surface with zero attachments. "
             "Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. "
-            "Rigid product lock: exact product matching reference image with zero substitution, preserving original brand aesthetics. "
             "STATIC TRUCK & PERSISTENT BOX CHOREOGRAPHY (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally with flawless lip-sync as she walks forward from inside her boutique toward the street. "
             "Directly in front of the store, a massive, giant black delivery truck with clean, bold 'TikTok' lettering written in bright white on its black body is ALREADY PARKED in reverse, completely stationary with its rear cargo doors ALREADY WIDE OPEN, revealing an interior completely packed and stacked wall-to-wall up to the ceiling with storage boxes. "
             "Valentina reaches the glass door, manually pushes it open with her hands, and walks straight up to the truck. She picks up a single storage box. "
-            "STRICT PERSISTENCE RULE: Throughout the entire duration of the video, the storage box remains physically present and firmly held in her hands without ever disappearing, vanishing, or morphing. She opens the box steadily while holding it, lifts a matching item directly out of the box while keeping the box visible in her grip, displays the product clearly to the camera, and concludes her sales pitch. "
+            "STRICT PERSISTENCE RULE: Throughout the entire duration of the video, the storage box remains physically present and firmly held in her hands without ever disappearing, vanishing, or morphing. She opens the box steadily while holding it, lifts the exact uploaded product directly out of the box while keeping the box visible in her grip, displays the item clearly to the camera, and concludes her sales pitch. "
             "IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. Fixed realistic background, organic human movement.\n\n"
             "\"Olha, gente... acabou de chegar o estoque aqui na Loja da Valentina. A gente vai trabalhar só com esse produto, porque ele é recordista de vendas e de muita qualidade! Clica aqui no carrinho laranja embaixo para garantir o seu.\"\n\n"
             "Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, AI morphing transition, soft blending, product switching, changing product model at the end, sudden jump cuts, rapid unrealistic pacing, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, text captions, generated writing, UI graphics, watermarks, distorted brand, altered design, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI, walking backward, truck moving, doors opening, box disappearing, box vanishing, item morphing into hand."
@@ -197,8 +196,8 @@ def obter_identidade_original(i):
     else:
         prompt_texto = (
             f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
-            f"STRICT ASSERTIVE CATEGORY & ZERO MIC PROTOCOL: Focus on clear product demonstration, showing details clearly. Strictly binding uploaded model reference face/body and isolated exact reference pixels of the product with zero alterations. "
-            f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Bare clothes, clean collarbone. "
+            f"STRICT UNIVERSAL PRODUCT LOCK: Faithfully match the exact product from the user-uploaded image with zero substitution, preserving original colors, textures, and details. "
+            f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone. "
             f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
             f"Strict 1:1 pixel lock and rigid product match with zero substitution. "
             f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera delivering a strong magnetic hook, pacing her speech evenly across the full 10 seconds while interacting directly with the item.\n\n"
@@ -216,11 +215,9 @@ def carregar_db_disco():
             with open(DB_FILE, "r", encoding="utf-8") as f:
                 dados = json.load(f)
                 if isinstance(dados, dict):
-                    # Converte chaves para int caso venham como string do JSON
                     return {int(k) if str(k).isdigit() else k: v for k, v in dados.items()}
         except Exception:
             pass
-    # Se não existir, gera o padrão de 1 a 20
     padrao = {}
     for i in range(1, 21):
         t, p = obter_identidade_original(i)
@@ -468,10 +465,10 @@ with st.container(border=True):
     c_l1_1, c_l1_2 = st.columns(2)
     with c_l1_1:
         st.markdown("🏷️ **NOME PRODUTO / SKU**")
-        produto_nome = st.text_input("Nome", placeholder="Ex: Sandália Gigil...", label_visibility="collapsed", key=f"input_nome_produto_{v}")
+        produto_nome = st.text_input("Nome", placeholder="Ex: Vestido Midi, Bolsa de Couro...", label_visibility="collapsed", key=f"input_nome_produto_{v}")
     with c_l1_2:
         st.markdown("📂 **CATEGORIA**")
-        tipo_produto = st.selectbox("Categoria", ["Calçado / Tênis / Sandália", "Acessório", "Vestuário", "Bolsa", "Outros"], label_visibility="collapsed", key=f"sel_categoria_{v}")
+        tipo_produto = st.selectbox("Categoria", ["Geral / Universal", "Calçado", "Vestuário", "Acessório", "Bolsa", "Outros"], label_visibility="collapsed", key=f"sel_categoria_{v}")
 
     st.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
@@ -526,5 +523,6 @@ if gerar_clicado:
                 f'<span class="tag-estilo">{estilo_titulo}</span><br>',
                 unsafe_allow_html=True
             )
+            # Exibe o prompt dentro da caixinha curta e compacta com rolagem e botão de cópia
             st.code(prompt_ativo_slot, language="text")
             st.markdown('</div>', unsafe_allow_html=True)
