@@ -155,39 +155,32 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# MOTOR DE MODELAGEM DE COPY INÉDITA (ANTI-REPETIÇÃO)
+# MOTOR DE MODELAGEM DE COPY INÉDITA (12.5s - CALIBRADO PARA NARRATIVA FLUIDA)
 def modelar_copy_viral_local(produto, categoria, historico_sessao):
     ganchos = [
-        f"Gente, para tudo e olha o acabamento desse {produto} que acabou de chegar aqui na Loja da Valentina!",
-        f"Meninas, vocês não têm noção do caimento real desse {produto} pessoalmente!",
-        f"Eu juro que eu não estava preparada para a qualidade absurda desse {produto}!",
-        f"Olha de pertinho os detalhes desse {produto} antes que acabe o lote de hoje!",
-        f"Finalmente chegou a reposição do {produto} mais pedido da Loja da Valentina!",
-        f"Se você estava esperando o momento certo para garantir o seu {produto}, olha isso aqui!",
-        f"Para tudo agora e repara no nível desse {produto} que liberamos no estoque!",
-        f"Gente, sério, olha como esse {produto} transforma qualquer produção em segundos!",
-        f"Vocês pediram tanto reposição desse {produto} que a gente trouxe direto para a vitrine!",
-        f"Olha o toque e o padrão desse {produto} que acabou de entrar na condição especial!"
+        f"Gente, para tudo e olha o acabamento impecável desse {produto} que acabou de chegar aqui na Loja da Valentina!",
+        f"Meninas, vocês simplesmente não têm noção do caimento real desse {produto} quando a gente veste no corpo!",
+        f"Eu juro que eu não estava preparada para a qualidade absurda e o conforto desse {produto}!",
+        f"Olha de pertinho todos os detalhes desse {produto} antes que esgote o lote exclusivo de hoje!",
+        f"Finalmente chegou a reposição oficial do {produto} mais pedido e desejado da Loja da Valentina!",
+        f"Se você estava esperando o momento perfeito para garantir o seu {produto}, olha isso aqui agora!",
+        f"Para tudo o que você está fazendo e repara no nível desse {produto} que liberamos no estoque!",
+        f"Gente, sério, olha como esse {produto} transforma qualquer produção diária em segundos!"
     ]
     
     desenvolvimento = [
-        "Ele tem um conforto absurdo, veste super bem e entrega um visual sofisticado sem esforço.",
-        "O material é impecável, super resistente e pensado para durar muito no seu dia a dia.",
-        "Cada detalhe foi feito com muito capricho, por isso ele virou recordista de pedidos por aqui.",
-        "É aquela peça coringa que valoriza o visual na hora e combina com absolutamente tudo.",
-        "A modelagem encaixa perfeitamente e traz uma leveza incrível desde o primeiro uso.",
-        "Não é à toa que todo mundo que recebe comenta da qualidade e já volta para pedir outro.",
-        "Ele une praticidade, elegância e um acabamento refinado que surpreende de perto.",
-        "A estrutura dele é firme, super confortável e deixa o look com cara de boutique de luxo."
+        "Ele tem um toque macio incrível, veste super bem e entrega um visual sofisticado sem esforço nenhum.",
+        "O material é de altíssima qualidade, super resistente e pensado para durar muito no seu dia a dia.",
+        "Cada costura foi feita com muito capricho, por isso ele virou o queridinho absoluto dos pedidos por aqui.",
+        "É aquela peça coringa indispensável que valoriza o visual na hora e combina com absolutamente tudo.",
+        "A modelagem encaixa perfeitamente nas curvas e traz uma leveza espetacular desde o primeiro uso."
     ]
     
     ctas = [
-        "Clica agora no carrinho laranja aqui embaixo e garante o seu na Loja da Valentina antes que esgote!",
-        "Toca no carrinho laranja aqui no cantinho e aproveita enquanto ainda tem disponível no estoque!",
-        "Já clica no carrinho laranja aqui embaixo para garantir o seu com envio rápido da Loja da Valentina!",
-        "Corre no carrinho laranja aqui embaixo e garante o seu antes que esse lote acabe de novo!",
-        "Garante o seu agora clicando no carrinho laranja aqui embaixo na Loja da Valentina!",
-        "Aproveita que acabou de entrar e clica no carrinho laranja aqui embaixo para pedir o seu!"
+        "Clica agora no carrinho laranja aqui embaixo e garante o seu na Loja da Valentina!",
+        "Toca no carrinho laranja no cantinho e aproveita enquanto ainda tem disponível no estoque!",
+        "Já clica no carrinho laranja aqui embaixo para garantir com envio rápido!",
+        "Corre no carrinho laranja e garante o seu antes que acabe de novo!"
     ]
     
     tentativas = 0
@@ -213,19 +206,17 @@ def gerar_copy_ia_gemini(api_key, produto, categoria, estilo_titulo, variacao_nu
     
     instrucao_sistema = (
         "Você é um Copywriter Sênior especialista em vídeos virais de alta conversão para TikTok Shop Brasil (Loja da Valentina). "
-        "Sua tarefa é MODELAR a estrutura psicológica dos vídeos virais atuais (Gancho de retenção -> "
-        "Destaque sensorial/benefício real -> Prova social/desejo -> CTA natural para o carrinho laranja), criando uma fala 100% ORIGINAL, "
-        "INÉDITA e NATURAL em Português do Brasil. "
+        "Sua tarefa é MODELAR a estrutura psicológica dos vídeos virais atuais (Gancho forte -> Benefício real -> Prova social -> CTA), "
+        "criando uma fala 100% ORIGINAL, INÉDITA e NATURAL em Português do Brasil. "
         "REGRAS OBRIGATÓRIAS: "
-        "1. NUNCA copie clichês idênticos ou textos engessados; crie uma variação autêntica, espontânea, como uma influenciadora brasileira falando para a câmera. "
-        "2. Duração exata de leitura: 8 a 10 segundos (entre 25 e 38 palavras no máximo). "
-        "3. Mencione naturalmente a 'Loja da Valentina' e o 'carrinho laranja' no final. "
-        "4. Conformidade estrita TikTok Shop: proibido promessas milagrosas ou linguagem agressiva enganosa. "
-        "5. Retorne APENAS a fala final entre aspas duplas, sem títulos, sem explicações e sem asteriscos."
+        "1. Tom espontâneo de influenciadora brasileira. "
+        "2. Duração exata de leitura: 10 a 12.5 segundos (entre 30 e 38 palavras). "
+        "3. Mencione 'Loja da Valentina' e o 'carrinho laranja'. "
+        "4. Retorne APENAS a fala final entre aspas duplas."
     )
     
     prompt_usuario = (
-        f"Crie a variação criativa #{variacao_num} totalmente diferente para:\n"
+        f"Crie a variação criativa #{variacao_num} inédita para:\n"
         f"- Produto: {produto}\n"
         f"- Categoria: {categoria}\n"
         f"- Estilo visual: {estilo_titulo}\n"
@@ -259,7 +250,7 @@ def gerar_copy_ia_gemini(api_key, produto, categoria, estilo_titulo, variacao_nu
             texto = f'{texto}"'
         return texto
 
-# FÁBRICA DE IDENTIDADE ORIGINAL (PADRÃO 1 A 20)
+# FÁBRICA DE IDENTIDADE ORIGINAL (12.5s)
 def obter_identidade_original(i):
     identidades_estilos = {
         1: ("Estilo 1: POV Mão & Revelação Tátil do Produto (ASMR)", "Foco tátil universal manuseando a peça com extrema nitidez, texturas refinadas e som imersivo de abertura."),
@@ -288,33 +279,33 @@ def obter_identidade_original(i):
     
     if i == 20:
         prompt_texto = (
-            "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. "
+            "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 12.5-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. "
             "STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Focus strictly on the exact product uploaded by the user with zero alterations, zero modifications to its structure, color, details, or brand. "
             "Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone, completely bare surface with zero attachments. "
             "Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. "
-            "CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally in Brazilian Portuguese with flawless lip-sync as she walks forward from inside her boutique toward the street in one single fluid, continuous motion with zero jump cuts. "
+            "CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-12.5s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally in Brazilian Portuguese with flawless lip-sync as she walks forward from inside her boutique toward the street in one single fluid, continuous motion with zero jump cuts. "
             "Directly in front of the store, a massive, giant black delivery truck with clean, bold 'TikTok' lettering written in bright white on its black body is ALREADY PARKED in reverse, completely stationary with its rear cargo doors ALREADY WIDE OPEN, revealing an interior completely packed and stacked wall-to-wall up to the ceiling with storage boxes. "
             "Valentina reaches the glass door, manually pushes it open with her hands, and walks straight up to the truck. She picks up a single storage box. "
             "RIGID PIXEL PERSISTENCE RULE: Throughout the entire duration, the storage box and the exact product inside remain physically permanent, 100% rigid, and unalterable. Absolute zero morphing, zero flickering, zero fading, zero transparency, zero ghosting transitions, and zero disappearance during lifting or handling. The hand and product maintain continuous, unbroken physical contact. "
-            "IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence."
+            "IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 12.5 seconds with zero abrupt audio cuts and zero dead silence."
         )
     elif i == 5:
         prompt_texto = (
-            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
+            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 12.5-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
             f"STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Faithfully match the exact product from the user-uploaded image with zero substitution, preserving original colors, textures, and details. "
             f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone. "
             f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock. "
-            f"SILENT VISUAL SHOWCASE (0-10s): Purely visual dynamic showcase without spoken dialogue, synced to upbeat viral rhythm, showing the product from multiple flattering angles with smooth camera glides. "
+            f"SILENT VISUAL SHOWCASE (0-12.5s): Purely visual dynamic showcase without spoken dialogue, synced to upbeat viral rhythm, showing the product from multiple flattering angles with smooth camera glides. "
             f"RIGID PIXEL PERSISTENCE RULE: The product maintains continuous, unbroken physical integrity, remaining 100% rigid, stable, and completely identical to the reference image. Absolute zero morphing, zero flickering, zero ghosting transitions, and zero object disappearance."
         )
     else:
         prompt_texto = (
-            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
+            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 12.5-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
             f"STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Faithfully match the exact product from the user-uploaded image with zero substitution, preserving original colors, textures, and details. "
             f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone. "
             f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock. "
-            f"CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-10s): The video opens dynamically with the creator moving smoothly (e.g., standing up, turning, or walking in a single continuous fluid motion with zero jump cuts) while speaking naturally in Brazilian Portuguese with flawless lip-sync and interacting directly with the item. "
-            f"RIGID PIXEL PERSISTENCE RULE: The product maintains continuous, unbroken physical contact with the model's hand, remaining 100% rigid, stable, and completely identical to the reference image. Absolute zero morphing, zero flickering, zero ghosting transitions, and zero object disappearance. Pacing speech evenly across the full 10 seconds."
+            f"CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-12.5s): The video opens dynamically with the creator moving smoothly (e.g., standing up, turning, or walking in a single continuous fluid motion with zero jump cuts) while speaking naturally in Brazilian Portuguese with flawless lip-sync and interacting directly with the item. "
+            f"RIGID PIXEL PERSISTENCE RULE: The product maintains continuous, unbroken physical contact with the model's hand, remaining 100% rigid, stable, and completely identical to the reference image. Absolute zero morphing, zero flickering, zero ghosting transitions, and zero object disappearance. Pacing speech evenly across the full 12.5 seconds."
         )
     return titulo_texto, prompt_texto
 
@@ -644,8 +635,6 @@ if gerar_clicado:
                 
                 eh_estilo_mudo = "Sem Fala" in estilo_titulo or "SILENT VISUAL SHOWCASE" in prompt_base
                 
-                # SE O USUÁRIO ESCOLHER "Fixo" OU O MOLDE JÁ TIVER ASPAS FIXAS E ELE ESTIVER EDITADO COM FALA PRÓPRIA, MANTÉM.
-                # SE ESCOLHER "IA Modeladora", ele injeta fala nova dinâmica a cada clique!
                 if eh_estilo_mudo or ("Fixo" in modo_copy and '"' in prompt_base):
                     prompt_final_montado = prompt_base
                     copy_gerada_exibicao = "Fala fixa mantida do seu molde salvo."
