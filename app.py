@@ -152,7 +152,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# FÁBRICA UNIVERSAL DE PROMPTS (COM CONTINUIDADE E PERSISTÊNCIA RÍGIDA)
+# FÁBRICA DE IDENTIDADE ORIGINAL (PADRÃO 1 A 20)
 def obter_identidade_original(i):
     identidades_estilos = {
         1: ("Estilo 1: POV Mão & Revelação Tátil do Produto (ASMR)", "Foco tátil universal manuseando a peça com extrema nitidez, texturas refinadas e som imersivo de abertura."),
@@ -167,7 +167,7 @@ def obter_identidade_original(i):
         10: ("Estilo 10: Provador Expresso de Oferta Relâmpago", "Ritmo acelerado, troca dinâmica e foco em conversão imediata de estoque limitado e preço promocional."),
         11: ("Estilo 11: Destaque Dinâmico & Movimento Urbano", "Foco na utilidade e versatilidade do produto em trânsito pela cidade."),
         12: ("Estilo 12: Texturas Aconchegantes & Toque Suave", "Foco em macro-texturas, caimento flexível e toque agradável para o dia a dia."),
-        13: ("Estilo 13: Look Noite & Balada com Luz Dramática", "Iluminação noturna sofisticada e moderna, destacando reflexos, brilho e acabamento sob neon."),
+        13: ("Estilo 13: Look Noite & Balada com Luz Dramática", "Iluminação nocturna sofisticada e moderna, destacando reflexos, brilho e acabamento sob neon."),
         14: ("Estilo 14: Estilo Atitude Streetwear & Modernidade", "Foco em design autêntico, estilo urbano moderno e apelo jovem para o TikTok."),
         15: ("Estilo 15: Peça Delicate (Close de Ocasião & Elegância)", "Detalhes delicados e acabamento refinado para ocasiões especiais."),
         16: ("Estilo 16: Sobreposição & Camadas Versáteis", "Estilo moderno de composição, demonstrando versatilidade e encaixe perfeito."),
@@ -202,32 +202,33 @@ def obter_identidade_original(i):
         )
     return titulo_texto, prompt_texto
 
-# PERSISTÊNCIA PERMANENTE NO DISCO (JSON)
+# PERSISTÊNCIA PERMANENTE NO DISCO (JSON) - SEM AUTO-RECRIAR SE FOR APAGADO DE PROPÓSITO
 DB_FILE = "moldes_salvos.json"
 
 def carregar_db_disco():
-    padrao = {}
-    for i in range(1, 21):
-        t, p = obter_identidade_original(i)
-        padrao[i] = {"titulo": t, "prompt": p}
-        
     if os.path.exists(DB_FILE):
         try:
             with open(DB_FILE, "r", encoding="utf-8") as f:
                 dados = json.load(f)
-                if isinstance(dados, dict) and len(dados) > 0:
+                if isinstance(dados, dict):
                     db_convertido = {}
                     for k, v in dados.items():
                         k_final = int(k) if str(k).isdigit() else k
                         if isinstance(v, dict) and "titulo" in v and "prompt" in v:
                             db_convertido[k_final] = v
-                    if db_convertido:
-                        return db_convertido
+                    return db_convertido
         except Exception:
             pass
             
-    salvar_db_disco(padrao)
-    return padrao
+    # Se o arquivo não existir na primeira execução, carrega o padrão. Se o usuário apagou tudo, retorna vazio.
+    if not os.path.exists(DB_FILE):
+        padrao = {}
+        for i in range(1, 21):
+            t, p = obter_identidade_original(i)
+            padrao[i] = {"titulo": t, "prompt": p}
+        salvar_db_disco(padrao)
+        return padrao
+    return {}
 
 def salvar_db_disco(db_dict):
     try:
@@ -236,7 +237,7 @@ def salvar_db_disco(db_dict):
     except Exception:
         pass
 
-# GESTÃO DE ESTADOS & FILA
+# GESTÃO DE ESTADOS
 if "db_estilos" not in st.session_state:
     st.session_state.db_estilos = carregar_db_disco()
 
@@ -285,7 +286,7 @@ with c_grid3:
 with st.container(border=True):
     st.markdown("🎬 **SELECIONAR ESTILOS PARA GRADE DIÁRIA**")
     chaves_ordenadas = sorted(list(st.session_state.db_estilos.keys()), key=lambda x: (0, int(x)) if str(x).isdigit() else (1, str(x)))
-    lista_titulos_geral = [st.session_state.db_estilos[k]["titulo"] for k in chaves_ordenadas]
+    lista_titulos_geral = [st.session_state.db_estilos[k]["titulo"] for k in chaves_ordenadas] if chaves_ordenadas else []
     
     estilos_selecionados = st.multiselect(
         "Selecione",
@@ -295,7 +296,7 @@ with st.container(border=True):
         key=f"multi_estilos_{v}"
     )
 
-# ÁREA RESTRITA PROTEGIDA POR SENHA ADMINISTRATIVA PARA EDIÇÃO/EXCLUSÃO
+# ÁREA RESTRITA PROTEGIDA POR SENHA ADMINISTRATIVA
 SENHA_MESTRE = "vidalooka2"
 
 with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts (Área Restrita - Requer Senha)", expanded=False):
@@ -310,38 +311,35 @@ with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts (Área Restrita - 
         if st.button("🔓 VALIDAR", key=f"btn_validar_{v}"):
             if senha_digitada == SENHA_MESTRE:
                 st.session_state.acesso_liberado = True
-                st.success("✅ Acesso administrativo liberado com sucesso!")
+                st.success("✅ Acesso administrativo liberado!")
             else:
                 st.session_state.acesso_liberado = False
                 st.error("❌ Senha incorreta.")
 
     st.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
-    # SÓ PERMITE EDITAR, APAGAR OU INSERIR SE A SENHA ESTIVER VALIDADA
     if st.session_state.acesso_liberado:
-        st.markdown("<p style='color: #00FF66; font-weight: 700;'>🔓 MODO ADMINISTRADOR ATIVO: Você pode editar, excluir ou criar prompts.</p>", unsafe_allow_html=True)
+        st.markdown("<p style='color: #00FF66; font-weight: 700;'>🔓 MODO ADMINISTRADOR ATIVO</p>", unsafe_allow_html=True)
         
         col_ger1, col_ger2 = st.columns(2)
         with col_ger1:
-            if st.button("🔄 RESTAURAR TODOS OS 20 PADRÕES", key=f"btn_rest_all_{v}"):
-                with st.spinner("🔄 Restaurando grade completa de 1 a 20..."):
+            if st.button("🗑️ ZERAR TODOS OS PROMPTS", key=f"btn_apagar_tudo_geral_{v}"):
+                with st.spinner("🗑️ Apagando todos os prompts..."):
                     time.sleep(0.4)
                     st.session_state.db_estilos = {}
-                    for i in range(1, 21):
-                        t, p = obter_identidade_original(i)
-                        st.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
                     salvar_db_disco(st.session_state.db_estilos)
-                st.success("✅ Grade completa restaurada!")
+                st.success("✅ Banco zerado definitivamente!")
                 time.sleep(0.8)
                 st.rerun()
 
         with col_ger2:
-            if st.button("🗑️ ZERAR TODOS OS PROMPTS", key=f"btn_apagar_tudo_geral_{v}"):
-                with st.spinner("🗑️ Zerando banco de prompts..."):
-                    time.sleep(0.4)
-                    st.session_state.db_estilos = {}
-                    salvar_db_disco(st.session_state.db_estilos)
-                st.success("✅ Banco zerado com sucesso!")
+            # Restaurar individual ou padrão caso queira
+            estilo_a_restaurar = st.number_input("Nº do Estilo para Restaurar (1 a 20)", min_value=1, max_value=20, value=1, step=1, key=f"num_rest_{v}")
+            if st.button("🔄 RESTAURAR ESTE ESTILO ESPECÍFICO", key=f"btn_rest_one_{v}"):
+                t_orig, p_orig = obter_identidade_original(estilo_a_restaurar)
+                st.session_state.db_estilos[estilo_a_restaurar] = {"titulo": t_orig, "prompt": p_orig}
+                salvar_db_disco(st.session_state.db_estilos)
+                st.success(f"✅ Estilo {estilo_a_restaurar} restaurado com sucesso!")
                 time.sleep(0.8)
                 st.rerun()
 
@@ -350,7 +348,7 @@ with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts (Área Restrita - 
         numeric_keys = [k for k in chaves_ordenadas if str(k).isdigit()]
         proximo_id_sugerido = (max([int(k) for k in numeric_keys]) + 1) if numeric_keys else 1
 
-        modo_operacao = st.radio("Modo de Operação", ["✏️ Editar / Excluir Estilo Existente", f"➕ Inserir Novo (Manual / Estilo {proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed", key=f"modo_op_{v}")
+        modo_operacao = st.radio("Modo de Operação", ["✏️ Editar / Excluir Estilo Existente", f"➕ Inserir Novo (Manual / ID {proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed", key=f"modo_op_{v}")
 
         st.markdown(f"<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>{modo_operacao.upper()}</p>", unsafe_allow_html=True)
 
@@ -381,10 +379,11 @@ with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts (Área Restrita - 
                             else:
                                 with st.spinner(f"💾 Salvando alterações no disco..."):
                                     time.sleep(0.4)
+                                    # ATUALIZA APENAS O SLOT ESCOLHIDO SEM DUPLICAR NEM SUBIR PARA O 1
                                     st.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
                                     st.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
                                     salvar_db_disco(st.session_state.db_estilos)
-                                st.success(f"✨ Estilo alterado e gravado com sucesso!")
+                                st.success(f"✨ Estilo {slot_num_edit} alterado com sucesso!")
                                 time.sleep(0.8)
                                 st.rerun()
                                 
@@ -398,10 +397,11 @@ with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts (Área Restrita - 
                             time.sleep(0.8)
                             st.rerun()
                 else:
-                    st.info("Nenhum estilo disponível.")
+                    st.info("Nenhum estilo disponível no momento. Insira um novo prompt abaixo.")
             else:
-                novo_titulo_input = st.text_input("Título / Tema do Novo Prompt Manual", value="", placeholder="Ex: Meu Estilo Personalizado...", key=f"campo_novo_titulo_valencia_fixo_{v}")
-                novo_prompt_input = st.text_area("Código do Novo Prompt", placeholder="Cole o código técnico do prompt aqui...", height=160, key=f"campo_novo_prompt_valencia_fixo_{v}")
+                novo_id_manual = st.number_input("ID Numérico do Novo Estilo", min_value=1, value=proximo_id_sugerido, step=1, key=f"id_manual_{v}")
+                novo_titulo_input = st.text_input("Título / Tema do Novo Prompt", value="", placeholder="Ex: Meu Estilo Personalizado...", key=f"campo_novo_titulo_valencia_fixo_{v}")
+                novo_prompt_input = st.text_area("Código do Prompt", placeholder="Cole o código técnico do prompt aqui...", height=160, key=f"campo_novo_prompt_valencia_fixo_{v}")
                 
                 st.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
                 
@@ -409,18 +409,18 @@ with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts (Área Restrita - 
                     if not novo_titulo_input or not novo_prompt_input:
                         st.warning("⚠️ Preencha o Título e o Código do novo prompt.")
                     else:
-                        with st.spinner(f"📥 Inserindo novo prompt..."):
+                        with st.spinner(f"📥 Inserindo novo estilo..."):
                             time.sleep(0.4)
-                            st.session_state.db_estilos[proximo_id_sugerido] = {
+                            st.session_state.db_estilos[novo_id_manual] = {
                                 "titulo": novo_titulo_input,
                                 "prompt": novo_prompt_input
                             }
                             salvar_db_disco(st.session_state.db_estilos)
-                        st.success(f"🎉 Novo estilo inserido e gravado permanentemente!")
+                        st.success(f"🎉 Estilo {novo_id_manual} inserido e gravado permanentemente!")
                         time.sleep(0.8)
                         st.rerun()
     else:
-        st.info("🔒 Insira a senha administrativa correta acima para desbloquear as opções de edição, exclusão e criação de novos prompts.")
+        st.info("🔒 Insira a senha administrativa correta acima para desbloquear a gestão de prompts.")
 
 st.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
