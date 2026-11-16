@@ -152,13 +152,13 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# DICIONÁRIO MESTRE UNIVERSAL (ADAPTÁVEL A QUALQUER PRODUTO ENVIADO)
+# FÁBRICA UNIVERSAL BLINDADA (COM CONTINUIDADE E PERSISTÊNCIA RÍGIDA)
 def obter_identidade_original(i):
     identidades_estilos = {
         1: ("Estilo 1: POV Mão & Revelação Tátil do Produto (ASMR)", "Foco tátil universal manuseando a peça com extrema nitidez, texturas refinadas e som imersivo de abertura."),
         2: ("Estilo 2: POV Corpo Inteiro em Movimento Dinâmico Urbano", "Câmera em movimento fluido acompanhando o produto de corpo inteiro (head-to-toe) ao ar livre sob luz natural."),
         3: ("Estilo 3: POV Provador de Luxo (Close Íntimo)", "Enquadramento elegante detalhando o caimento exato, a modelagem e a textura da peça."),
-        4: ("Estilo 4: POV Giro 360 Graus em Frente ao Espelho", "Rotação e giros fluidos em frente ao espelho iluminado da boutique, exibindo todos os ângulos do item."),
+        4: ("Estilo 4: POV Giro 360 Graus en Frente ao Espelho", "Rotação e giros fluidos em frente ao espelho iluminado da boutique, exibindo todos os ângulos do item."),
         5: ("Estilo 5: POV Sem Fala com Trilha Viral & Transição Rápida", "Estilo puramente visual de altíssima retenção, sem diálogos, focado em cortes dinâmicos sincronizados com a batida da música."),
         6: ("Estilo 6: POV Close Macro com Foco nos Detalhes", "Câmera de perto apontada diretamente para o produto enviado, destacando acabamentos, costuras e diferenciais."),
         7: ("Estilo 7: Look do Dia Executivo & Elegância (Estilo Virgínia)", "Estética de alto padrão transmitindo autoridade, sofisticação e caimento impecável."),
@@ -182,27 +182,23 @@ def obter_identidade_original(i):
     if i == 20:
         prompt_texto = (
             "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. "
-            "STRICT UNIVERSAL PRODUCT LOCK: Focus strictly on the exact product uploaded by the user with zero alterations, zero modifications to its structure, color, details, or brand. "
+            "STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Focus strictly on the exact product uploaded by the user with zero alterations, zero modifications to its structure, color, details, or brand. "
             "Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone, completely bare surface with zero attachments. "
             "Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. "
-            "STATIC TRUCK & PERSISTENT BOX CHOREOGRAPHY (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally with flawless lip-sync as she walks forward from inside her boutique toward the street. "
+            "CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-10s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally with flawless lip-sync as she walks forward from inside her boutique toward the street in one single fluid, continuous motion with zero jump cuts. "
             "Directly in front of the store, a massive, giant black delivery truck with clean, bold 'TikTok' lettering written in bright white on its black body is ALREADY PARKED in reverse, completely stationary with its rear cargo doors ALREADY WIDE OPEN, revealing an interior completely packed and stacked wall-to-wall up to the ceiling with storage boxes. "
             "Valentina reaches the glass door, manually pushes it open with her hands, and walks straight up to the truck. She picks up a single storage box. "
-            "STRICT PERSISTENCE RULE: Throughout the entire duration of the video, the storage box remains physically present and firmly held in her hands without ever disappearing, vanishing, or morphing. She opens the box steadily while holding it, lifts the exact uploaded product directly out of the box while keeping the box visible in her grip, displays the item clearly to the camera, and concludes her sales pitch. "
-            "IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence. Fixed realistic background, organic human movement.\n\n"
-            "\"Olha, gente... acabou de chegar o estoque aqui na Loja da Valentina. A gente vai trabalhar só com esse produto, porque ele é recordista de vendas e de muita qualidade! Clica aqui no carrinho laranja embaixo para garantir o seu.\"\n\n"
-            "Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, AI morphing transition, soft blending, product switching, changing product model at the end, sudden jump cuts, rapid unrealistic pacing, over 10s, rushed speech, fast jerky movement, static starting frame, ghosting effect, transparent overlay, floating text, subtitles, text captions, generated writing, UI graphics, watermarks, distorted brand, altered design, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI, walking backward, truck moving, doors opening, box disappearing, box vanishing, item morphing into hand."
+            "RIGID PIXEL PERSISTENCE RULE: Throughout the entire duration, the storage box and the exact product inside remain physically permanent, 100% rigid, and unalterable. Absolute zero morphing, zero flickering, zero fading, zero transparency, zero ghosting transitions, and zero disappearance during lifting or handling. The hand and product maintain continuous, unbroken physical contact. "
+            "IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 10 seconds with zero abrupt audio cuts and zero dead silence."
         )
     else:
         prompt_texto = (
             f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 10-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
-            f"STRICT UNIVERSAL PRODUCT LOCK: Faithfully match the exact product from the user-uploaded image with zero substitution, preserving original colors, textures, and details. "
+            f"STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Faithfully match the exact product from the user-uploaded image with zero substitution, preserving original colors, textures, and details. "
             f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone. "
-            f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. "
-            f"Strict 1:1 pixel lock and rigid product match with zero substitution. "
-            f"VIRAL HOOK & FLUID TRY-ON FLOW (0-10s): The video opens dynamically with the creator looking straight into the camera delivering a strong magnetic hook, pacing her speech evenly across the full 10 seconds while interacting directly with the item.\n\n"
-            f"\"Olha, gente, meninas, olha aqui o que chegou agora na Loja da Valentina! Chegou todo esse estoque exclusivo. A gente vai trabalhar só com essa marca porque está vendendo muito. Clica no carrinho laranja aqui embaixo e garanta a sua, que esse estoque chegou agora e vai estar de promoção!\"\n\n"
-            f"Absolute Negative Prompt / Anti-Mic & Anti-Artifact Engine: microphone, lapel mic, clip-on microphone, wireless mic, badge, pin, earphones, clipped accessories, floating gadgets, washed-out colors, dull lighting, blurry details, soft focus, digital noise, flat lighting, early speech ending, dead silence at the end, abrupt appearance, pop-up object, harsh audio cut, model swapping, face morphing, background shift, CGI."
+            f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock. "
+            f"CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-10s): The video opens dynamically with the creator moving smoothly (e.g., standing up, turning, or walking in a single continuous fluid motion with zero jump cuts) while interacting directly with the item. "
+            f"RIGID PIXEL PERSISTENCE RULE: The product maintains continuous, unbroken physical contact with the model's hand, remaining 100% rigid, stable, and completely identical to the reference image. Absolute zero morphing, zero flickering, zero ghosting transitions, and zero object disappearance. Pacing speech evenly across the full 10 seconds."
         )
     return titulo_texto, prompt_texto
 
@@ -210,18 +206,27 @@ def obter_identidade_original(i):
 DB_FILE = "moldes_salvos.json"
 
 def carregar_db_disco():
-    if os.path.exists(DB_FILE):
-        try:
-            with open(DB_FILE, "r", encoding="utf-8") as f:
-                dados = json.load(f)
-                if isinstance(dados, dict):
-                    return {int(k) if str(k).isdigit() else k: v for k, v in dados.items()}
-        except Exception:
-            pass
     padrao = {}
     for i in range(1, 21):
         t, p = obter_identidade_original(i)
         padrao[i] = {"titulo": t, "prompt": p}
+        
+    if os.path.exists(DB_FILE):
+        try:
+            with open(DB_FILE, "r", encoding="utf-8") as f:
+                dados = json.load(f)
+                if isinstance(dados, dict) and len(dados) > 0:
+                    db_convertido = {}
+                    for k, v in dados.items():
+                        k_int = int(k) if str(k).isdigit() else k
+                        if isinstance(v, dict) and "titulo" in v and "prompt" in v:
+                            db_convertido[k_int] = v
+                    if db_convertido:
+                        return db_convertido
+        except Exception:
+            pass
+            
+    salvar_db_disco(padrao)
     return padrao
 
 def salvar_db_disco(db_dict):
@@ -231,7 +236,7 @@ def salvar_db_disco(db_dict):
     except Exception:
         pass
 
-# GESTÃO DE ESTADOS & FILA DE EXCLUSÕES ORDENADA
+# GESTÃO DE ESTADOS & FILA
 if "db_estilos" not in st.session_state:
     st.session_state.db_estilos = carregar_db_disco()
 
@@ -240,9 +245,6 @@ if "fila_exclusoes" not in st.session_state:
 
 if "form_version" not in st.session_state:
     st.session_state.form_version = 0
-
-if "estilo_ativo_idx" not in st.session_state:
-    st.session_state.estilo_ativo_idx = 1
 
 if "acesso_liberado" not in st.session_state:
     st.session_state.acesso_liberado = False
@@ -286,16 +288,16 @@ with c_grid3:
 
 with st.container(border=True):
     st.markdown("🎬 **SELECIONAR ESTILOS PARA GRADE DIÁRIA**")
-    lista_titulos_geral = [st.session_state.db_estilos[i]["titulo"] for i in sorted(st.session_state.db_estilos.keys())] if st.session_state.db_estilos else []
+    lista_titulos_geral = [st.session_state.db_estilos[i]["titulo"] for i in sorted(st.session_state.db_estilos.keys(), key=lambda x: str(x))] if st.session_state.db_estilos else []
     estilos_selecionados = st.multiselect(
         "Selecione",
         options=lista_titulos_geral,
-        default=[st.session_state.db_estilos[len(st.session_state.db_estilos)]["titulo"]] if len(st.session_state.db_estilos) > 0 else [],
+        default=lista_titulos_geral[:1] if len(lista_titulos_geral) > 0 else [],
         label_visibility="collapsed",
         key=f"multi_estilos_{v}"
     )
 
-# GERENCIADOR COM VALIDAÇÃO LIMPA
+# GERENCIADOR COM VALIDAÇÃO LIMPA E OPÇÃO DE APAGAR TUDO
 SENHA_MESTRE = "vidalooka2"
 
 with st.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Restrita)", expanded=True):
@@ -316,32 +318,10 @@ with st.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Restrita
     st.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
 
     if st.session_state.acesso_liberado:
-        col_ger1, col_ger2 = st.columns(2)
+        col_ger1, col_ger2, col_ger3 = st.columns(3)
         
         with col_ger1:
-            texto_botao_restaurar = "🔄 RESTAURAR PRÓXIMO APAGADO"
-            if st.session_state.fila_exclusoes:
-                proximo_a_voltar = st.session_state.fila_exclusoes[0]
-                texto_botao_restaurar = f"🔄 RESTAURAR ESTILO {proximo_a_voltar}"
-
-            if st.button(texto_botao_restaurar, key=f"btn_rest_prox_{v}"):
-                if st.session_state.fila_exclusoes:
-                    id_para_restaurar = st.session_state.fila_exclusoes.pop(0)
-                    
-                    with st.spinner(f"🔄 Restaurando Estilo {id_para_restaurar}..."):
-                        time.sleep(0.4)
-                        t_orig, p_orig = obter_identidade_original(id_para_restaurar)
-                        st.session_state.db_estilos[id_para_restaurar] = {"titulo": t_orig, "prompt": p_orig}
-                        salvar_db_disco(st.session_state.db_estilos)
-                    
-                    st.success(f"✅ Estilo {id_para_restaurar} retornado com sucesso!")
-                    time.sleep(0.8)
-                    st.rerun()
-                else:
-                    st.info("ℹ️ Não há nenhum estilo na fila de restauração.")
-
-        with col_ger2:
-            if st.button("🔄 RESTAURAR TODOS OS 20", key=f"btn_rest_all_{v}"):
+            if st.button("🔄 RESTAURAR TODOS (1-20)", key=f"btn_rest_all_{v}"):
                 with st.spinner("🔄 Restaurando grade completa de 1 a 20..."):
                     time.sleep(0.4)
                     st.session_state.db_estilos = {}
@@ -350,16 +330,38 @@ with st.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Restrita
                         st.session_state.db_estilos[i] = {"titulo": t, "prompt": p}
                     st.session_state.fila_exclusoes = []
                     salvar_db_disco(st.session_state.db_estilos)
-                st.success("✅ Grade completa de 1 a 20 restaurada perfeitamente!")
+                st.success("✅ Grade completa restaurada!")
                 time.sleep(0.8)
                 st.rerun()
+
+        with col_ger2:
+            if st.button("🗑️ APAGAR TODOS (ZERAR)", key=f"btn_apagar_tudo_geral_{v}"):
+                with st.spinner("🗑️ Apagando todos os prompts..."):
+                    time.sleep(0.4)
+                    st.session_state.db_estilos = {}
+                    salvar_db_disco(st.session_state.db_estilos)
+                st.success("✅ Todos os prompts foram apagados! O banco está limpo para inserção manual.")
+                time.sleep(0.8)
+                st.rerun()
+
+        with col_ger3:
+            if st.session_state.fila_exclusoes:
+                proximo_a_voltar = st.session_state.fila_exclusoes[0]
+                if st.button(f"🔄 RESTAURAR ESTILO {proximo_a_voltar}", key=f"btn_rest_prox_{v}"):
+                    id_para_restaurar = st.session_state.fila_exclusoes.pop(0)
+                    t_orig, p_orig = obter_identidade_original(id_para_restaurar)
+                    st.session_state.db_estilos[id_para_restaurar] = {"titulo": t_orig, "prompt": p_orig}
+                    salvar_db_disco(st.session_state.db_estilos)
+                    st.success(f"✅ Estilo {id_para_restaurar} retornado!")
+                    time.sleep(0.8)
+                    st.rerun()
 
         st.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
         if not st.session_state.db_estilos:
-            st.write("Nenhum estilo na memória.")
+            st.info("ℹ️ Nenhum estilo na memória no momento. Use a opção abaixo para inserir seus prompts manuais.")
         else:
-            ids_disp = sorted(list(st.session_state.db_estilos.keys()))
+            ids_disp = sorted(list(st.session_state.db_estilos.keys()), key=lambda x: str(x))
             
             estilo_escolhido = st.selectbox(
                 "Selecione o Estilo para Excluir",
@@ -373,50 +375,43 @@ with st.expander("⚙️ Gerenciar / Restaurar / Excluir Estilos (Área Restrita
             if st.button("🗑️ EXCLUIR ESTILO SELECIONADO", key=f"btn_exc_estilo_{v}"):
                 with st.spinner(f"🗑️ Excluindo Estilo {estilo_escolhido}..."):
                     time.sleep(0.3)
-                    if estilo_escolhido not in st.session_state.fila_exclusoes:
+                    if isinstance(estilo_escolhido, int) and estilo_escolhido not in st.session_state.fila_exclusoes:
                         st.session_state.fila_exclusoes.append(estilo_escolhido)
                     
                     del st.session_state.db_estilos[estilo_escolhido]
                     salvar_db_disco(st.session_state.db_estilos)
                 
-                st.success(f"🗑️ Estilo {estilo_escolhido} excluído definitivamente do disco!")
+                st.success(f"🗑️ Estilo '{estilo_escolhido}' excluído definitivamente!")
                 time.sleep(0.8)
                 st.rerun()
 
 st.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# MODO DE OPERAÇÃO UNIFICADO (EDITAR OU INSERIR NO FINAL)
-todos_ids_existentes = list(st.session_state.db_estilos.keys())
-proximo_id_sugerido = (max(todos_ids_existentes) + 1) if todos_ids_existentes else 1
+# MODO DE OPERAÇÃO UNIFICADO (EDITAR OU INSERIR NOVO MANUAL)
+todos_ids_existentes = sorted(list(st.session_state.db_estilos.keys()), key=lambda x: str(x))
+# Define ID numérico ou texto para novos cadastros
+numeric_keys = [k for k in todos_ids_existentes if isinstance(k, int)]
+proximo_id_sugerido = (max(numeric_keys) + 1) if numeric_keys else 1
 
-modo_operacao = st.radio("Modo de Operação", ["✏️ Editar Estilo Existente", f"➕ Inserir Novo (Estilo {proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed", key=f"modo_op_{v}")
+modo_operacao = st.radio("Modo de Operação", ["✏️ Editar Estilo Existente", f"➕ Inserir Novo (Manual / Estilo {proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed", key=f"modo_op_{v}")
 
 st.markdown(f"<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>{modo_operacao.upper()}</p>", unsafe_allow_html=True)
 
 with st.container(border=True):
-    opcoes_editor = sorted(todos_ids_existentes)
-    
     if "Editar" in modo_operacao:
-        if opcoes_editor:
-            if st.session_state.estilo_ativo_idx not in opcoes_editor:
-                st.session_state.estilo_ativo_idx = opcoes_editor[0]
-                
+        if todos_ids_existentes:
             slot_num_edit = st.selectbox(
                 "Selecione o Estilo para Editar", 
-                options=opcoes_editor, 
-                index=opcoes_editor.index(st.session_state.estilo_ativo_idx) if st.session_state.estilo_ativo_idx in opcoes_editor else 0,
+                options=todos_ids_existentes, 
                 format_func=lambda x: f"Estilo {x} - {st.session_state.db_estilos[x]['titulo']}",
                 key=f"select_editor_direto_id_{v}"
             )
-            
-            if slot_num_edit != st.session_state.estilo_ativo_idx:
-                st.session_state.estilo_ativo_idx = slot_num_edit
 
             titulo_atual_estilo = st.session_state.db_estilos[slot_num_edit]["titulo"]
             prompt_atual_estilo = st.session_state.db_estilos[slot_num_edit]["prompt"]
 
-            novo_titulo_editado = st.text_input("Tema / Título do Estilo", value=titulo_atual_estilo, key=f"titulo_input_{slot_num_edit}_{v}")
-            texto_editado_usuario = st.text_area("Código do Prompt", value=prompt_atual_estilo, height=160, key=f"prompt_textarea_{slot_num_edit}_{v}")
+            novo_titulo_editado = st.text_input("Tema / Título do Estilo", value=titulo_atual_estilo, key=f"titulo_input_edit_{slot_num_edit}_{v}")
+            texto_editado_usuario = st.text_area("Código do Prompt", value=prompt_atual_estilo, height=160, key=f"prompt_textarea_edit_{slot_num_edit}_{v}")
             
             st.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
             
@@ -424,35 +419,35 @@ with st.container(border=True):
                 if not novo_titulo_editado or not texto_editado_usuario:
                     st.warning("⚠️ Preencha o Título e o Código do prompt antes de salvar.")
                 else:
-                    with st.spinner(f"💾 Salvando alterações do Estilo {slot_num_edit} no disco..."):
+                    with st.spinner(f"💾 Salvando alterações no disco..."):
                         time.sleep(0.4)
                         st.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
                         st.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
                         salvar_db_disco(st.session_state.db_estilos)
-                    st.success(f"✨ Estilo {slot_num_edit} alterado e gravado com sucesso!")
+                    st.success(f"✨ Estilo alterado e gravado com sucesso!")
                     time.sleep(0.8)
                     st.rerun()
         else:
-            st.write("Nenhum estilo disponível.")
+            st.info("Nenhum estilo disponível para edição. Insira um novo prompt manual abaixo.")
     else:
-        novo_titulo_input = st.text_input("Título / Tema do Novo Prompt", value="", placeholder="Ex: Novo Estilo Personalizado...", key=f"campo_novo_titulo_valencia_fixo_{v}")
-        novo_prompt_input = st.text_area("Código do Novo Prompt", placeholder="Cole o código do prompt aqui...", height=160, key=f"campo_novo_prompt_valencia_fixo_{v}")
+        # Inserção de Novo Prompt Manual
+        novo_titulo_input = st.text_input("Título / Tema do Novo Prompt Manual", value="", placeholder="Ex: Meu Estilo Personalizado TikTok...", key=f"campo_novo_titulo_valencia_fixo_{v}")
+        novo_prompt_input = st.text_area("Código do Novo Prompt", placeholder="Cole o código técnico do prompt aqui...", height=160, key=f"campo_novo_prompt_valencia_fixo_{v}")
         
         st.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
         
-        if st.button("📥 INSERIR E SALVAR NO FINAL", key=f"btn_inserir_novo_{v}"):
+        if st.button("📥 INSERIR E SALVAR NO SISTEMA", key=f"btn_inserir_novo_{v}"):
             if not novo_titulo_input or not novo_prompt_input:
                 st.warning("⚠️ Preencha o Título e o Código do novo prompt.")
             else:
-                with st.spinner(f"📥 Inserindo Estilo {proximo_id_sugerido}..."):
+                with st.spinner(f"📥 Inserindo novo prompt no sistema..."):
                     time.sleep(0.4)
                     st.session_state.db_estilos[proximo_id_sugerido] = {
                         "titulo": novo_titulo_input,
                         "prompt": novo_prompt_input
                     }
-                    st.session_state.estilo_ativo_idx = proximo_id_sugerido
                     salvar_db_disco(st.session_state.db_estilos)
-                st.success(f"🎉 Novo Estilo {proximo_id_sugerido} inserido e gravado permanentemente!")
+                st.success(f"🎉 Novo estilo inserido e gravado permanentemente!")
                 time.sleep(0.8)
                 st.rerun()
 
@@ -523,6 +518,5 @@ if gerar_clicado:
                 f'<span class="tag-estilo">{estilo_titulo}</span><br>',
                 unsafe_allow_html=True
             )
-            # Exibe o prompt dentro da caixinha curta e compacta com rolagem e botão de cópia
             st.code(prompt_ativo_slot, language="text")
             st.markdown('</div>', unsafe_allow_html=True)
