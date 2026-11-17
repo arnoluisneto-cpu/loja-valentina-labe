@@ -155,32 +155,41 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# MOTOR DE MODELAGEM DE COPY INÉDITA (12.5s - CALIBRADO PARA NARRATIVA FLUIDA)
-def modelar_copy_viral_local(produto, categoria, historico_sessao):
+# MOTOR INTELIGENTE DE RESUMO E MODELAGEM DE COPY (CALIBRADO PARA EXATAMENTE 12.5s)
+def resumir_e_modelar_copy_local(descricao_completa, categoria, historico_sessao):
+    # Extrai termos-chave da descrição do usuário para injetar com inteligência
+    desc_lower = descricao_completa.lower()
+    
+    # Identifica atributos principais mencionados na descrição
+    destaques = []
+    if "gel" in desc_lower or "palmilha" in desc_lower:
+        destaques.append("com palmilha em gel super confortável")
+    if "leve" in desc_lower:
+        destaques.append("super leve e macio")
+    if "cores" in desc_lower:
+        destaques.append("com várias cores lindas")
+    if "couro" in desc_lower or "material" in desc_lower:
+        destaques.append("com acabamento impecável")
+        
+    detalhe_str = " ".join(destaques) if destaques else "com uma qualidade e acabamento incríveis"
+
     ganchos = [
-        f"Gente, para tudo e olha o acabamento impecável desse {produto} que acabou de chegar aqui na Loja da Valentina!",
-        f"Meninas, vocês simplesmente não têm noção do caimento real desse {produto} quando a gente veste no corpo!",
-        f"Eu juro que eu não estava preparada para a qualidade absurda e o conforto desse {produto}!",
-        f"Olha de pertinho todos os detalhes desse {produto} antes que esgote o lote exclusivo de hoje!",
-        f"Finalmente chegou a reposição oficial do {produto} mais pedido e desejado da Loja da Valentina!",
-        f"Se você estava esperando o momento perfeito para garantir o seu {produto}, olha isso aqui agora!",
-        f"Para tudo o que você está fazendo e repara no nível desse {produto} que liberamos no estoque!",
-        f"Gente, sério, olha como esse {produto} transforma qualquer produção diária em segundos!"
+        f"Gente, para tudo e olha os detalhes desse produto que acabou de chegar na Loja da Valentina!",
+        f"Meninas, vocês simplesmente não têm noção do conforto real desse modelo quando a gente usa!",
+        f"Eu juro que não estava preparada para a qualidade absurda e o padrão desse lançamento!",
+        f"Olha de pertinho tudo o que esse produto entrega antes que acabe o nosso lote de hoje!"
     ]
     
     desenvolvimento = [
-        "Ele tem um toque macio incrível, veste super bem e entrega um visual sofisticado sem esforço nenhum.",
-        "O material é de altíssima qualidade, super resistente e pensado para durar muito no seu dia a dia.",
-        "Cada costura foi feita com muito capricho, por isso ele virou o queridinho absoluto dos pedidos por aqui.",
-        "É aquela peça coringa indispensável que valoriza o visual na hora e combina com absolutamente tudo.",
-        "A modelagem encaixa perfeitamente nas curvas e traz uma leveza espetacular desde o primeiro uso."
+        f"Ele é {detalhe_str}, veste super bem no dia a dia e traz um visual sofisticado sem esforço.",
+        f"Cada detalhe foi pensado para durar muito, unindo resistência {detalhe_str} e muita elegância.",
+        f"É aquela peça coringa indispensável, {detalhe_str}, que valoriza qualquer look na hora."
     ]
     
     ctas = [
         "Clica agora no carrinho laranja aqui embaixo e garante o seu na Loja da Valentina!",
         "Toca no carrinho laranja no cantinho e aproveita enquanto ainda tem disponível no estoque!",
-        "Já clica no carrinho laranja aqui embaixo para garantir com envio rápido!",
-        "Corre no carrinho laranja e garante o seu antes que acabe de novo!"
+        "Já clica no carrinho laranja aqui embaixo para garantir com envio rápido!"
     ]
     
     tentativas = 0
@@ -201,23 +210,23 @@ def modelar_copy_viral_local(produto, categoria, historico_sessao):
     historico_sessao.add(copy_final)
     return copy_final
 
-def gerar_copy_ia_gemini(api_key, produto, categoria, estilo_titulo, variacao_num):
+def gerar_copy_ia_gemini(api_key, descricao_completa, categoria, estilo_titulo, variacao_num):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key.strip()}"
     
     instrucao_sistema = (
         "Você é um Copywriter Sênior especialista em vídeos virais de alta conversão para TikTok Shop Brasil (Loja da Valentina). "
-        "Sua tarefa é MODELAR a estrutura psicológica dos vídeos virais atuais (Gancho forte -> Benefício real -> Prova social -> CTA), "
-        "criando uma fala 100% ORIGINAL, INÉDITA e NATURAL em Português do Brasil. "
+        "Sua tarefa é ANALISAR a descrição técnica completa enviada pelo usuário, extrair os atributos mais fortes (marca, conforto, material, diferenciais) "
+        "e CRIAR uma fala 100% ORIGINAL, INÉDITA e NATURAL em Português do Brasil modelada para vídeos curtos. "
         "REGRAS OBRIGATÓRIAS: "
         "1. Tom espontâneo de influenciadora brasileira. "
-        "2. Duração exata de leitura: 10 a 12.5 segundos (entre 30 e 38 palavras). "
-        "3. Mencione 'Loja da Valentina' e o 'carrinho laranja'. "
+        "2. Duração exata de leitura: 10 a 12.5 segundos (rigorosamente entre 30 e 38 palavras no máximo). "
+        "3. Mencione 'Loja da Valentina' e o 'carrinho laranja' no final. "
         "4. Retorne APENAS a fala final entre aspas duplas."
     )
     
     prompt_usuario = (
-        f"Crie a variação criativa #{variacao_num} inédita para:\n"
-        f"- Produto: {produto}\n"
+        f"Analise esta descrição completa do produto e crie a variação criativa #{variacao_num} inédita:\n"
+        f"- Descrição do Produto / Fornecedor: {descricao_completa}\n"
         f"- Categoria: {categoria}\n"
         f"- Estilo visual: {estilo_titulo}\n"
         f"Escreva apenas a fala falada pela criadora entre aspas:"
@@ -410,7 +419,7 @@ with c_grid2:
 with c_grid3:
     with st.container(border=True):
         st.markdown("🧠 **MOTOR DE COPY**")
-        modo_copy = st.selectbox("Motor Copy", ["IA Modeladora (Anti-Cópia Dinâmica)", "Fixo (Do molde salvo)"], label_visibility="collapsed", key=f"sel_copy_mode_{v}")
+        modo_copy = st.selectbox("Motor Copy", ["IA Modeladora (Resumo Inteligente)", "Fixo (Do molde salvo)"], label_visibility="collapsed", key=f"sel_copy_mode_{v}")
 
 with st.container(border=True):
     st.markdown("🎬 **SELECIONAR ESTILOS PARA GRADE DIÁRIA**")
@@ -571,17 +580,20 @@ with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts & Cérebro IA (Ár
 
 st.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# DADOS DO PRODUTO & UPLOADS
-st.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & UPLOADS</p>", unsafe_allow_html=True)
+# DADOS DO PRODUTO & UPLOADS (DESCRIÇÃO COMPLETA PARA RESUMO INTELIGENTE)
+st.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & DESCRIÇÃO TÉCNICA</p>", unsafe_allow_html=True)
 
 with st.container(border=True):
     c_l1_1, c_l1_2 = st.columns(2)
     with c_l1_1:
-        st.markdown("🏷️ **NOME PRODUTO / SKU**")
-        produto_nome = st.text_input("Nome", placeholder="Ex: Sandália Plataforma Preta, Calça Pantalona...", label_visibility="collapsed", key=f"input_nome_produto_{v}")
+        st.markdown("🏷️ **NOME / MARCA DO PRODUTO**")
+        produto_nome = st.text_input("Nome", placeholder="Ex: Tênis Sapatilha Wayper...", label_visibility="collapsed", key=f"input_nome_produto_{v}")
     with c_l1_2:
         st.markdown("📂 **CATEGORIA**")
-        tipo_produto = st.selectbox("Categoria", ["Geral / Universal", "Calçado", "Vestuário", "Acessório", "Bolsa", "Outros"], label_visibility="collapsed", key=f"sel_categoria_{v}")
+        tipo_produto = st.selectbox("Categoria", ["Calçado", "Vestuário", "Acessório", "Bolsa", "Outros"], label_visibility="collapsed", key=f"sel_categoria_{v}")
+
+    st.markdown("📝 **DESCRIÇÃO COMPLETA (Cole tudo aqui: marca, modelo, palmilha em gel, cores, detalhes...)**")
+    descricao_fornecedor = st.text_area("Descrição", placeholder="Cole aqui a descrição completa do seu fornecedor. O app vai analisar tudo e resumir os melhores argumentos no roteiro...", height=100, label_visibility="collapsed", key=f"input_desc_completa_{v}")
 
     st.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
@@ -613,8 +625,8 @@ with col_btn2:
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
 
 if gerar_clicado:
-    if not produto_nome:
-        st.warning("⚠️ Informe o nome do produto.")
+    if not produto_nome and not descricao_fornecedor:
+        st.warning("⚠️ Informe o nome ou cole a descrição do produto.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Envie todas as fotos.")
     elif not estilos_selecionados:
@@ -622,10 +634,11 @@ if gerar_clicado:
     else:
         agora = datetime.now().strftime("%H:%M:%S")
         api_key_salva = st.session_state.config_ia.get("api_key", "").strip()
+        texto_base_analise = f"{produto_nome} - {descricao_fornecedor}"
         
         mapa_prompts = {st.session_state.db_estilos[i]["titulo"]: st.session_state.db_estilos[i]["prompt"] for i in st.session_state.db_estilos if i in st.session_state.db_estilos}
         
-        with st.spinner("🧠 Processando prompts e gerando falas dinâmicas..."):
+        with st.spinner("🧠 Analisando descrição e resumindo para 12.5s..."):
             st.success(f"✅ Gerados {len(estilos_selecionados)} prompts às {agora} para '{produto_nome}'.")
             
             for idx, estilo_titulo in enumerate(estilos_selecionados):
@@ -639,29 +652,29 @@ if gerar_clicado:
                     prompt_final_montado = prompt_base
                     copy_gerada_exibicao = "Fala fixa mantida do seu molde salvo."
                 else:
-                    fala_dinamica = ""
+                    fala_resumida = ""
                     if api_key_salva:
                         try:
-                            fala_dinamica = gerar_copy_ia_gemini(
+                            fala_resumida = gerar_copy_ia_gemini(
                                 api_key=api_key_salva,
-                                produto=produto_nome,
+                                descricao_completa=texto_base_analise,
                                 categoria=tipo_produto,
                                 estilo_titulo=estilo_titulo,
                                 variacao_num=prompt_numero + random.randint(1, 999)
                             )
                         except Exception:
-                            fala_dinamica = modelar_copy_viral_local(produto_nome, tipo_produto, st.session_state.historico_copys)
+                            fala_resumida = resumir_e_modelar_copy_local(texto_base_analise, tipo_produto, st.session_state.historico_copys)
                     else:
-                        fala_dinamica = modelar_copy_viral_local(produto_nome, tipo_produto, st.session_state.historico_copys)
+                        fala_resumida = resumir_e_modelar_copy_local(texto_base_analise, tipo_produto, st.session_state.historico_copys)
                         
-                    copy_gerada_exibicao = fala_dinamica
-                    prompt_final_montado = f"{prompt_base}\n\n{fala_dinamica}"
+                    copy_gerada_exibicao = fala_resumida
+                    prompt_final_montado = f"{prompt_base}\n\n{fala_resumida}"
 
                 st.markdown(f"### 🎬 Prompt {prompt_numero} • {horario_postagem}")
                 st.markdown(
                     '<div class="metric-card">'
                     f'<span class="tag-estilo">{estilo_titulo}</span><br>'
-                    f'<span style="color:#00FF66; font-size:11px;">🗣️ <b>Fala Gerada:</b> {copy_gerada_exibicao}</span>',
+                    f'<span style="color:#00FF66; font-size:11px;">🗣️ <b>Fala Resumida (12.5s):</b> {copy_gerada_exibicao}</span>',
                     unsafe_allow_html=True
                 )
                 st.code(prompt_final_montado, language="text")
