@@ -157,10 +157,8 @@ st.markdown("""
 
 # MOTOR INTELIGENTE DE RESUMO E MODELAGEM DE COPY (CALIBRADO PARA EXATAMENTE 12.5s)
 def resumir_e_modelar_copy_local(descricao_completa, categoria, historico_sessao):
-    # Extrai termos-chave da descrição do usuário para injetar com inteligência
     desc_lower = descricao_completa.lower()
     
-    # Identifica atributos principais mencionados na descrição
     destaques = []
     if "gel" in desc_lower or "palmilha" in desc_lower:
         destaques.append("com palmilha em gel super confortável")
@@ -219,7 +217,7 @@ def gerar_copy_ia_gemini(api_key, descricao_completa, categoria, estilo_titulo, 
         "e CRIAR uma fala 100% ORIGINAL, INÉDITA e NATURAL em Português do Brasil modelada para vídeos curtos. "
         "REGRAS OBRIGATÓRIAS: "
         "1. Tom espontâneo de influenciadora brasileira. "
-        "2. Duração exata de leitura: 10 a 12.5 segundos (rigorosamente entre 30 e 38 palavras no máximo). "
+        "2. Duração exata de leitura: 10 a 12.5 segundos (rigorosamente entre 26 e 34 palavras no máximo). "
         "3. Mencione 'Loja da Valentina' e o 'carrinho laranja' no final. "
         "4. Retorne APENAS a fala final entre aspas duplas."
     )
@@ -259,7 +257,7 @@ def gerar_copy_ia_gemini(api_key, descricao_completa, categoria, estilo_titulo, 
             texto = f'{texto}"'
         return texto
 
-# FÁBRICA DE IDENTIDADE ORIGINAL (12.5s)
+# FÁBRICA DE IDENTIDADE ORIGINAL (12.5s COM CRONOGRAMA DE SAÍDA DA LOJA)
 def obter_identidade_original(i):
     identidades_estilos = {
         1: ("Estilo 1: POV Mão & Revelação Tátil do Produto (ASMR)", "Foco tátil universal manuseando a peça com extrema nitidez, texturas refinadas e som imersivo de abertura."),
@@ -281,7 +279,7 @@ def obter_identidade_original(i):
         17: ("Estilo 17: Movimento Fluido & Apresentação Dinâmica", "Fluidez, leveza e apresentação natural do produto em uso."),
         18: ("Estilo 18: Peça Premium de Cós / Estrutura Alta & Elegância", "Caimento impecável e acabamento de alfaiataria em plano aberto."),
         19: ("Estilo 19: Praticidade & Funcionalidade Ágil", "Demonstração rápida de agilidade e facilidade de uso para o público."),
-        20: ("Estilo 20: POV Caminhão Preto Gigante do TikTok (Estoque Chegando)", "Cenário épico externo com caminhão gigante estacionado e portas abertas repletas de caixas da Loja da Valentina.")
+        20: ("Estilo 20: POV Caminhão Preto Gigante do TikTok (Saída da Loja)", "Cenário épico externo com caminhão gigante estacionado e portas abertas repletas de caixas da Loja da Valentina.")
     }
     
     titulo_texto, desc_estilo = identidades_estilos.get(i, (f"Estilo {i}", "Estilo universal personalizado da Loja da Valentina."))
@@ -292,11 +290,11 @@ def obter_identidade_original(i):
             "STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Focus strictly on the exact product uploaded by the user with zero alterations, zero modifications to its structure, color, details, or brand. "
             "Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone, completely bare surface with zero attachments. "
             "Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. "
-            "CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-12.5s): From exact second 0, the camera is positioned behind the creator (Valentina) from a rear angle. The video opens instantly with Valentina speaking naturally in Brazilian Portuguese with flawless lip-sync as she walks forward from inside her boutique toward the street in one single fluid, continuous motion with zero jump cuts. "
-            "Directly in front of the store, a massive, giant black delivery truck with clean, bold 'TikTok' lettering written in bright white on its black body is ALREADY PARKED in reverse, completely stationary with its rear cargo doors ALREADY WIDE OPEN, revealing an interior completely packed and stacked wall-to-wall up to the ceiling with storage boxes. "
-            "Valentina reaches the glass door, manually pushes it open with her hands, and walks straight up to the truck. She picks up a single storage box. "
-            "RIGID PIXEL PERSISTENCE RULE: Throughout the entire duration, the storage box and the exact product inside remain physically permanent, 100% rigid, and unalterable. Absolute zero morphing, zero flickering, zero fading, zero transparency, zero ghosting transitions, and zero disappearance during lifting or handling. The hand and product maintain continuous, unbroken physical contact. "
-            "IMMEDIATE FLAWLESS START & CLEAN SCREEN: Absolute zero static frames, zero ghosting, zero overlay transparency, zero floating text, zero subtitles, zero UI overlays, zero watermarks, zero generated text captions. SMOOTH TAIL BUFFER: Action and speech naturally conclude right at 12.5 seconds with zero abrupt audio cuts and zero dead silence."
+            "CHRONOLOGICALLY LOCKED TIMELINE (0-12.5s): "
+            "[0.0s - 2.5s]: The video opens instantly at second 0.0 inside the boutique. Creator Valentina is already speaking the opening hook in Brazilian Portuguese with flawless lip-sync while manually pushing open the glass door to exit. "
+            "[2.5s - 8.5s]: Valentina walks fluidly forward from inside the boutique toward the street in a continuous motion. "
+            "[8.5s - 12.5s]: She reaches the stationary giant black delivery truck parked directly outside with 'TikTok' lettering and wide-open rear doors packed with boxes, picking up a single storage box. "
+            "RIGID PIXEL PERSISTENCE RULE: The product and storage box remain 100% rigid, stable, and physically unalterable. Absolute zero morphing, zero flickering, zero ghosting, zero floating items. Speech is evenly paced to conclude right at 12.5s."
         )
     elif i == 5:
         prompt_texto = (
@@ -313,8 +311,8 @@ def obter_identidade_original(i):
             f"STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Faithfully match the exact product from the user-uploaded image with zero substitution, preserving original colors, textures, and details. "
             f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone. "
             f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock. "
-            f"CONTINUOUS TIMELINE CHOREOGRAPHY & RIGID OBJECT PERSISTENCE (0-12.5s): The video opens dynamically with the creator moving smoothly (e.g., standing up, turning, or walking in a single continuous fluid motion with zero jump cuts) while speaking naturally in Brazilian Portuguese with flawless lip-sync and interacting directly with the item. "
-            f"RIGID PIXEL PERSISTENCE RULE: The product maintains continuous, unbroken physical contact with the model's hand, remaining 100% rigid, stable, and completely identical to the reference image. Absolute zero morphing, zero flickering, zero ghosting transitions, and zero object disappearance. Pacing speech evenly across the full 12.5 seconds."
+            f"CHRONOLOGICALLY LOCKED TIMELINE (0-12.5s): [0.0s - 3.0s] Instant speech start with flawless lip-sync in Brazilian Portuguese from second 0.0. [3.0s - 9.0s] Fluid motion and product interaction. [9.0s - 12.5s] Smooth conclusion and CTA. "
+            f"RIGID PIXEL PERSISTENCE RULE: The product maintains continuous, unbroken physical contact with the model's hand, remaining 100% rigid, stable, and completely identical to the reference image. Absolute zero morphing, zero flickering, zero ghosting."
         )
     return titulo_texto, prompt_texto
 
@@ -580,7 +578,7 @@ with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts & Cérebro IA (Ár
 
 st.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# DADOS DO PRODUTO & UPLOADS (DESCRIÇÃO COMPLETA PARA RESUMO INTELIGENTE)
+# DADOS DO PRODUTO & UPLOADS
 st.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & DESCRIÇÃO TÉCNICA</p>", unsafe_allow_html=True)
 
 with st.container(border=True):
@@ -593,7 +591,7 @@ with st.container(border=True):
         tipo_produto = st.selectbox("Categoria", ["Calçado", "Vestuário", "Acessório", "Bolsa", "Outros"], label_visibility="collapsed", key=f"sel_categoria_{v}")
 
     st.markdown("📝 **DESCRIÇÃO COMPLETA (Cole tudo aqui: marca, modelo, palmilha em gel, cores, detalhes...)**")
-    descricao_fornecedor = st.text_area("Descrição", placeholder="Cole aqui a descrição completa do seu fornecedor. O app vai analisar tudo e resumir os melhores argumentos no roteiro...", height=100, label_visibility="collapsed", key=f"input_desc_completa_{v}")
+    descricao_fornecedor = st.text_area("Descrição", placeholder="Cole aqui a descrição completa do seu fornecedor...", height=100, label_visibility="collapsed", key=f"input_desc_completa_{v}")
 
     st.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
@@ -638,7 +636,7 @@ if gerar_clicado:
         
         mapa_prompts = {st.session_state.db_estilos[i]["titulo"]: st.session_state.db_estilos[i]["prompt"] for i in st.session_state.db_estilos if i in st.session_state.db_estilos}
         
-        with st.spinner("🧠 Analisando descrição e resumindo para 12.5s..."):
+        with st.spinner("🧠 Analisando descrição e estruturando blocos de tempo (12.5s)..."):
             st.success(f"✅ Gerados {len(estilos_selecionados)} prompts às {agora} para '{produto_nome}'.")
             
             for idx, estilo_titulo in enumerate(estilos_selecionados):
