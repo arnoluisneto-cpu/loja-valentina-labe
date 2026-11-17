@@ -155,39 +155,36 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# MOTOR INTELIGENTE DE RESUMO E MODELAGEM DE COPY (CALIBRADO PARA EXATAMENTE 12.5s)
+# MOTOR INTELIGENTE DE RESUMO E MODELAGEM DE COPY (RIGOROSAMENTE 25 PALAVRAS / 10 SEGUNDOS)
 def resumir_e_modelar_copy_local(descricao_completa, categoria, historico_sessao):
     desc_lower = descricao_completa.lower()
     
     destaques = []
     if "gel" in desc_lower or "palmilha" in desc_lower:
-        destaques.append("com palmilha em gel super confortável")
+        destaques.append("com palmilha em gel")
     if "leve" in desc_lower:
-        destaques.append("super leve e macio")
+        destaques.append("super leve")
     if "cores" in desc_lower:
-        destaques.append("com várias cores lindas")
-    if "couro" in desc_lower or "material" in desc_lower:
-        destaques.append("com acabamento impecável")
+        destaques.append("com várias cores")
         
-    detalhe_str = " ".join(destaques) if destaques else "com uma qualidade e acabamento incríveis"
+    detalhe_str = " ".join(destaques) if destaques else "com acabamento perfeito"
 
     ganchos = [
-        f"Gente, para tudo e olha os detalhes desse produto que acabou de chegar na Loja da Valentina!",
-        f"Meninas, vocês simplesmente não têm noção do conforto real desse modelo quando a gente usa!",
-        f"Eu juro que não estava preparada para a qualidade absurda e o padrão desse lançamento!",
-        f"Olha de pertinho tudo o que esse produto entrega antes que acabe o nosso lote de hoje!"
+        f"Gente, olha esse modelo que chegou na Loja da Valentina!",
+        f"Meninas, vocês precisam ver o conforto real desse tênis!",
+        f"Qualidade absurda e acabamento impecável neste super lançamento!"
     ]
     
     desenvolvimento = [
-        f"Ele é {detalhe_str}, veste super bem no dia a dia e traz um visual sofisticado sem esforço.",
-        f"Cada detalhe foi pensado para durar muito, unindo resistência {detalhe_str} e muita elegância.",
-        f"É aquela peça coringa indispensável, {detalhe_str}, que valoriza qualquer look na hora."
+        f"Ele é {detalhe_str} e combina com absolutamente tudo.",
+        f"Super confortável {detalhe_str}, ideal para o dia a dia.",
+        f"Peça coringa indispensável {detalhe_str} que veste muito bem."
     ]
     
     ctas = [
-        "Clica agora no carrinho laranja aqui embaixo e garante o seu na Loja da Valentina!",
-        "Toca no carrinho laranja no cantinho e aproveita enquanto ainda tem disponível no estoque!",
-        "Já clica no carrinho laranja aqui embaixo para garantir com envio rápido!"
+        "Clica no carrinho laranja aqui embaixo e garante o seu!",
+        "Corre no carrinho laranja no cantinho e aproveita agora!",
+        "Garante o seu clicando no carrinho laranja logo abaixo!"
     ]
     
     tentativas = 0
@@ -197,7 +194,8 @@ def resumir_e_modelar_copy_local(descricao_completa, categoria, historico_sessao
         d = random.choice(desenvolvimento)
         c = random.choice(ctas)
         candidata = f'"{g} {d} {c}"'
-        if candidata not in historico_sessao:
+        # Garante limite estrito de ~25 palavras
+        if len(candidata.split()) <= 26 and candidata not in historico_sessao:
             copy_final = candidata
             break
         tentativas += 1
@@ -213,21 +211,20 @@ def gerar_copy_ia_gemini(api_key, descricao_completa, categoria, estilo_titulo, 
     
     instrucao_sistema = (
         "Você é um Copywriter Sênior especialista em vídeos virais de alta conversão para TikTok Shop Brasil (Loja da Valentina). "
-        "Sua tarefa é ANALISAR a descrição técnica completa enviada pelo usuário, extrair os atributos mais fortes (marca, conforto, material, diferenciais) "
-        "e CRIAR uma fala 100% ORIGINAL, INÉDITA e NATURAL em Português do Brasil modelada para vídeos curtos. "
-        "REGRAS OBRIGATÓRIAS: "
+        "Sua tarefa é ANALISAR a descrição técnica completa enviada pelo usuário, extrair os atributos principais e "
+        "CRIAR uma fala 100% ORIGINAL, INÉDITA e DIRETA em Português do Brasil para vídeos curtos. "
+        "REGRAS OBRIGATÓRIAS RIGOROSAS: "
         "1. Tom espontâneo de influenciadora brasileira. "
-        "2. Duração exata de leitura: 10 a 12.5 segundos (rigorosamente entre 26 e 34 palavras no máximo). "
+        "2. Duração exata de leitura: exatamente 10 segundos cravados, contendo NO MÁXIMO 25 PALAVRAS no total. "
         "3. Mencione 'Loja da Valentina' e o 'carrinho laranja' no final. "
         "4. Retorne APENAS a fala final entre aspas duplas."
     )
     
     prompt_usuario = (
-        f"Analise esta descrição completa do produto e crie a variação criativa #{variacao_num} inédita:\n"
-        f"- Descrição do Produto / Fornecedor: {descricao_completa}\n"
+        f"Analise esta descrição do produto e crie a variação criativa #{variacao_num} de exatamente 25 palavras (10 segundos):\n"
+        f"- Descrição: {descricao_completa}\n"
         f"- Categoria: {categoria}\n"
-        f"- Estilo visual: {estilo_titulo}\n"
-        f"Escreva apenas a fala falada pela criadora entre aspas:"
+        f"Escreva apenas a fala falada entre aspas:"
     )
     
     payload = {
@@ -236,7 +233,7 @@ def gerar_copy_ia_gemini(api_key, descricao_completa, categoria, estilo_titulo, 
         }],
         "generationConfig": {
             "temperature": 0.95,
-            "maxOutputTokens": 150
+            "maxOutputTokens": 100
         }
     }
     
@@ -257,13 +254,13 @@ def gerar_copy_ia_gemini(api_key, descricao_completa, categoria, estilo_titulo, 
             texto = f'{texto}"'
         return texto
 
-# FÁBRICA DE IDENTIDADE ORIGINAL (12.5s COM CRONOGRAMA DE SAÍDA DA LOJA)
+# FÁBRICA DE IDENTIDADE ORIGINAL (10 SEGUNDOS CRAVADOS PARA TODOS OS ESTILOS)
 def obter_identidade_original(i):
     identidades_estilos = {
         1: ("Estilo 1: POV Mão & Revelação Tátil do Produto (ASMR)", "Foco tátil universal manuseando a peça com extrema nitidez, texturas refinadas e som imersivo de abertura."),
         2: ("Estilo 2: POV Corpo Inteiro em Movimento Dinâmico Urbano", "Câmera em movimento fluido acompanhando o produto de corpo inteiro (head-to-toe) ao ar livre sob luz natural."),
         3: ("Estilo 3: POV Provador de Luxo (Close Íntimo)", "Enquadramento elegante detalhando o caimento exato, a modelagem e a textura da peça."),
-        4: ("Estilo 4: POV Giro 360 Graus em Frente ao Espelho", "Rotação e giros fluidos em frente ao espelho iluminado da boutique, exibindo todos os ângulos do item."),
+        4: ("Estilo 4: POV Giro 360 Graus en Frente ao Espelho", "Rotação e giros fluidos em frente ao espelho iluminado da boutique, exibindo todos os ângulos do item."),
         5: ("Estilo 5: POV Sem Fala com Trilha Viral & Transição Rápida", "Estilo puramente visual de altíssima retenção, sem diálogos, focado em cortes dinâmicos sincronizados com a batida da música."),
         6: ("Estilo 6: POV Close Macro com Foco nos Detalhes", "Câmera de perto apontada diretamente para o produto enviado, destacando acabamentos, costuras e diferenciais."),
         7: ("Estilo 7: Look do Dia Executivo & Elegância (Estilo Virgínia)", "Estética de alto padrão transmitindo autoridade, sofisticação e caimento impecável."),
@@ -286,33 +283,24 @@ def obter_identidade_original(i):
     
     if i == 20:
         prompt_texto = (
-            "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 12.5-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok Parado com Portas Abertas e Valentina. "
-            "STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Focus strictly on the exact product uploaded by the user with zero alterations, zero modifications to its structure, color, details, or brand. "
-            "Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone, completely bare surface with zero attachments. "
-            "Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock: identical reference model face and body proportions. "
-            "CHRONOLOGICALLY LOCKED TIMELINE (0-12.5s): "
-            "[0.0s - 2.5s]: The video opens instantly at second 0.0 inside the boutique. Creator Valentina is already speaking the opening hook in Brazilian Portuguese with flawless lip-sync while manually pushing open the glass door to exit. "
-            "[2.5s - 8.5s]: Valentina walks fluidly forward from inside the boutique toward the street in a continuous motion. "
-            "[8.5s - 12.5s]: She reaches the stationary giant black delivery truck parked directly outside with 'TikTok' lettering and wide-open rear doors packed with boxes, picking up a single storage box. "
-            "RIGID PIXEL PERSISTENCE RULE: The product and storage box remain 100% rigid, stable, and physically unalterable. Absolute zero morphing, zero flickering, zero ghosting, zero floating items. Speech is evenly paced to conclude right at 12.5s."
+            "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, EXACT 10.0-SECOND PRECISE DURATION, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok. "
+            "STRICT PRODUCT LOCK & 1:1 PIXEL FIDELITY: Crystal-clear brand, logo, and texture preservation with zero blurring. Absolute zero microphones, NO lapel mics, NO text overlays, NO watermarks. "
+            "STRICT 10.0-SECOND TIMELINE LOCK: "
+            "[0.0s - 2.0s]: Creator speaks instantly from second 0.0 with flawless lip-sync in Brazilian Portuguese while pushing open the boutique glass door. "
+            "[2.0s - 7.0s]: Fluid walk toward the street. "
+            "[7.0s - 10.0s]: Reaches the stationary truck, touches the box, clean natural conclusion right at 10.0s."
         )
     elif i == 5:
         prompt_texto = (
-            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 12.5-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
-            f"STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Faithfully match the exact product from the user-uploaded image with zero substitution, preserving original colors, textures, and details. "
-            f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone. "
-            f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock. "
-            f"SILENT VISUAL SHOWCASE (0-12.5s): Purely visual dynamic showcase without spoken dialogue, synced to upbeat viral rhythm, showing the product from multiple flattering angles with smooth camera glides. "
-            f"RIGID PIXEL PERSISTENCE RULE: The product maintains continuous, unbroken physical integrity, remaining 100% rigid, stable, and completely identical to the reference image. Absolute zero morphing, zero flickering, zero ghosting transitions, and zero object disappearance."
+            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, EXACT 10.0-SECOND PRECISE DURATION, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
+            f"STRICT PRODUCT LOCK & 1:1 PIXEL FIDELITY: Crystal-clear brand and texture preservation. Absolute zero microphones, NO text overlays. "
+            f"SILENT VISUAL SHOWCASE (10.0s): Upbeat rhythmic visual showcase with zero dialogue, maintaining absolute pixel stability."
         )
     else:
         prompt_texto = (
-            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, 12.5-second precise duration, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
-            f"STRICT UNIVERSAL PRODUCT LOCK & ZERO MIC PROTOCOL: Faithfully match the exact product from the user-uploaded image with zero substitution, preserving original colors, textures, and details. "
-            f"Absolute zero microphones, NO lapel mics, NO clip-on mics, NO wireless mics on clothing, NO earphones, NO floating gadgets, NO text overlays, NO subtitles, NO watermarks, NO UI graphics, NO branding. Clean collarbone. "
-            f"Cinematic Visual Engineering: hyper-detailed micro-textures, razor-sharp natural focus, rich dynamic contrast with zero washed-out shadows, professional 3-point studio lighting, lifelike human skin pores, and glossy vibrant color grading. Strict 1:1 pixel lock. "
-            f"CHRONOLOGICALLY LOCKED TIMELINE (0-12.5s): [0.0s - 3.0s] Instant speech start with flawless lip-sync in Brazilian Portuguese from second 0.0. [3.0s - 9.0s] Fluid motion and product interaction. [9.0s - 12.5s] Smooth conclusion and CTA. "
-            f"RIGID PIXEL PERSISTENCE RULE: The product maintains continuous, unbroken physical contact with the model's hand, remaining 100% rigid, stable, and completely identical to the reference image. Absolute zero morphing, zero flickering, zero ghosting."
+            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, EXACT 10.0-SECOND PRECISE DURATION, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
+            f"STRICT PRODUCT LOCK & 1:1 PIXEL FIDELITY: Crystal-clear brand, logo, and texture preservation with zero blurring. Absolute zero microphones, NO text overlays, NO watermarks. "
+            f"STRICT 10.0-SECOND TIMELINE LOCK: Immediate speech start at second 0.0 with flawless lip-sync in Brazilian Portuguese, max 25 words high-density delivery concluding smoothly right at 10.0s."
         )
     return titulo_texto, prompt_texto
 
@@ -393,7 +381,7 @@ v = st.session_state.form_version
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
-        <p class="hero-subtitle">LOJA DA VALENTINA • AUTOMATIZAÇÃO DE LOJAS NO TIKTOK</p>
+        <p class="hero-subtitle">LOJA DA VALENTINA • AUTOMATIZAÇÃO DE LOJAS NO TIKTOK (10s CRAVADOS)</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -615,7 +603,7 @@ st.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 col_esq_vazio, col_btn1, col_btn2, col_dir_vazio = st.columns([1, 2, 2, 1])
 
 with col_btn1:
-    gerar_clicado = st.button("🚀 GERAR PROMPTS", key=f"btn_gerar_{v}")
+    gerar_clicado = st.button("🚀 GERAR PROMPTS (10s CRAVADOS)", key=f"btn_gerar_{v}")
 
 with col_btn2:
     st.button("🔄 LIMPAR TUDO", on_click=limpar_apenas_formulario, key=f"btn_limpar_tudo_{v}")
@@ -636,8 +624,8 @@ if gerar_clicado:
         
         mapa_prompts = {st.session_state.db_estilos[i]["titulo"]: st.session_state.db_estilos[i]["prompt"] for i in st.session_state.db_estilos if i in st.session_state.db_estilos}
         
-        with st.spinner("🧠 Analisando descrição e estruturando blocos de tempo (12.5s)..."):
-            st.success(f"✅ Gerados {len(estilos_selecionados)} prompts às {agora} para '{produto_nome}'.")
+        with st.spinner("🧠 Processando e travando em 10 segundos cravados (25 palavras)..."):
+            st.success(f"✅ Gerados {len(estilos_selecionados)} prompts de 10s às {agora} para '{produto_nome}'.")
             
             for idx, estilo_titulo in enumerate(estilos_selecionados):
                 prompt_numero = idx + 1
@@ -672,7 +660,7 @@ if gerar_clicado:
                 st.markdown(
                     '<div class="metric-card">'
                     f'<span class="tag-estilo">{estilo_titulo}</span><br>'
-                    f'<span style="color:#00FF66; font-size:11px;">🗣️ <b>Fala Resumida (12.5s):</b> {copy_gerada_exibicao}</span>',
+                    f'<span style="color:#00FF66; font-size:11px;">🗣️ <b>Fala de 10s (Max 25 palavras):</b> {copy_gerada_exibicao}</span>',
                     unsafe_allow_html=True
                 )
                 st.code(prompt_final_montado, language="text")
