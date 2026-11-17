@@ -155,10 +155,9 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# MOTOR INTELIGENTE DE RESUMO E MODELAGEM DE COPY (RIGOROSAMENTE 25 PALAVRAS / 10 SEGUNDOS)
+# MOTOR LOCAL ENXUTO (MÁX 28 PALAVRAS / 11s)
 def resumir_e_modelar_copy_local(descricao_completa, categoria, historico_sessao):
     desc_lower = descricao_completa.lower()
-    
     destaques = []
     if "gel" in desc_lower or "palmilha" in desc_lower:
         destaques.append("com palmilha em gel")
@@ -170,498 +169,262 @@ def resumir_e_modelar_copy_local(descricao_completa, categoria, historico_sessao
     detalhe_str = " ".join(destaques) if destaques else "com acabamento perfeito"
 
     ganchos = [
-        f"Gente, olha esse modelo que chegou na Loja da Valentina!",
-        f"Meninas, vocês precisam ver o conforto real desse tênis!",
-        f"Qualidade absurda e acabamento impecável neste super lançamento!"
+        f"Gente, olha esse modelo incrível que acabou de chegar na Loja da Valentina!",
+        f"Meninas, vocês precisam ver o conforto real e a qualidade desse tênis!",
+        f"Simplesmente apaixonada por esse lançamento exclusivo que acabou de sair do forno!"
     ]
-    
     desenvolvimento = [
-        f"Ele é {detalhe_str} e combina com absolutamente tudo.",
-        f"Super confortável {detalhe_str}, ideal para o dia a dia.",
-        f"Peça coringa indispensável {detalhe_str} que veste muito bem."
+        f"Ele é {detalhe_str} e combina perfeitamente com todos os looks.",
+        f"Super confortável {detalhe_str}, ideal para usar o dia inteiro sem dor.",
+        f"Uma peça coringa indispensável {detalhe_str} que veste super bem no pé."
     ]
-    
     ctas = [
         "Clica no carrinho laranja aqui embaixo e garante o seu!",
-        "Corre no carrinho laranja no cantinho e aproveita agora!",
-        "Garante o seu clicando no carrinho laranja logo abaixo!"
+        "Corre no carrinho laranja no cantinho e aproveita para garantir!",
+        "Já clica no carrinho laranja logo abaixo para garantir o seu!"
     ]
     
-    tentativas = 0
-    copy_final = ""
-    while tentativas < 30:
-        g = random.choice(ganchos)
-        d = random.choice(desenvolvimento)
-        c = random.choice(ctas)
-        candidata = f'"{g} {d} {c}"'
-        # Garante limite estrito de ~25 palavras
-        if len(candidata.split()) <= 26 and candidata not in historico_sessao:
-            copy_final = candidata
-            break
-        tentativas += 1
-        
-    if not copy_final:
-        copy_final = f'"{random.choice(ganchos)} {random.choice(desenvolvimento)} {random.choice(ctas)}"'
-        
-    historico_sessao.add(copy_final)
-    return copy_final
+    for _ in range(30):
+        candidata = f'"{random.choice(ganchos)} {random.choice(desenvolvimento)} {random.choice(ctas)}"'
+        if len(candidata.split()) <= 29 and candidata not in historico_sessao:
+            historico_sessao.add(candidata)
+            return candidata
+            
+    candidata = f'"{random.choice(ganchos)} {random.choice(desenvolvimento)} {random.choice(ctas)}"'
+    historico_sessao.add(candidata)
+    return candidata
 
 def gerar_copy_ia_gemini(api_key, descricao_completa, categoria, estilo_titulo, variacao_num):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key.strip()}"
-    
     instrucao_sistema = (
-        "Você é um Copywriter Sênior especialista em vídeos virais de alta conversão para TikTok Shop Brasil (Loja da Valentina). "
-        "Sua tarefa é ANALISAR a descrição técnica completa enviada pelo usuário, extrair os atributos principais e "
-        "CRIAR uma fala 100% ORIGINAL, INÉDITA e DIRETA em Português do Brasil para vídeos curtos. "
-        "REGRAS OBRIGATÓRIAS RIGOROSAS: "
-        "1. Tom espontâneo de influenciadora brasileira. "
-        "2. Duração exata de leitura: exatamente 10 segundos cravados, contendo NO MÁXIMO 25 PALAVRAS no total. "
-        "3. Mencione 'Loja da Valentina' e o 'carrinho laranja' no final. "
-        "4. Retorne APENAS a fala final entre aspas duplas."
+        "Copywriter Sênior especialista em TikTok Shop Brasil (Loja da Valentina). "
+        "Analise a descrição, extraia os pontos fortes e crie uma fala original em Português do Brasil. "
+        "REGRAS: 1. Tom de influenciadora espontânea. 2. Exatamente 11 segundos de fala (máximo de 28 palavras). "
+        "3. Termine citando o 'carrinho laranja' da Loja da Valentina. 4. Retorne APENAS a fala entre aspas duplas."
     )
-    
-    prompt_usuario = (
-        f"Analise esta descrição do produto e crie a variação criativa #{variacao_num} de exatamente 25 palavras (10 segundos):\n"
-        f"- Descrição: {descricao_completa}\n"
-        f"- Categoria: {categoria}\n"
-        f"Escreva apenas a fala falada entre aspas:"
-    )
-    
     payload = {
-        "contents": [{
-            "parts": [{"text": f"{instrucao_sistema}\n\n{prompt_usuario}"}]
-        }],
-        "generationConfig": {
-            "temperature": 0.95,
-            "maxOutputTokens": 100
-        }
+        "contents": [{"parts": [{"text": f"{instrucao_sistema}\n\nProduto: {descricao_completa}\nCategoria: {categoria}\nEscreva a fala:"}]}],
+        "generationConfig": {"temperature": 0.9, "maxOutputTokens": 90}
     }
-    
-    req = urllib.request.Request(
-        url,
-        data=json.dumps(payload).encode("utf-8"),
-        headers={"Content-Type": "application/json"},
-        method="POST"
-    )
-    
+    req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"}, method="POST")
     with urllib.request.urlopen(req, timeout=12) as response:
         res_data = json.loads(response.read().decode("utf-8"))
-        texto = res_data["candidates"][0]["content"]["parts"][0]["text"].strip()
-        texto = texto.replace("\n", " ").strip()
-        if not texto.startswith('"'):
-            texto = f'"{texto}'
-        if not texto.endswith('"'):
-            texto = f'{texto}"'
+        texto = res_data["candidates"][0]["content"]["parts"][0]["text"].strip().replace("\n", " ")
+        if not texto.startswith('"'): texto = f'"{texto}'
+        if not texto.endswith('"'): texto = f'{texto}"'
         return texto
 
-# FÁBRICA DE IDENTIDADE ORIGINAL (10 SEGUNDOS CRAVADOS PARA TODOS OS ESTILOS)
+# FÁBRICA DE IDENTIDADE ENXUTA (11s CRAVADOS)
 def obter_identidade_original(i):
-    identidades_estilos = {
-        1: ("Estilo 1: POV Mão & Revelação Tátil do Produto (ASMR)", "Foco tátil universal manuseando a peça com extrema nitidez, texturas refinadas e som imersivo de abertura."),
-        2: ("Estilo 2: POV Corpo Inteiro em Movimento Dinâmico Urbano", "Câmera em movimento fluido acompanhando o produto de corpo inteiro (head-to-toe) ao ar livre sob luz natural."),
-        3: ("Estilo 3: POV Provador de Luxo (Close Íntimo)", "Enquadramento elegante detalhando o caimento exato, a modelagem e a textura da peça."),
-        4: ("Estilo 4: POV Giro 360 Graus en Frente ao Espelho", "Rotação e giros fluidos em frente ao espelho iluminado da boutique, exibindo todos os ângulos do item."),
-        5: ("Estilo 5: POV Sem Fala com Trilha Viral & Transição Rápida", "Estilo puramente visual de altíssima retenção, sem diálogos, focado em cortes dinâmicos sincronizados com a batida da música."),
-        6: ("Estilo 6: POV Close Macro com Foco nos Detalhes", "Câmera de perto apontada diretamente para o produto enviado, destacando acabamentos, costuras e diferenciais."),
-        7: ("Estilo 7: Look do Dia Executivo & Elegância (Estilo Virgínia)", "Estética de alto padrão transmitindo autoridade, sofisticação e caimento impecável."),
-        8: ("Estilo 8: Look Verão & Frescor na Praça Externa", "Cenário ensolarado e vibrante, mostrando leveza, versatilidade e praticidade."),
-        9: ("Estilo 9: Estilo Clássico Imponente em Estúdio de Cinema", "Iluminação profissional de estúdio de cinema focada na imponência, postura e sofisticação máxima."),
-        10: ("Estilo 10: Provador Expresso de Oferta Relâmpago", "Ritmo acelerado, troca dinâmica e foco em conversão imediata de estoque limitado e preço promocional."),
-        11: ("Estilo 11: Destaque Dinâmico & Movimento Urbano", "Foco na utilidade e versatilidade do produto em trânsito pela cidade."),
-        12: ("Estilo 12: Texturas Aconchegantes & Toque Suave", "Foco em macro-texturas, caimento flexível e toque agradável para o dia a dia."),
-        13: ("Estilo 13: Look Noite & Balada com Luz Dramática", "Iluminação noturna sofisticada e moderna, destacando reflexos, brilho e acabamento sob neon."),
-        14: ("Estilo 14: Estilo Atitude Streetwear & Modernidade", "Foco em design autêntico, estilo urbano moderno e apelo jovem para o TikTok."),
-        15: ("Estilo 15: Peça Delicate (Close de Ocasião & Elegância)", "Detalhes delicados e acabamento refinado para ocasiões especiais."),
-        16: ("Estilo 16: Sobreposição & Camadas Versáteis", "Estilo moderno de composição, demonstrando versatilidade e encaixe perfeito."),
-        17: ("Estilo 17: Movimento Fluido & Apresentação Dinâmica", "Fluidez, leveza e apresentação natural do produto em uso."),
-        18: ("Estilo 18: Peça Premium de Cós / Estrutura Alta & Elegância", "Caimento impecável e acabamento de alfaiataria em plano aberto."),
-        19: ("Estilo 19: Praticidade & Funcionalidade Ágil", "Demonstração rápida de agilidade e facilidade de uso para o público."),
-        20: ("Estilo 20: POV Caminhão Preto Gigante do TikTok (Saída da Loja)", "Cenário épico externo com caminhão gigante estacionado e portas abertas repletas de caixas da Loja da Valentina.")
+    estilos = {
+        1: ("Estilo 1: POV Mão & Revelação Tátil", "Foco tátil manuseando o produto com extrema nitidez e som imersivo."),
+        2: ("Estilo 2: POV Corpo Inteiro Urbano", "Câmera fluida acompanhando o produto de corpo inteiro ao ar livre."),
+        3: ("Estilo 3: POV Provador de Luxo", "Enquadramento elegante detalhando caimento e textura."),
+        4: ("Estilo 4: POV Giro 360 no Espelho", "Rotação fluida em frente ao espelho da boutique."),
+        5: ("Estilo 5: POV Visual Sem Fala (Trilha Viral)", "Vídeo puramente visual dinâmico sem diálogos."),
+        6: ("Estilo 6: POV Close Macro de Detalhes", "Câmera de perto destacando costuras, acabamento e marca."),
+        7: ("Estilo 7: Look do Dia Executivo", "Estética de alto padrão e sofisticação."),
+        8: ("Estilo 8: Look Verão & Frescor", "Cenário ensolarado mostrando leveza e versatilidade."),
+        9: ("Estilo 9: Estudo Clássico em Estúdio", "Iluminação de cinema focada em imponência."),
+        10: ("Estilo 10: Provador Relâmpago", "Ritmo ágil focado em conversão de estoque limitado."),
+        11: ("Estilo 11: Destaque Dinâmico Urbano", "Utilidade e versatilidade em trânsito."),
+        12: ("Estilo 12: Texturas Aconchegantes", "Foco em toque suave e flexível."),
+        13: ("Estilo 13: Look Noite com Neon", "Iluminação noturna moderna e sofisticada."),
+        14: ("Estilo 14: Streetwear Autêntico", "Estilo urbano jovem e moderno."),
+        15: ("Estilo 15: Peça Delicate", "Detalhes refinados para ocasiões especiais."),
+        16: ("Estilo 16: Sobreposição Versátil", "Composição moderna e encaixe perfeito."),
+        17: ("Estilo 17: Movimento Fluido", "Apresentação natural do produto em uso."),
+        18: ("Estilo 18: Peça Premium de Alfaiataria", "Caimento impecável em plano aberto."),
+        19: ("Estilo 19: Praticidade Ágil", "Demonstração rápida de facilidade de uso."),
+        20: ("Estilo 20: Caminhão Preto TikTok (Saída da Loja)", "Cenário épico externo com caminhão e caixas da Loja da Valentina.")
     }
+    titulo, desc = estilos.get(i, (f"Estilo {i}", "Estilo personalizado Valentina."))
     
-    titulo_texto, desc_estilo = identidades_estilos.get(i, (f"Estilo {i}", "Estilo universal personalizado da Loja da Valentina."))
-    
+    base_prompt = (
+        "Masterpiece 8K UHD UGC video, EXACT 11.0-SECOND DURATION, 9:16 vertical, RAW optical sensor. "
+        "STRICT PRODUCT LOCK: 1:1 fidelity on brand, logo and textures with zero blur. Zero mics, zero text overlays, zero watermarks. "
+        "TIMELINE LOCK (0-11s): Immediate speech start at second 0.0 with flawless Brazilian Portuguese lip-sync, max 28 words expressive delivery, smooth conclusion at 11.0s."
+    )
     if i == 20:
-        prompt_texto = (
-            "Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, EXACT 10.0-SECOND PRECISE DURATION, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: 20. Caminhão Preto Gigante do TikTok. "
-            "STRICT PRODUCT LOCK & 1:1 PIXEL FIDELITY: Crystal-clear brand, logo, and texture preservation with zero blurring. Absolute zero microphones, NO lapel mics, NO text overlays, NO watermarks. "
-            "STRICT 10.0-SECOND TIMELINE LOCK: "
-            "[0.0s - 2.0s]: Creator speaks instantly from second 0.0 with flawless lip-sync in Brazilian Portuguese while pushing open the boutique glass door. "
-            "[2.0s - 7.0s]: Fluid walk toward the street. "
-            "[7.0s - 10.0s]: Reaches the stationary truck, touches the box, clean natural conclusion right at 10.0s."
+        base_prompt = (
+            "Masterpiece 8K UHD UGC video, EXACT 11.0-SECOND DURATION, 9:16 vertical. "
+            "STRICT PRODUCT LOCK: 1:1 brand fidelity, zero mics, zero overlays. "
+            "CHRONO-LOCK (0-11s): [0-2s] Creator speaks instantly at 0.0s while pushing boutique door open. [2-8s] Fluid walk. [8-11s] Reaches truck, clean finish at 11.0s."
         )
     elif i == 5:
-        prompt_texto = (
-            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, EXACT 10.0-SECOND PRECISE DURATION, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
-            f"STRICT PRODUCT LOCK & 1:1 PIXEL FIDELITY: Crystal-clear brand and texture preservation. Absolute zero microphones, NO text overlays. "
-            f"SILENT VISUAL SHOWCASE (10.0s): Upbeat rhythmic visual showcase with zero dialogue, maintaining absolute pixel stability."
+        base_prompt = (
+            "Masterpiece 8K UHD UGC video, EXACT 11.0-SECOND DURATION, 9:16 vertical. "
+            "STRICT PRODUCT LOCK: 1:1 brand fidelity, zero mics, zero overlays. "
+            "SILENT VISUAL SHOWCASE (11s): Upbeat dynamic visual rhythm with zero dialogue and absolute pixel stability."
         )
-    else:
-        prompt_texto = (
-            f"Masterpiece 8K UHD hyper-realistic TikTok Shop UGC video powered by Arri Alexa cinema color science, EXACT 10.0-SECOND PRECISE DURATION, 9:16 vertical format, RAW optical sensor, photorealistic human physics. ACTIVE STYLE: {i}. {titulo_texto} - {desc_estilo}. "
-            f"STRICT PRODUCT LOCK & 1:1 PIXEL FIDELITY: Crystal-clear brand, logo, and texture preservation with zero blurring. Absolute zero microphones, NO text overlays, NO watermarks. "
-            f"STRICT 10.0-SECOND TIMELINE LOCK: Immediate speech start at second 0.0 with flawless lip-sync in Brazilian Portuguese, max 25 words high-density delivery concluding smoothly right at 10.0s."
-        )
-    return titulo_texto, prompt_texto
+    return titulo, f"{base_prompt} ACTIVE STYLE: {i}. {titulo} - {desc}"
 
-# PERSISTÊNCIA PERMANENTE NO DISCO (JSON)
+# BANCO E CONFIG
 DB_FILE = "moldes_salvos.json"
 CONFIG_FILE = "config_ia.json"
 
-def carregar_config_ia():
+def carregar_config():
     if os.path.exists(CONFIG_FILE):
         try:
-            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
-                return json.load(f)
-        except Exception:
-            pass
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f: return json.load(f)
+        except: pass
     return {"api_key": ""}
 
-def salvar_config_ia(cfg):
+def salvar_config(cfg):
     try:
-        with open(CONFIG_FILE, "w", encoding="utf-8") as f:
-            json.dump(cfg, f, ensure_ascii=False, indent=4)
-    except Exception:
-        pass
+        with open(CONFIG_FILE, "w", encoding="utf-8") as f: json.dump(cfg, f, ensure_ascii=False, indent=4)
+    except: pass
 
-def carregar_db_disco():
+def carregar_db():
     if os.path.exists(DB_FILE):
         try:
             with open(DB_FILE, "r", encoding="utf-8") as f:
-                dados = json.load(f)
-                if isinstance(dados, dict):
-                    db_convertido = {}
-                    for k, v in dados.items():
-                        k_final = int(k) if str(k).isdigit() else k
-                        if isinstance(v, dict) and "titulo" in v and "prompt" in v:
-                            db_convertido[k_final] = v
-                    return db_convertido
-        except Exception:
-            pass
-            
-    if not os.path.exists(DB_FILE):
-        padrao = {}
-        for i in range(1, 21):
-            t, p = obter_identidade_original(i)
-            padrao[i] = {"titulo": t, "prompt": p}
-        salvar_db_disco(padrao)
-        return padrao
-    return {}
+                d = json.load(f)
+                if isinstance(d, dict):
+                    return {int(k) if str(k).isdigit() else k: v for k, v in d.items()}
+        except: pass
+    padrao = {i: dict(zip(["titulo", "prompt"], obter_identidade_original(i))) for i in range(1, 21)}
+    salvar_db(padrao)
+    return padrao
 
-def salvar_db_disco(db_dict):
+def salvar_db(db):
     try:
-        with open(DB_FILE, "w", encoding="utf-8") as f:
-            json.dump(db_dict, f, ensure_ascii=False, indent=4)
-    except Exception:
-        pass
+        with open(DB_FILE, "w", encoding="utf-8") as f: json.dump(db, f, ensure_ascii=False, indent=4)
+    except: pass
 
-# GESTÃO DE ESTADOS
-if "db_estilos" not in st.session_state:
-    st.session_state.db_estilos = carregar_db_disco()
+if "db_estilos" not in st.session_state: st.session_state.db_estilos = carregar_db()
+if "config_ia" not in st.session_state: st.session_state.config_ia = carregar_config()
+if "form_version" not in st.session_state: st.session_state.form_version = 0
+if "acesso_liberado" not in st.session_state: st.session_state.acesso_liberado = False
+if "historico_copys" not in st.session_state: st.session_state.historico_copys = set()
 
-if "config_ia" not in st.session_state:
-    st.session_state.config_ia = carregar_config_ia()
-
-if "form_version" not in st.session_state:
-    st.session_state.form_version = 0
-
-if "acesso_liberado" not in st.session_state:
-    st.session_state.acesso_liberado = False
-
-if "historico_copys" not in st.session_state:
-    st.session_state.historico_copys = set()
-
-def limpar_apenas_formulario():
+def limpar_formulario():
     st.session_state.form_version += 1
     st.rerun()
 
 v = st.session_state.form_version
 
-# TOPO
+# UI TOPO
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
-        <p class="hero-subtitle">LOJA DA VALENTINA • AUTOMATIZAÇÃO DE LOJAS NO TIKTOK (10s CRAVADOS)</p>
+        <p class="hero-subtitle">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (11s CRAVADOS)</p>
     </div>
 """, unsafe_allow_html=True)
 
 st.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
 
-# PAINEL DE CONTROLE RÁPIDO
+# PAINEL RÁPIDO
 st.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>⚡ PAINEL DE CONTROLE RÁPIDO</p>", unsafe_allow_html=True)
-
-c_grid1, c_grid2, c_grid3 = st.columns(3)
-
-with c_grid1:
+c1, c2, c3 = st.columns(3)
+with c1:
     with st.container(border=True):
         st.markdown("🎬 **DIRETOR SKIN**")
-        diretor_skin = st.selectbox("Skin", ["BOY (Elite Director)", "UGC LIFESTYLE"], label_visibility="collapsed", key=f"sel_skin_{v}")
-
-with c_grid2:
+        st.selectbox("Skin", ["BOY (Elite Director)", "UGC LIFESTYLE"], label_visibility="collapsed", key=f"sel_skin_{v}")
+with c2:
     with st.container(border=True):
         st.markdown("📱 **PROPORÇÃO**")
-        proporcao = st.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"], label_visibility="collapsed", key=f"sel_prop_{v}")
-
-with c_grid3:
+        st.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"], label_visibility="collapsed", key=f"sel_prop_{v}")
+with c3:
     with st.container(border=True):
         st.markdown("🧠 **MOTOR DE COPY**")
-        modo_copy = st.selectbox("Motor Copy", ["IA Modeladora (Resumo Inteligente)", "Fixo (Do molde salvo)"], label_visibility="collapsed", key=f"sel_copy_mode_{v}")
+        st.selectbox("Motor Copy", ["IA Modeladora (Resumo Inteligente)", "Fixo (Do molde salvo)"], label_visibility="collapsed", key=f"sel_copy_mode_{v}")
 
 with st.container(border=True):
     st.markdown("🎬 **SELECIONAR ESTILOS PARA GRADE DIÁRIA**")
-    chaves_ordenadas = sorted(list(st.session_state.db_estilos.keys()), key=lambda x: (0, int(x)) if str(x).isdigit() else (1, str(x)))
-    lista_titulos_geral = [st.session_state.db_estilos[k]["titulo"] for k in chaves_ordenadas] if chaves_ordenadas else []
-    
-    estilos_selecionados = st.multiselect(
-        "Selecione",
-        options=lista_titulos_geral,
-        default=lista_titulos_geral[:1] if len(lista_titulos_geral) > 0 else [],
-        label_visibility="collapsed",
-        key=f"multi_estilos_{v}"
-    )
+    chaves_ord = sorted(list(st.session_state.db_estilos.keys()), key=lambda x: (0, int(x)) if str(x).isdigit() else (1, str(x)))
+    lista_titulos = [st.session_state.db_estilos[k]["titulo"] for k in chaves_ord]
+    estilos_selecionados = st.multiselect("Selecione", options=lista_titulos, default=lista_titulos[:1] if lista_titulos else [], label_visibility="collapsed", key=f"multi_estilos_{v}")
 
-# ÁREA RESTRITA PROTEGIDA POR SENHA ADMINISTRATIVA
-SENHA_MESTRE = "vidalooka2"
-
-with st.expander("⚙️ Gerenciar / Editar / Excluir Prompts & Cérebro IA (Área Restrita - Requer Senha)", expanded=False):
+# ÁREA RESTRITA
+with st.expander("⚙️ Gerenciar / Editar Prompts & Cérebro IA (Requer Senha)", expanded=False):
     col_s1, col_s2 = st.columns([3, 1])
-    
     with col_s1:
-        st.markdown("🔐 **SENHA ADMINISTRATIVA**")
-        senha_digitada = st.text_input("Senha", placeholder="Digite a senha administrativa...", type="password", label_visibility="collapsed", key=f"input_senha_adm_{v}")
-    
+        senha_dig = st.text_input("Senha", placeholder="Senha administrativa...", type="password", label_visibility="collapsed", key=f"pass_{v}")
     with col_s2:
-        st.markdown("🛡️ **AÇÃO**")
-        if st.button("🔓 VALIDAR", key=f"btn_validar_{v}"):
-            if senha_digitada == SENHA_MESTRE:
-                st.session_state.acesso_liberado = True
-                st.success("✅ Acesso administrativo liberado!")
-            else:
-                st.session_state.acesso_liberado = False
-                st.error("❌ Senha incorreta.")
-
-    st.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
+        if st.button("🔓 VALIDAR", key=f"val_{v}"):
+            st.session_state.acesso_liberado = (senha_dig == "vidalooka2")
+            if st.session_state.acesso_liberado: st.success("✅ Liberado!")
+            else: st.error("❌ Incorreta.")
 
     if st.session_state.acesso_liberado:
         st.markdown("<p style='color: #00FF66; font-weight: 700;'>🔓 MODO ADMINISTRADOR ATIVO</p>", unsafe_allow_html=True)
-        
         with st.container(border=True):
-            st.markdown("🧠 **CONEXÃO CÉREBRO IA (API GEMINI - OPCIONAL)**")
-            col_api1, col_api2 = st.columns([3, 1])
-            with col_api1:
-                nova_api_key = st.text_input(
-                    "Chave API Gemini",
-                    value=st.session_state.config_ia.get("api_key", ""),
-                    type="password",
-                    placeholder="Cole sua Gemini API Key aqui (opcional)...",
-                    label_visibility="collapsed",
-                    key=f"api_key_input_{v}"
-                )
-            with col_api2:
-                if st.button("💾 SALVAR CHAVE", key=f"btn_save_api_{v}"):
-                    st.session_state.config_ia["api_key"] = nova_api_key.strip()
-                    salvar_config_ia(st.session_state.config_ia)
-                    st.success("✅ Chave salva!")
-                    time.sleep(0.5)
-                    st.rerun()
+            st.markdown("🧠 **API GEMINI**")
+            k1, k2 = st.columns([3, 1])
+            with k1: nova_key = st.text_input("Key", value=st.session_state.config_ia.get("api_key", ""), type="password", label_visibility="collapsed", key=f"key_{v}")
+            with k2:
+                if st.button("💾 SALVAR", key=f"save_k_{v}"):
+                    st.session_state.config_ia["api_key"] = nova_key.strip()
+                    salvar_config(st.session_state.config_ia)
+                    st.success("Salvo!")
+                    time.sleep(0.5); st.rerun()
 
-        col_ger1, col_ger2 = st.columns(2)
-        with col_ger1:
-            if st.button("🗑️ ZERAR TODOS OS PROMPTS", key=f"btn_apagar_tudo_geral_{v}"):
-                with st.spinner("🗑️ Apagando todos os prompts..."):
-                    time.sleep(0.4)
-                    st.session_state.db_estilos = {}
-                    salvar_db_disco(st.session_state.db_estilos)
-                st.success("✅ Banco zerado definitivamente!")
-                time.sleep(0.8)
-                st.rerun()
+        if chaves_ord:
+            slot_edit = st.selectbox("Estilo para Editar", options=chaves_ord, format_func=lambda x: f"Estilo {x} - {st.session_state.db_estilos[x]['titulo']}", key=f"edit_sel_{v}")
+            t_edit = st.text_input("Título", value=st.session_state.db_estilos[slot_edit]["titulo"], key=f"t_edit_{slot_edit}_{v}")
+            p_edit = st.text_area("Prompt Enxuto", value=st.session_state.db_estilos[slot_edit]["prompt"], height=140, key=f"p_edit_{slot_edit}_{v}")
+            if st.button("💾 SALVAR ALTERAÇÃO", key=f"btn_save_st_{slot_edit}_{v}"):
+                st.session_state.db_estilos[slot_edit] = {"titulo": t_edit, "prompt": p_edit}
+                salvar_db(st.session_state.db_estilos)
+                st.success("Salvo com sucesso!")
+                time.sleep(0.5); st.rerun()
 
-        with col_ger2:
-            estilo_a_restaurar = st.number_input("Nº do Estilo para Restaurar (1 a 20)", min_value=1, max_value=20, value=1, step=1, key=f"num_rest_{v}")
-            if st.button("🔄 RESTAURAR ESTE ESTILO ESPECÍFICO", key=f"btn_rest_one_{v}"):
-                t_orig, p_orig = obter_identidade_original(estilo_a_restaurar)
-                st.session_state.db_estilos[estilo_a_restaurar] = {"titulo": t_orig, "prompt": p_orig}
-                salvar_db_disco(st.session_state.db_estilos)
-                st.success(f"✅ Estilo {estilo_a_restaurar} restaurado com sucesso!")
-                time.sleep(0.8)
-                st.rerun()
-
-        st.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
-
-        numeric_keys = [k for k in chaves_ordenadas if str(k).isdigit()]
-        proximo_id_sugerido = (max([int(k) for k in numeric_keys]) + 1) if numeric_keys else 1
-
-        modo_operacao = st.radio("Modo de Operação", ["✏️ Editar / Excluir Estilo Existente", f"➕ Inserir Novo (Manual / ID {proximo_id_sugerido})"], horizontal=True, label_visibility="collapsed", key=f"modo_op_{v}")
-
-        st.markdown(f"<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>{modo_operacao.upper()}</p>", unsafe_allow_html=True)
-
-        with st.container(border=True):
-            if "Editar" in modo_operacao:
-                if chaves_ordenadas:
-                    slot_num_edit = st.selectbox(
-                        "Selecione o Estilo para Editar", 
-                        options=chaves_ordenadas, 
-                        format_func=lambda x: f"Estilo {x} - {st.session_state.db_estilos[x]['titulo']}",
-                        key=f"select_editor_direto_id_{v}"
-                    )
-
-                    titulo_atual_estilo = st.session_state.db_estilos[slot_num_edit]["titulo"]
-                    prompt_atual_estilo = st.session_state.db_estilos[slot_num_edit]["prompt"]
-
-                    novo_titulo_editado = st.text_input("Tema / Título do Estilo", value=titulo_atual_estilo, key=f"titulo_input_edit_{slot_num_edit}_{v}")
-                    texto_editado_usuario = st.text_area("Código do Prompt", value=prompt_atual_estilo, height=160, key=f"prompt_textarea_edit_{slot_num_edit}_{v}")
-                    
-                    st.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
-                    
-                    col_b_salvar, col_b_exc = st.columns(2)
-                    
-                    with col_b_salvar:
-                        if st.button("💾 SALVAR ALTERAÇÃO", key=f"btn_salvar_{slot_num_edit}_{v}"):
-                            if not novo_titulo_editado or not texto_editado_usuario:
-                                st.warning("⚠️ Preencha o Título e o Código antes de salvar.")
-                            else:
-                                with st.spinner(f"💾 Salvando alterações no disco..."):
-                                    time.sleep(0.4)
-                                    st.session_state.db_estilos[slot_num_edit]["titulo"] = novo_titulo_editado
-                                    st.session_state.db_estilos[slot_num_edit]["prompt"] = texto_editado_usuario
-                                    salvar_db_disco(st.session_state.db_estilos)
-                                st.success(f"✨ Estilo {slot_num_edit} alterado com sucesso!")
-                                time.sleep(0.8)
-                                st.rerun()
-                                
-                    with col_b_exc:
-                        if st.button("🗑️ EXCLUIR ESTE ESTILO", key=f"btn_exc_direto_{slot_num_edit}_{v}"):
-                            with st.spinner(f"🗑️ Excluindo Estilo {slot_num_edit}..."):
-                                time.sleep(0.3)
-                                del st.session_state.db_estilos[slot_num_edit]
-                                salvar_db_disco(st.session_state.db_estilos)
-                            st.success(f"🗑️ Estilo excluído definitivamente do disco!")
-                            time.sleep(0.8)
-                            st.rerun()
-                else:
-                    st.info("Nenhum estilo disponível no momento.")
-            else:
-                novo_id_manual = st.number_input("ID Numérico do Novo Estilo", min_value=1, value=proximo_id_sugerido, step=1, key=f"id_manual_{v}")
-                novo_titulo_input = st.text_input("Título / Tema do Novo Prompt", value="", placeholder="Ex: Meu Estilo Personalizado...", key=f"campo_novo_titulo_valencia_fixo_{v}")
-                novo_prompt_input = st.text_area("Código do Prompt", placeholder="Cole o código técnico do prompt aqui...", height=160, key=f"campo_novo_prompt_valencia_fixo_{v}")
-                
-                st.markdown("<div style='margin: 4px 0;'></div>", unsafe_allow_html=True)
-                
-                if st.button("📥 INSERIR E SALVAR NO SISTEMA", key=f"btn_inserir_novo_{v}"):
-                    if not novo_titulo_input or not novo_prompt_input:
-                        st.warning("⚠️ Preencha o Título e o Código do novo prompt.")
-                    else:
-                        with st.spinner(f"📥 Inserindo novo estilo..."):
-                            time.sleep(0.4)
-                            st.session_state.db_estilos[novo_id_manual] = {
-                                "titulo": novo_titulo_input,
-                                "prompt": novo_prompt_input
-                            }
-                            salvar_db_disco(st.session_state.db_estilos)
-                        st.success(f"🎉 Estilo {novo_id_manual} inserido e gravado permanentemente!")
-                        time.sleep(0.8)
-                        st.rerun()
-    else:
-        st.info("🔒 Insira a senha administrativa correta acima para desbloquear a gestão de prompts.")
-
-st.markdown("<div style='margin: 6px 0;'></div>", unsafe_allow_html=True)
-
-# DADOS DO PRODUTO & UPLOADS
+# DADOS DO PRODUTO
 st.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & DESCRIÇÃO TÉCNICA</p>", unsafe_allow_html=True)
-
 with st.container(border=True):
-    c_l1_1, c_l1_2 = st.columns(2)
-    with c_l1_1:
-        st.markdown("🏷️ **NOME / MARCA DO PRODUTO**")
-        produto_nome = st.text_input("Nome", placeholder="Ex: Tênis Sapatilha Wayper...", label_visibility="collapsed", key=f"input_nome_produto_{v}")
-    with c_l1_2:
-        st.markdown("📂 **CATEGORIA**")
-        tipo_produto = st.selectbox("Categoria", ["Calçado", "Vestuário", "Acessório", "Bolsa", "Outros"], label_visibility="collapsed", key=f"sel_categoria_{v}")
-
-    st.markdown("📝 **DESCRIÇÃO COMPLETA (Cole tudo aqui: marca, modelo, palmilha em gel, cores, detalhes...)**")
-    descricao_fornecedor = st.text_area("Descrição", placeholder="Cole aqui a descrição completa do seu fornecedor...", height=100, label_visibility="collapsed", key=f"input_desc_completa_{v}")
-
-    st.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
-
-    c_f1, c_f2, c_f3 = st.columns(3)
+    p_n1, p_n2 = st.columns(2)
+    with p_n1: produto_nome = st.text_input("Nome", placeholder="Ex: Tênis Wayper...", label_visibility="collapsed", key=f"nom_{v}")
+    with p_n2: tipo_produto = st.selectbox("Categoria", ["Calçado", "Vestuário", "Acessório", "Bolsa", "Outros"], label_visibility="collapsed", key=f"cat_{v}")
     
-    with c_f1:
-        st.markdown("👩 **FOTO MODELO**")
-        foto_modelo = st.file_uploader("Foto Modelo", type=["jpg", "jpeg", "png"], key=f"m_1_{v}", label_visibility="collapsed")
-        
-    with c_f2:
-        st.markdown("📷 **FOTO PRODUTO**")
-        foto_produto_analise = st.file_uploader("Foto Produto", type=["jpg", "jpeg", "png"], key=f"prod_1_{v}", label_visibility="collapsed")
-        
-    with c_f3:
-        st.markdown("🔍 **FOTO ZOOM**")
-        foto_peca = st.file_uploader("Foto Zoom", type=["jpg", "jpeg", "png"], key=f"p_1_{v}", label_visibility="collapsed")
+    descricao_fornecedor = st.text_area("Descrição", placeholder="Cole a descrição completa do fornecedor aqui...", height=90, label_visibility="collapsed", key=f"desc_{v}")
+    
+    f1, f2, f3 = st.columns(3)
+    with f1: foto_modelo = st.file_uploader("Modelo", type=["jpg", "png"], key=f"m_{v}", label_visibility="collapsed")
+    with f2: foto_produto_analise = st.file_uploader("Produto", type=["jpg", "png"], key=f"p_{v}", label_visibility="collapsed")
+    with f3: foto_peca = st.file_uploader("Zoom", type=["jpg", "png"], key=f"z_{v}", label_visibility="collapsed")
 
 st.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
-# BOTÕES CENTRALIZADOS
-col_esq_vazio, col_btn1, col_btn2, col_dir_vazio = st.columns([1, 2, 2, 1])
-
-with col_btn1:
-    gerar_clicado = st.button("🚀 GERAR PROMPTS (10s CRAVADOS)", key=f"btn_gerar_{v}")
-
-with col_btn2:
-    st.button("🔄 LIMPAR TUDO", on_click=limpar_apenas_formulario, key=f"btn_limpar_tudo_{v}")
+col_e, btn_g, btn_l, col_d = st.columns([1, 2, 2, 1])
+with btn_g: gerar_clicado = st.button("🚀 GERAR PROMPTS (11s)", key=f"gen_{v}")
+with btn_l: st.button("🔄 LIMPAR", on_click=limpar_formulario, key=f"clr_{v}")
 
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
 
 if gerar_clicado:
     if not produto_nome and not descricao_fornecedor:
-        st.warning("⚠️ Informe o nome ou cole a descrição do produto.")
+        st.warning("⚠️ Informe o nome ou descrição.")
     elif not foto_peca or not foto_modelo or not foto_produto_analise:
         st.warning("⚠️ Envie todas as fotos.")
     elif not estilos_selecionados:
-        st.warning("⚠️ Selecione pelo menos 1 estilo.")
+        st.warning("⚠️ Selecione ao menos 1 estilo.")
     else:
-        agora = datetime.now().strftime("%H:%M:%S")
-        api_key_salva = st.session_state.config_ia.get("api_key", "").strip()
-        texto_base_analise = f"{produto_nome} - {descricao_fornecedor}"
+        api_key = st.session_state.config_ia.get("api_key", "").strip()
+        texto_base = f"{produto_nome} - {descricao_fornecedor}"
+        mapa = {st.session_state.db_estilos[i]["titulo"]: st.session_state.db_estilos[i]["prompt"] for i in st.session_state.db_estilos}
         
-        mapa_prompts = {st.session_state.db_estilos[i]["titulo"]: st.session_state.db_estilos[i]["prompt"] for i in st.session_state.db_estilos if i in st.session_state.db_estilos}
-        
-        with st.spinner("🧠 Processando e travando em 10 segundos cravados (25 palavras)..."):
-            st.success(f"✅ Gerados {len(estilos_selecionados)} prompts de 10s às {agora} para '{produto_nome}'.")
-            
-            for idx, estilo_titulo in enumerate(estilos_selecionados):
-                prompt_numero = idx + 1
-                horario_postagem = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
-                prompt_base = mapa_prompts.get(estilo_titulo, "Prompt não encontrado.")
+        with st.spinner("🧠 Otimizando prompts e travando em 11s cravados..."):
+            st.success(f"✅ Gerados {len(estilos_selecionados)} prompts para '{produto_nome}'.")
+            for idx, est in enumerate(estilos_selecionados):
+                horario = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
+                p_base = mapa.get(est, "")
+                is_mudo = "Sem Fala" in est or "SILENT" in p_base
                 
-                eh_estilo_mudo = "Sem Fala" in estilo_titulo or "SILENT VISUAL SHOWCASE" in prompt_base
-                
-                if eh_estilo_mudo or ("Fixo" in modo_copy and '"' in prompt_base):
-                    prompt_final_montado = prompt_base
-                    copy_gerada_exibicao = "Fala fixa mantida do seu molde salvo."
+                if is_mudo or ("Fixo" in st.session_state.get(f"sel_copy_mode_{v}", "") and '"' in p_base):
+                    final_prompt, display_copy = p_base, "Fala fixa mantida."
                 else:
-                    fala_resumida = ""
-                    if api_key_salva:
+                    fala = ""
+                    if api_key:
                         try:
-                            fala_resumida = gerar_copy_ia_gemini(
-                                api_key=api_key_salva,
-                                descricao_completa=texto_base_analise,
-                                categoria=tipo_produto,
-                                estilo_titulo=estilo_titulo,
-                                variacao_num=prompt_numero + random.randint(1, 999)
-                            )
-                        except Exception:
-                            fala_resumida = resumir_e_modelar_copy_local(texto_base_analise, tipo_produto, st.session_state.historico_copys)
-                    else:
-                        fala_resumida = resumir_e_modelar_copy_local(texto_base_analise, tipo_produto, st.session_state.historico_copys)
-                        
-                    copy_gerada_exibicao = fala_resumida
-                    prompt_final_montado = f"{prompt_base}\n\n{fala_resumida}"
+                            fala = gerar_copy_ia_gemini(api_key, texto_base, tipo_produto, est, idx + 100)
+                        except: pass
+                    if not fala:
+                        fala = resumir_e_modelar_copy_local(texto_base, tipo_produto, st.session_state.historico_copys)
+                    display_copy = fala
+                    final_prompt = f"{p_base}\n\n{fala}"
 
-                st.markdown(f"### 🎬 Prompt {prompt_numero} • {horario_postagem}")
-                st.markdown(
-                    '<div class="metric-card">'
-                    f'<span class="tag-estilo">{estilo_titulo}</span><br>'
-                    f'<span style="color:#00FF66; font-size:11px;">🗣️ <b>Fala de 10s (Max 25 palavras):</b> {copy_gerada_exibicao}</span>',
-                    unsafe_allow_html=True
-                )
-                st.code(prompt_final_montado, language="text")
+                st.markdown(f"### 🎬 Prompt {idx+1} • {horario}")
+                st.markdown(f'<div class="metric-card"><span class="tag-estilo">{est}</span><br><span style="color:#00FF66; font-size:11px;">🗣️ <b>Fala (11s / Max 28 palavras):</b> {display_copy}</span>', unsafe_allow_html=True)
+                st.code(final_prompt, language="text")
                 st.markdown('</div>', unsafe_allow_html=True)
