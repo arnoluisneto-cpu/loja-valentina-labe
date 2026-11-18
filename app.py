@@ -13,7 +13,7 @@ st.set_page_config(
     layout="centered"
 )
 
-# ESTÉTICA DE ALTO LUXO (BLINDADA E POLIDA)
+# ESTÉTICA DE ALTO LUXO ORIGINAL (MANTIDA IDÊNTICA)
 st.markdown("""
     <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
@@ -155,56 +155,55 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# MOTOR LOCAL ENXUTO (MÁX 28 PALAVRAS / 11s)
+# MOTOR LOCAL OTIMIZADO (11s / MÁX 28 PALAVRAS / FOCO EM DOR E SHOPPING)
 def resumir_e_modelar_copy_local(descricao_completa, categoria, historico_sessao):
     desc_lower = descricao_completa.lower()
-    destaques = []
-    if "gel" in desc_lower or "palmilha" in desc_lower:
-        destaques.append("com palmilha em gel")
-    if "leve" in desc_lower:
-        destaques.append("super leve")
-    if "cores" in desc_lower:
-        destaques.append("com várias cores")
-        
-    detalhe_str = " ".join(destaques) if destaques else "com acabamento perfeito"
-
-    ganchos = [
-        f"Gente, olha esse modelo incrível que acabou de chegar na Loja da Valentina!",
-        f"Meninas, vocês precisam ver o conforto real e a qualidade desse tênis!",
-        f"Simplesmente apaixonada por esse lançamento exclusivo que acabou de sair do forno!"
-    ]
-    desenvolvimento = [
-        f"Ele é {detalhe_str} e combina perfeitamente com todos os looks.",
-        f"Super confortável {detalhe_str}, ideal para usar o dia inteiro sem dor.",
-        f"Uma peça coringa indispensável {detalhe_str} que veste super bem no pé."
-    ]
-    ctas = [
-        "Clica no carrinho laranja aqui embaixo e garante o seu!",
-        "Corre no carrinho laranja no cantinho e aproveita para garantir!",
-        "Já clica no carrinho laranja logo abaixo para garantir o seu!"
+    
+    ganchos_dor = [
+        "Chega de jogar dinheiro fora comprando coisa cara que machuca o pé!",
+        "Você não tem noção do absurdo que é o preço disso no shopping comparado com o que custa aqui!",
+        "Amiga, para tudo o que você está fazendo se o seu maior problema é achar um calçado que aguenta o dia todo!",
+        "Quem me indicou essa loja salvou minha vida, porque o conforto disso aqui é surreal de bom!"
     ]
     
-    for _ in range(30):
-        candidata = f'"{random.choice(ganchos)} {random.choice(desenvolvimento)} {random.choice(ctas)}"'
+    corpo_necessidade = [
+        "A qualidade é idêntica àquelas marcas de grife, com acabamento impecável e palmilha super macia.",
+        "Ele é leve, não pesa nada no pé e resolve qualquer look corrido do dia a dia sem esforço.",
+        "É aquela peça coringa indispensável que todo mundo elogia e que esgota em minutos no estoque."
+    ]
+    
+    fechamentos_cta = [
+        "Clica no carrinho laranja aqui embaixo antes que acabe a numeração!",
+        "Corre no carrinho laranja no cantinho e aproveita o preço de lançamento!",
+        "Não fica de fora dessa, clica no carrinho laranja logo abaixo e garante o seu!"
+    ]
+    
+    for _ in range(50):
+        g = random.choice(ganchos_dor)
+        d = random.choice(corpo_necessidade)
+        c = random.choice(fechamentos_cta)
+        candidata = f'"{g} {d} {c}"'
         if len(candidata.split()) <= 29 and candidata not in historico_sessao:
             historico_sessao.add(candidata)
             return candidata
             
-    candidata = f'"{random.choice(ganchos)} {random.choice(desenvolvimento)} {random.choice(ctas)}"'
+    candidata = f'"{random.choice(ganchos_dor)} {random.choice(corpo_necessidade)} {random.choice(fechamentos_cta)}"'
     historico_sessao.add(candidata)
     return candidata
 
 def gerar_copy_ia_gemini(api_key, descricao_completa, categoria, estilo_titulo, variacao_num):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key.strip()}"
     instrucao_sistema = (
-        "Copywriter Sênior especialista em TikTok Shop Brasil (Loja da Valentina). "
-        "Analise a descrição, extraia os pontos fortes e crie uma fala original em Português do Brasil. "
-        "REGRAS: 1. Tom de influenciadora espontânea. 2. Exatamente 11 segundos de fala (máximo de 28 palavras). "
-        "3. Termine citando o 'carrinho laranja' da Loja da Valentina. 4. Retorne APENAS a fala entre aspas duplas."
+        "Você é o Diretor de Crescimento e Copywriter Sênior mais agressivo do TikTok Shop Brasil (Loja da Valentina). "
+        "Sua missão é criar uma copy magnética, focada na dor do cliente (desconforto, preço abusivo de shopping) e transformar o produto em uma necessidade vital. "
+        "DIRETRIZES: 1. Linguagem coloquial, direta e natural de influenciadora de sucesso. "
+        "2. Duração rigorosa de 11 segundos (entre 24 e 28 palavras no máximo). "
+        "3. Inicie com um gancho forte de dor e termine obrigatoriamente chamando para o 'carrinho laranja' da Loja da Valentina. "
+        "4. Retorne APENAS a fala final entre aspas duplas."
     )
     payload = {
-        "contents": [{"parts": [{"text": f"{instrucao_sistema}\n\nProduto: {descricao_completa}\nCategoria: {categoria}\nEscreva a fala:"}]}],
-        "generationConfig": {"temperature": 0.9, "maxOutputTokens": 90}
+        "contents": [{"parts": [{"text": f"{instrucao_sistema}\n\nProduto: {descricao_completa}\nCategoria: {categoria}\nEstilo: {estilo_titulo}\nVariação #{variacao_num}\nCrie a copy viral de 11 segundos:"}]}],
+        "generationConfig": {"temperature": 1.0, "maxOutputTokens": 90}
     }
     req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"}, method="POST")
     with urllib.request.urlopen(req, timeout=12) as response:
@@ -214,7 +213,7 @@ def gerar_copy_ia_gemini(api_key, descricao_completa, categoria, estilo_titulo, 
         if not texto.endswith('"'): texto = f'{texto}"'
         return texto
 
-# FÁBRICA DE IDENTIDADE ENXUTA (11s CRAVADOS)
+# FÁBRICA DE IDENTIDADE ORIGINAL (11s CRAVADOS - BLOQUEIO DE TELETRANSPORTE)
 def obter_identidade_original(i):
     estilos = {
         1: ("Estilo 1: POV Mão & Revelação Tátil", "Foco tátil manuseando o produto com extrema nitidez e som imersivo."),
@@ -229,7 +228,7 @@ def obter_identidade_original(i):
         10: ("Estilo 10: Provador Relâmpago", "Ritmo ágil focado em conversão de estoque limitado."),
         11: ("Estilo 11: Destaque Dinâmico Urbano", "Utilidade e versatilidade em trânsito."),
         12: ("Estilo 12: Texturas Aconchegantes", "Foco em toque suave e flexível."),
-        13: ("Estilo 13: Look Noite com Neon", "Iluminação noturna moderna e sofisticada."),
+        13: ("Estilo 13: Look Noite com Neon", "Iluminação nocturna moderna e sofisticada."),
         14: ("Estilo 14: Streetwear Autêntico", "Estilo urbano jovem e moderno."),
         15: ("Estilo 15: Peça Delicate", "Detalhes refinados para ocasiões especiais."),
         16: ("Estilo 16: Sobreposição Versátil", "Composição moderna e encaixe perfeito."),
@@ -243,12 +242,14 @@ def obter_identidade_original(i):
     base_prompt = (
         "Masterpiece 8K UHD UGC video, EXACT 11.0-SECOND DURATION, 9:16 vertical, RAW optical sensor. "
         "STRICT PRODUCT LOCK: 1:1 fidelity on brand, logo and textures with zero blur. Zero mics, zero text overlays, zero watermarks. "
-        "TIMELINE LOCK (0-11s): Immediate speech start at second 0.0 with flawless Brazilian Portuguese lip-sync, max 28 words expressive delivery, smooth conclusion at 11.0s."
+        "PHYSICS & REALISM LOCK: The product/box must be physically stable and present in the model's hands or surface from second 0.0 with zero sudden pop-ins or teletransports. "
+        "TIMELINE LOCK (0-11s): Immediate speech start at second 0.0 with flawless Brazilian Portuguese lip-sync, max 28 words high-impact delivery, smooth conclusion at 11.0s."
     )
     if i == 20:
         base_prompt = (
             "Masterpiece 8K UHD UGC video, EXACT 11.0-SECOND DURATION, 9:16 vertical. "
             "STRICT PRODUCT LOCK: 1:1 brand fidelity, zero mics, zero overlays. "
+            "PHYSICS LOCK: Box and product are physically steady with zero sudden generation errors. "
             "CHRONO-LOCK (0-11s): [0-2s] Creator speaks instantly at 0.0s while pushing boutique door open. [2-8s] Fluid walk. [8-11s] Reaches truck, clean finish at 11.0s."
         )
     elif i == 5:
@@ -387,7 +388,7 @@ with st.container(border=True):
 st.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
 col_e, btn_g, btn_l, col_d = st.columns([1, 2, 2, 1])
-with btn_g: gerar_clicado = st.button("🚀 GERAR PROMPTS (11s)", key=f"gen_{v}")
+with btn_g: gerar_clicado = st.button("🚀 GERAR PROMPTS VIRAIS (11s)", key=f"gen_{v}")
 with btn_l: st.button("🔄 LIMPAR", on_click=limpar_formulario, key=f"clr_{v}")
 
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
@@ -404,7 +405,7 @@ if gerar_clicado:
         texto_base = f"{produto_nome} - {descricao_fornecedor}"
         mapa = {st.session_state.db_estilos[i]["titulo"]: st.session_state.db_estilos[i]["prompt"] for i in st.session_state.db_estilos}
         
-        with st.spinner("🧠 Otimizando prompts e travando em 11s cravados..."):
+        with st.spinner("🔥 Disparando Motor Viral (11s cravados)..."):
             st.success(f"✅ Gerados {len(estilos_selecionados)} prompts para '{produto_nome}'.")
             for idx, est in enumerate(estilos_selecionados):
                 horario = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
@@ -417,7 +418,7 @@ if gerar_clicado:
                     fala = ""
                     if api_key:
                         try:
-                            fala = gerar_copy_ia_gemini(api_key, texto_base, tipo_produto, est, idx + 100)
+                            fala = gerar_copy_ia_gemini(api_key, texto_base, tipo_produto, est, idx + 400)
                         except: pass
                     if not fala:
                         fala = resumir_e_modelar_copy_local(texto_base, tipo_produto, st.session_state.historico_copys)
@@ -425,6 +426,6 @@ if gerar_clicado:
                     final_prompt = f"{p_base}\n\n{fala}"
 
                 st.markdown(f"### 🎬 Prompt {idx+1} • {horario}")
-                st.markdown(f'<div class="metric-card"><span class="tag-estilo">{est}</span><br><span style="color:#00FF66; font-size:11px;">🗣️ <b>Fala (11s / Max 28 palavras):</b> {display_copy}</span>', unsafe_allow_html=True)
+                st.markdown(f'<div class="metric-card"><span class="tag-estilo">{est}</span><br><span style="color:#00FF66; font-size:11px;">🔥 <b>Copy Viral (11s):</b> {display_copy}</span>', unsafe_allow_html=True)
                 st.code(final_prompt, language="text")
                 st.markdown('</div>', unsafe_allow_html=True)
