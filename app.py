@@ -202,10 +202,7 @@ def _registrar_fala_unica(fala_crua, historico_sessao, falas_usadas_lote, valida
     falas_usadas_lote.add(candidata)
     return candidata
 
-def _extrair_resumo_util(descricao_completa, categoria, beneficio_extra="", material_extra=""):
-    extras = [sanitizar_copy_tiktok_shop(x).lower() for x in (beneficio_extra, material_extra) if sanitizar_copy_tiktok_shop(x)]
-    if extras:
-        return " e ".join(extras[:2])
+def _extrair_resumo_util(descricao_completa, categoria):
     desc_limpa = sanitizar_copy_tiktok_shop(descricao_completa)
     if desc_limpa:
         trecho = re.split(r"[.!?\n]", desc_limpa)[0].strip()
@@ -221,11 +218,11 @@ def _extrair_resumo_util(descricao_completa, categoria, beneficio_extra="", mate
     return cat_map.get(categoria, "praticidade real na rotina diária")
 
 # MOTOR LOCAL DE VENDA DIRETA (11.5s / 21 A 32 PALAVRAS)
-def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, estilo_fala, historico_sessao, falas_usadas_lote, beneficio_extra="", material_extra=""):
+def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, estilo_fala, historico_sessao, falas_usadas_lote):
     prod_bruto = sanitizar_copy_tiktok_shop(nome_produto)
     cat_bruta = sanitizar_copy_tiktok_shop(categoria).lower()
     item_fala = prod_bruto.strip() if prod_bruto else f"essa peça de {cat_bruta}"
-    detalhe_real = _extrair_resumo_util(descricao_completa, categoria, beneficio_extra, material_extra)
+    detalhe_real = _extrair_resumo_util(descricao_completa, categoria)
 
     banco_por_estilo = {
         "gancho_1_promocao_intensa_amiga": [
@@ -271,7 +268,7 @@ def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, es
     falas_usadas_lote.add(fallback)
     return fallback
 
-def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, estilo_titulo, estilo_fala, variacao_num, historico_sessao, falas_usadas_lote, beneficio_extra="", material_extra="", ref_internacional=""):
+def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, estilo_titulo, estilo_fala, variacao_num, historico_sessao, falas_usadas_lote):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key.strip()}"
     bloqueadas = list(historico_sessao)[-6:] + list(falas_usadas_lote)
     evitar_txt = f" NÃO repita nenhuma destas falas: {' | '.join(bloqueadas[-8:])}." if bloqueadas else ""
@@ -288,18 +285,13 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
         "ou plataformas externas. Retorne APENAS a fala entre aspas duplas."
         f"{evitar_txt}"
     )
-    info_extra = (
-        f"Benefício: {sanitizar_copy_tiktok_shop(beneficio_extra)} | "
-        f"Material: {sanitizar_copy_tiktok_shop(material_extra)} | "
-        f"Pesquisa/Tendência Internacional: {sanitizar_copy_tiktok_shop(ref_internacional) or 'padrão global de retenção e demonstração visual adaptado ao Brasil'} | "
-    )
     payload = {
         "contents": [{
             "parts": [{
                 "text": (
                     f"{instrucao_sistema}\n"
                     f"Produto: {sanitizar_copy_tiktok_shop(nome_produto)} | Categoria: {sanitizar_copy_tiktok_shop(categoria)} | "
-                    f"{info_extra}Estilo: {estilo_titulo} | Var #{variacao_num}\n"
+                    f"Estilo: {estilo_titulo} | Var #{variacao_num}\n"
                     f"Detalhes: {sanitizar_copy_tiktok_shop(descricao_completa)}"
                 )
             }]
@@ -467,14 +459,7 @@ with st.container(border=True):
     with p_n2:
         tipo_produto = st.selectbox("Categoria", ["Calçado", "Vestuário", "Acessório", "Bolsa", "Outros"], label_visibility="collapsed", key=f"cat_{v}")
 
-    b_n1, b_n2 = st.columns(2)
-    with b_n1:
-        beneficio_prod = st.text_input("Benefício", placeholder="Opcional: benefício principal (ex: não aperta)...", label_visibility="collapsed", key=f"ben_{v}")
-    with b_n2:
-        material_prod = st.text_input("Material", placeholder="Opcional: material/textura (ex: malha macia)...", label_visibility="collapsed", key=f"mat_{v}")
-
-    ref_internacional = st.text_input("Tendência Internacional", placeholder="Opcional: gancho ou pesquisa internacional para adaptar ao Brasil...", label_visibility="collapsed", key=f"ref_intl_{v}")
-    descricao_fornecedor = st.text_area("Descrição", placeholder="Cole a descrição completa do fornecedor aqui...", height=85, label_visibility="collapsed", key=f"desc_{v}")
+    descricao_fornecedor = st.text_area("Descrição", placeholder="Cole a descrição completa do fornecedor aqui...", height=90, label_visibility="collapsed", key=f"desc_{v}")
 
 st.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
@@ -549,8 +534,7 @@ if gerar_clicado:
                                 for _ in range(3):
                                     fala = gerar_copy_ia_gemini(
                                         api_key, produto_nome, descricao_fornecedor, tipo_produto, est,
-                                        gancho_alvo, take_num, st.session_state.historico_copys, falas_usadas_lote,
-                                        beneficio_prod, material_prod, ref_internacional
+                                        gancho_alvo, take_num, st.session_state.historico_copys, falas_usadas_lote
                                     )
                                     if fala:
                                         break
@@ -559,8 +543,7 @@ if gerar_clicado:
                         if not fala:
                             fala = resumir_e_modelar_copy_local(
                                 produto_nome, descricao_fornecedor, tipo_produto, gancho_alvo,
-                                st.session_state.historico_copys, falas_usadas_lote,
-                                beneficio_prod, material_prod
+                                st.session_state.historico_copys, falas_usadas_lote
                             )
                         display_copy = fala
                         final_prompt = f"{p_base}\n\n{fala}"
