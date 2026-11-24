@@ -2,7 +2,6 @@ import json
 import os
 import random
 import urllib.request
-import urllib.error
 import time
 import streamlit as st
 
@@ -209,27 +208,19 @@ def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, hi
 def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, estilo_titulo, variacao_num):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key.strip()}"
     instrucao_sistema = (
-        "Você é o Diretor de Crescimento e Copywriter Sênior do TikTok Shop Brasil. "
-        "Crie um roteiro 100% autoral de 11 segundos cravados (24 a 28 palavras). "
-        "Escreva com tom espontâneo, natural e direto de quem acabou de testar ou descobrir o produto na prática, "
-        "evitando clichês artificiais de propaganda. "
-        "Abra com um dos 10 ganchos de retenção nos primeiros segundos: "
-        "vitrine de resultado no 1º segundo, revelação/caimento ao virar a câmera, chamada de quem usa a categoria na rotina, "
-        "surpresa por entregar mais gastando menos, detalhe prático antes de comprar, teste de 7 opções, "
-        "diferença antes/depois na rotina, 'POV: finalmente achei...', descoberta prévia da categoria ou oferta do momento. "
-        "Cite obrigatoriamente a 'Loja da Valentina' e encerre chamando para o 'carrinho laranja'. "
-        "Retorne APENAS a fala final em português do Brasil entre aspas duplas."
+        "Diretor de criação TikTok Shop Brasil. Escreva uma fala espontânea de 11s (24 a 28 palavras), "
+        "abrindo com gancho viral de retenção nos primeiros segundos (resultado no 1º segundo, revelação, "
+        "nicho da categoria, surpresa vs. preço alto, detalhe antes de comprar, teste de 7 opções, "
+        "antes/depois na rotina, POV achado, descoberta prévia ou urgência). "
+        "Inclua 'Loja da Valentina' e chame para o 'carrinho laranja'. Retorne APENAS a fala entre aspas duplas."
     )
     payload = {
         "contents": [{
             "parts": [{
                 "text": (
-                    f"{instrucao_sistema}\n\n"
-                    f"Nome do Produto: {nome_produto}\n"
-                    f"Descrição: {descricao_completa}\n"
-                    f"Categoria: {categoria}\n"
-                    f"Estilo: {estilo_titulo}\n"
-                    f"Variação #{variacao_num}:"
+                    f"{instrucao_sistema}\n"
+                    f"Produto: {nome_produto} | Categoria: {categoria} | Estilo: {estilo_titulo} | Var #{variacao_num}\n"
+                    f"Detalhes: {descricao_completa}"
                 )
             }]
         }],
@@ -245,66 +236,106 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
         res_data = json.loads(response.read().decode("utf-8"))
         candidates = res_data.get("candidates") or []
         if not candidates:
-            raise ValueError("Resposta da API sem candidatos válidos.")
+            raise ValueError("Resposta sem candidatos.")
         partes = ((candidates[0].get("content") or {}).get("parts")) or []
-        texto_bruto = (partes[0].get("text") if partes else "") or ""
-        texto = texto_bruto.strip().replace("\n", " ")
+        texto = ((partes[0].get("text") if partes else "") or "").strip().replace("\n", " ")
         if not texto:
-            raise ValueError("Resposta vazia da API.")
+            raise ValueError("Resposta vazia.")
         if not texto.startswith('"'):
             texto = f'"{texto}'
         if not texto.endswith('"'):
             texto = f'{texto}"'
         return texto
 
-# FÁBRICA DE IDENTIDADE ORIGINAL (11s CRAVADOS - COMPLIANCE TIKTOK SHOP)
+# 20 PROMPTS VIRAIS ÚNICOS (SEM REPETIÇÃO ENTRE ESTILOS, 11s, ESTÁVEIS E SEM FLUTUAÇÃO)
 def obter_identidade_original(i):
-    estilos = {
-        1: ("Estilo 1: POV Mão & Revelação Tátil", "Foco tátil manuseando o produto com extrema nitidez e som imersivo."),
-        2: ("Estilo 2: POV Corpo Inteiro Urbano", "Câmera fluida acompanhando o produto de corpo inteiro ao ar livre."),
-        3: ("Estilo 3: POV Provador de Luxo", "Enquadramento elegante detalhando caimento e textura."),
-        4: ("Estilo 4: POV Giro 360 no Espelho", "Rotação fluida em frente ao espelho da boutique."),
-        5: ("Estilo 5: POV Visual Sem Fala (Trilha Viral)", "Vídeo puramente visual dinâmico sem diálogos."),
-        6: ("Estilo 6: POV Close Macro de Detalhes", "Câmera de perto destacando costuras, acabamento e marca."),
-        7: ("Estilo 7: Look do Dia Executivo", "Estética de alto padrão e sofisticação."),
-        8: ("Estilo 8: Look Verão & Frescor", "Cenário ensolarado mostrando leveza e versatilidade."),
-        9: ("Estilo 9: Estudo Clássico em Estúdio", "Iluminação de cinema focada em imponência."),
-        10: ("Estilo 10: Provador Relâmpago", "Ritmo ágil focado em conversão de estoque limitado."),
-        11: ("Estilo 11: Destaque Dinâmico Urbano", "Utilidade e versatilidade em trânsito."),
-        12: ("Estilo 12: Texturas Aconchegantes", "Foco em toque suave e flexível."),
-        13: ("Estilo 13: Look Noite com Neon", "Iluminação noturna moderna e sofisticada."),
-        14: ("Estilo 14: Streetwear Autêntico", "Estilo urbano jovem e moderno."),
-        15: ("Estilo 15: Peça Delicate", "Detalhes refinados para ocasiões especiais."),
-        16: ("Estilo 16: Sobreposição Versátil", "Composição moderna e encaixe perfeito."),
-        17: ("Estilo 17: Movimento Fluido", "Apresentação natural do produto em uso."),
-        18: ("Estilo 18: Peça Premium de Alfaiataria", "Caimento impecável em plano aberto."),
-        19: ("Estilo 19: Praticidade Ágil", "Demonstração rápida de facilidade de uso."),
-        20: ("Estilo 20: Caminhão Preto TikTok (Saída da Loja)", "Cenário épico externo com caminhão e caixas da Loja da Valentina.")
-    }
-    titulo, desc = estilos.get(i, (f"Estilo {i}", "Estilo personalizado Valentina."))
-
-    regras_base = (
-        "Masterpiece 8K UHD UGC video, EXACT 11.0-SECOND DURATION, 9:16 vertical, RAW optical sensor. "
-        "STRICT PRODUCT LOCK: 1:1 fidelity on product, exact textures with zero blur, unique lighting and camera angle. "
-        "Zero mics, zero text overlays, zero watermarks, zero third-party logos. "
-        "PHYSICS & REALISM LOCK: Product/box physically stable and present from second 0.0 with natural movement and zero sudden pop-ins. "
+    base_fisica = (
+        "11s viral video, exact 1:1 product lock, grounded physical contact from 0.0s (no floating, no warping, no blur), "
+        "no text overlays, no watermarks, no third-party logos, no mics."
     )
-    if i == 20:
-        foco_fluxo = (
-            f"{regras_base}"
-            "CHRONO-LOCK (0-11s): [0-2s] Speaks at 0.0s pushing boutique door open. [2-8s] Fluid walk. [8-11s] Reaches truck, clean finish at 11.0s."
+    prompts_unicos = {
+        1: (
+            "Estilo 1: POV Mão & Revelação Tátil",
+            f"Close POV hands holding the product firmly from 0.0s, immediate hook at 0.0s in PT-BR, tactile reveal with steady camera. {base_fisica}"
+        ),
+        2: (
+            "Estilo 2: POV Corpo Inteiro Urbano",
+            f"Full-body street walk at an easy pace, product anchored naturally on body/hand from 0.0s, hook at 0.0s in PT-BR, smooth tracking shot. {base_fisica}"
+        ),
+        3: (
+            "Estilo 3: POV Provador de Luxo",
+            f"Warm boutique fitting room framing, creator shows fit and comfort from 0.0s, hook at 0.0s in PT-BR, steady angle. {base_fisica}"
+        ),
+        4: (
+            "Estilo 4: POV Giro 360 no Espelho",
+            f"Slow controlled half-turn in front of a mirror showing angles without losing product shape, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        5: (
+            "Estilo 5: POV Visual Sem Fala (Trilha Viral)",
+            f"Silent viral visual beat with crisp product angles, zero dialogue, steady motion and exact geometry for 11s. {base_fisica}"
+        ),
+        6: (
+            "Estilo 6: POV Close Macro de Detalhes",
+            f"Tight macro focus on stitching, texture, and finish while keeping the item steady and sharp, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        7: (
+            "Estilo 7: Look do Dia Executivo",
+            f"Clean day-to-work framing with balanced daylight and sharp product structure, hook at 0.0s in PT-BR, calm camera. {base_fisica}"
+        ),
+        8: (
+            "Estilo 8: Look Verão & Frescor",
+            f"Bright daytime outdoor light highlighting lightness and clean edges without overexposure, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        9: (
+            "Estilo 9: Estudo Clássico em Estúdio",
+            f"Minimalist studio backdrop with soft directional light emphasizing true product volume, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        10: (
+            "Estilo 10: Provador Relâmpago",
+            f"Brisk but controlled try-on pace keeping the product clear and steady on every move, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        11: (
+            "Estilo 11: Destaque Dinâmico Urbano",
+            f"Everyday sidewalk movement showing practical use with zero camera shake or distortion, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        12: (
+            "Estilo 12: Texturas Aconchegantes",
+            f"Cozy soft-touch showcase emphasizing fabric/material feel while keeping rigid shape intact, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        13: (
+            "Estilo 13: Look Noite com Neon",
+            f"Nighttime city glow with subtle neon accents while keeping the product well-lit and undistorted, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        14: (
+            "Estilo 14: Streetwear Autêntico",
+            f"Casual urban street style with natural posture and faithful proportions from 0.0s, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        15: (
+            "Estilo 15: Peça Delicate",
+            f"Refined delicate details under soft light preserving fine lines without distortion, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        16: (
+            "Estilo 16: Sobreposição Versátil",
+            f"Layered styling showing clean fit and natural movement from 0.0s, hook at 0.0s in PT-BR, steady framing. {base_fisica}"
+        ),
+        17: (
+            "Estilo 17: Movimento Fluido",
+            f"Smooth continuous motion demonstrating natural everyday use with zero warping, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        18: (
+            "Estilo 18: Peça Premium de Alfaiataria",
+            f"Structured tailored look in a clean medium-wide shot keeping exact symmetry, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        19: (
+            "Estilo 19: Praticidade Ágil",
+            f"Quick practical demonstration of ease of use with smooth transitions and firm product contact, hook at 0.0s in PT-BR. {base_fisica}"
+        ),
+        20: (
+            "Estilo 20: Caminhão Preto TikTok (Saída da Loja)",
+            f"Stepping out of store toward a black truck with product/box firmly held from 0.0s, hook at 0.0s in PT-BR, smooth 11s walk. {base_fisica}"
         )
-    elif i == 5:
-        foco_fluxo = (
-            f"{regras_base}"
-            "SILENT VISUAL SHOWCASE (11s): Upbeat dynamic visual rhythm with zero dialogue and pixel stability."
-        )
-    else:
-        foco_fluxo = (
-            f"{regras_base}"
-            "TIMELINE LOCK (0-11s): Immediate speech start at second 0.0 with Brazilian Portuguese lip-sync, max 28 words delivery, smooth finish at 11.0s."
-        )
-    return titulo, f"{foco_fluxo} ACTIVE STYLE: {i}. {titulo} - {desc}"
+    }
+    return prompts_unicos.get(i, (f"Estilo {i}", f"Custom viral 11s showcase for style {i}. {base_fisica}"))
 
 # BANCO E CONFIG
 DB_FILE = "moldes_salvos.json"
@@ -358,6 +389,8 @@ if "acesso_liberado" not in st.session_state:
     st.session_state.acesso_liberado = False
 if "historico_copys" not in st.session_state:
     st.session_state.historico_copys = set()
+if "contador_takes" not in st.session_state:
+    st.session_state.contador_takes = 0
 
 def limpar_formulario():
     st.session_state.form_version += 1
@@ -464,6 +497,12 @@ with btn_l:
     st.button("🔄 LIMPAR", on_click=limpar_formulario, key=f"clr_{v}")
 
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
+VARIACOES_TOM = [
+    "natural handheld angle",
+    "soft side light shift",
+    "subtle slow push-in",
+    "relaxed everyday energy"
+]
 
 if gerar_clicado:
     if not produto_nome and not descricao_fornecedor:
@@ -481,11 +520,17 @@ if gerar_clicado:
         with st.spinner("🔥 Disparando Motor Viral (11s cravados)..."):
             st.success(f"✅ Gerados {len(estilos_selecionados)} prompts para '{nome_exibicao}'.")
             for idx, est in enumerate(estilos_selecionados):
+                st.session_state.contador_takes += 1
+                take_num = st.session_state.contador_takes
                 horario = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
-                p_base = mapa.get(est, "").replace("9:16 vertical", f"{proporcao_alvo} framing")
+                p_base = mapa.get(est, "")
+                if proporcao_alvo != "9:16":
+                    p_base = f"{p_base} Aspect: {proporcao_alvo}."
+
                 is_mudo = "Sem Fala" in est or "SILENT" in p_base
                 if not is_mudo:
-                    p_base = f"{p_base} DIRECTOR MODE: {skin_sel}."
+                    var_tom = VARIACOES_TOM[(take_num - 1) % len(VARIACOES_TOM)]
+                    p_base = f"{p_base} Skin: {skin_sel} | Take #{take_num}: {var_tom}."
 
                 if is_mudo or ("Fixo" in copy_mode_sel and '"' in p_base):
                     final_prompt, display_copy = p_base, "Fala fixa mantida."
@@ -493,7 +538,7 @@ if gerar_clicado:
                     fala = ""
                     if api_key:
                         try:
-                            fala = gerar_copy_ia_gemini(api_key, produto_nome, descricao_fornecedor, tipo_produto, est, idx + 400)
+                            fala = gerar_copy_ia_gemini(api_key, produto_nome, descricao_fornecedor, tipo_produto, est, take_num)
                         except Exception as err:
                             st.caption(f"⚠️ Falha na API Gemini ({err}); usando motor local.")
                     if not fala:
