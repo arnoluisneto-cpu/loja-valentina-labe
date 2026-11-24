@@ -171,19 +171,28 @@ SUBSTITUICOES_COMPLIANCE = [
 SUBSTITUICOES_UNIVERSAIS = [
     (r"\bcanetas?\s+de\s+nail\s+art\b|\bnail\s+art\b|\bcanetas?\b", "o produto de referência"),
     (r"\bunhas?\s+decoradas?\b|\bunhas?\b|\bmesa\s+de\s+manicure\b", "o produto em uso real"),
-    (r"\bsand[áa]lias?\b|\bt[êe]nis\b|\bpantalonas?\b|\bcamisolas?\b|\brel[óo]gios?\b", "o produto selecionado")
+    (r"\bcamisolas?\s+curtas?\s+de\s+cetim\s+brilhante\s+com\s+decote\s+em\s+renda\s+vermelha\s+e\s+al[çc]as\s+finas\s+sobre\s+mesa\s+de\s+m[áa]rmore\b", "o produto de referência"),
+    (r"\bcamisolas?\b|\bcetim\s+brilhante\b|\brenda\s+vermelha\b|\bmesa\s+de\s+m[áa]rmore\b", "o produto selecionado"),
+    (r"\btops?\s+de\s+diferentes\s+cores\s+sobre\s+um\s+len[çc]ol\s+branco\b", "o produto de referência sobre uma superfície clara e neutra"),
+    (r"\blen[çc]ol\s+branco\b", "superfície clara e neutra"),
+    (r"\bsand[áa]lias?\b|\bt[êe]nis\b|\bpantalonas?\b|\brel[óo]gios?\b", "o produto selecionado")
 ]
 
 ESTILOS_FALA_POR_INDICE = {
-    1: "fala_styleface_revelacao",
-    2: "fala_ugc_pov_mao",
-    3: "fala_styleface_caimento",
-    4: "fala_ugc_pov_rotina",
-    5: "fala_styleface_sem_fala",
-    6: "fala_ugc_pov_rua",
-    7: "fala_ugc_3cenas_universal",
-    8: "fala_styleface_pescoco_baixo_fixo"
+    1: "fala_dor_revelacao_amigo",
+    2: "fala_dor_prejuizo_amigo",
+    3: "fala_dor_desconforto_amigo",
+    4: "fala_dor_correria_amigo",
+    5: "fala_visual_sem_audio",
+    6: "fala_dor_expectativa_real_amigo",
+    7: "fala_dor_detalhe_enganoso_amigo",
+    8: "fala_dor_caimento_amigo"
 }
+
+TRAVA_ANTI_TEXTO_FLUTUANTE = (
+    "zero floating text, no on-screen text, no captions, no subtitles, no graphics, "
+    "no social media icons or UI overlays, no watermarks, no third-party logos, no unrequested objects."
+)
 
 def sanitizar_copy_tiktok_shop(texto):
     limpo = texto or ""
@@ -195,12 +204,15 @@ def universalizar_prompt(texto):
     limpo = sanitizar_copy_tiktok_shop(texto)
     for padrao, substituto in SUBSTITUICOES_UNIVERSAIS:
         limpo = re.sub(padrao, substituto, limpo, flags=re.IGNORECASE)
+    limpo = " ".join(limpo.split())
+    if "no floating text" not in limpo.lower() and "no on-screen text" not in limpo.lower():
+        limpo = f"{limpo} {TRAVA_ANTI_TEXTO_FLUTUANTE}"
     return " ".join(limpo.split())
 
 def _contar_palavras_reais(texto_sem_aspas):
     return len([p for p in texto_sem_aspas.strip().split() if p])
 
-# MOTOR LOCAL UNIVERSAL COM ESTILO DE FALA DISTINTO POR ESTILO (12s CRAVADOS / 24 A 34 PALAVRAS)
+# MOTOR LOCAL DE AMIGO PARA AMIGO: GANCHO FORTE NA DOR + DESENVOLVIMENTO NA DOR + CTA (12s / 24 A 34 PALAVRAS)
 def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, estilo_fala, historico_sessao, falas_usadas_lote):
     prod_bruto = sanitizar_copy_tiktok_shop(nome_produto)
     cat_bruta = sanitizar_copy_tiktok_shop(categoria).lower()
@@ -208,40 +220,38 @@ def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, es
     prod_curto = " ".join(prod_limpo.split()[:3])
 
     banco_por_estilo = {
-        "fala_styleface_revelacao": [
-            f"Olha como esse {prod_curto} resolve já no primeiro segundo do vídeo! Entrega da Loja da Valentina com conforto real no dia a dia: clica aqui embaixo no carrinho laranja e garante o seu!",
-            f"Logo no primeiro segundo dá pra ver o diferencial desse {prod_curto}! Peça da Loja da Valentina com ótimo encaixe: clica aqui embaixo no carrinho laranja e garante o seu!"
+        "fala_dor_revelacao_amigo": [
+            f"Amiga, chega de sofrer escolhendo {cat_bruta} que aperta ou decepciona! Eu tava cansada de errar até pegar esse {prod_curto} na Loja da Valentina: clica aqui no carrinho laranja e garante o seu!",
+            f"Cara, não compra mais {cat_bruta} no escuro sem ver isso! Eu já perdi dinheiro com coisa ruim até achar esse {prod_curto} na Loja da Valentina: clica aqui no carrinho laranja!"
         ],
-        "fala_ugc_pov_mao": [
-            f"POV: pegando esse {prod_curto} na mão agora e já vendo a firmeza! Achado da Loja da Valentina feito pro dia a dia: dá uma olhada no carrinho laranja aqui embaixo!",
-            f"POV: testando esse {prod_curto} de perto na rotina de hoje! Qualidade da Loja da Valentina sem complicação: abre o carrinho laranja aqui embaixo e pega o seu!"
+        "fala_dor_prejuizo_amigo": [
+            f"Sério, ninguém merece gastar dinheiro à toa com {cat_bruta} que não segura o tranco! Peguei esse {prod_curto} na Loja da Valentina e valeu cada centavo: abre o carrinho laranja aqui embaixo!",
+            f"Chega de jogar dinheiro fora com {cat_bruta} bonito na foto e ruim na mão! Indica de amigo da Loja da Valentina: clica aqui no carrinho laranja e garante o seu!"
         ],
-        "fala_styleface_caimento": [
-            f"Repara no caimento real desse {prod_curto} quando o corpo se movimenta! Estilo da Loja da Valentina super confortável: clica aqui embaixo no carrinho laranja e garante o seu!",
-            f"Veja como esse {prod_curto} assenta bem sem repuxar na rotina! Peça da Loja da Valentina com acabamento firme: dá uma olhada no carrinho laranja aqui embaixo!"
+        "fala_dor_desconforto_amigo": [
+            f"Amiga, dá uma raiva quando o item incomoda ou pesa no meio do dia, né? Esse {prod_curto} aliviou minha rotina na Loja da Valentina: dá uma olhada no carrinho laranja aqui embaixo!",
+            f"Cara, eu não aguentava mais sentir incômodo usando {cat_bruta} mal feito! Troquei por esse {prod_curto} da Loja da Valentina e mudou tudo: clica aqui no carrinho laranja e garante o seu!"
         ],
-        "fala_ugc_pov_rotina": [
-            f"POV: finalmente achei um {prod_curto} prático de verdade pra minha rotina diária! Facilidade da Loja da Valentina que ajuda todo dia: abre o carrinho laranja aqui embaixo e pega o seu!",
-            f"POV: encaixando esse {prod_curto} na correria do dia sem perder tempo! Solução da Loja da Valentina simples e funcional: clica aqui embaixo no carrinho laranja e garante o seu!"
+        "fala_dor_correria_amigo": [
+            f"Na correria do dia a dia perder tempo com coisa que trava ou incomoda é péssimo! Esse {prod_curto} salvou meu tempo na Loja da Valentina: abre o carrinho laranja aqui embaixo!",
+            f"Quando a rotina aperta, você não pode depender de {cat_bruta} que atrapalha! Peguei esse {prod_curto} na Loja da Valentina e facilitou demais: clica aqui no carrinho laranja aqui embaixo!"
         ],
-        "fala_styleface_sem_fala": [
-            f"Sem falar muito, esse {prod_curto} já mostra tudo no visual do take! Linha da Loja da Valentina pensada pro dia a dia: dá uma olhada no carrinho laranja aqui embaixo!"
+        "fala_visual_sem_audio": [
+            f"Sem legenda e sem enrolação: olha esse {prod_curto} resolvendo a dor na prática! Achado da Loja da Valentina direto no ponto: clica aqui no carrinho laranja e garante o seu!"
         ],
-        "fala_ugc_pov_rua": [
-            f"POV: andando na rua com {prod_curto} e sentindo a leveza no passo! Qualidade da Loja da Valentina feita pra acompanhar o dia: abre o carrinho laranja aqui embaixo e pega o seu!",
-            f"POV: saindo pro dia a dia com {prod_curto} bem firme e confortável! Achado da Loja da Valentina super prático: clica aqui embaixo no carrinho laranja e garante o seu!"
+        "fala_dor_expectativa_real_amigo": [
+            f"Sabe aquela frustração de pedir {cat_bruta} e vir totalmente diferente do esperado? Esse {prod_curto} da Loja da Valentina me surpreendeu de verdade: abre o carrinho laranja aqui embaixo!",
+            f"Eu já tava desanimada de comprar {cat_bruta} online por causa de tanta decepção! Esse {prod_curto} da Loja da Valentina salvou: clica aqui no carrinho laranja e garante o seu!"
         ],
-        "fala_ugc_3cenas_universal": [
-            f"Olha como esse {prod_curto} funciona na prática e entrega resultado limpo! Achado da Loja da Valentina com acabamento caprichado: clica aqui embaixo no carrinho laranja e garante o seu!",
-            f"Do primeiro olhar ao uso real, esse {prod_curto} surpreende no detalhe! Qualidade da Loja da Valentina pro dia a dia: abre o carrinho laranja aqui embaixo e pega o seu!"
+        "fala_dor_detalhe_enganoso_amigo": [
+            f"Amiga, presta atenção no acabamento antes de fechar qualquer compra de {cat_bruta}! Esse {prod_curto} da Loja da Valentina não me deixou na mão: clica aqui no carrinho laranja!"
         ],
-        "fala_styleface_pescoco_baixo_fixo": [
-            f"Olha como esse {prod_curto} fica no corpo do pescoço pra baixo com caimento limpo! Loja da Valentina na prática: clica aqui embaixo no carrinho laranja e garante o seu!",
-            f"Veja o encaixe real desse {prod_curto} do pescoço pra baixo sem perder a forma! Achado da Loja da Valentina: dá uma olhada no carrinho laranja aqui embaixo!"
+        "fala_dor_caimento_amigo": [
+            f"Cara, nada pior do que {cat_bruta} que não assenta direito ou fica repuxando! Esse {prod_curto} da Loja da Valentina ficou super confortável: abre o carrinho laranja aqui embaixo!"
         ]
     }
 
-    opcoes = list(banco_por_estilo.get(estilo_fala, banco_por_estilo["fala_styleface_revelacao"]))
+    opcoes = list(banco_por_estilo.get(estilo_fala, banco_por_estilo["fala_dor_revelacao_amigo"]))
     random.shuffle(opcoes)
 
     for raw in opcoes:
@@ -254,15 +264,14 @@ def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, es
             return candidata
 
     for raw in opcoes:
-        frase = sanitizar_copy_tiktok_shop(f"{raw} ({cat_bruta})")
+        frase = sanitizar_copy_tiktok_shop(raw)
         candidata = f'"{frase}"'
         if candidata not in historico_sessao and candidata not in falas_usadas_lote:
             historico_sessao.add(candidata)
             falas_usadas_lote.add(candidata)
             return candidata
 
-    base_fallback = sanitizar_copy_tiktok_shop(opcoes[0])
-    fallback = f'"{base_fallback}"'
+    fallback = f'"{sanitizar_copy_tiktok_shop(opcoes[0])}"'
     historico_sessao.add(fallback)
     falas_usadas_lote.add(fallback)
     return fallback
@@ -273,11 +282,15 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
     evitar_txt = f" NÃO repita nenhuma destas falas: {' | '.join(bloqueadas[-8:])}." if bloqueadas else ""
 
     instrucao_sistema = (
-        f"Diretor de criação TikTok Shop Brasil. Escreva uma fala espontânea de 12 segundos cravados (26 a 32 palavras) "
-        f"adaptada de forma universal ao produto informado, com o estilo de fala exclusivo '{estilo_fala}'. "
+        "Você escreve falas para TikTok Shop Brasil em tom de AMIGO INDICANDO PARA AMIGO (ex: 'Amiga...', 'Cara...', 'Sério...'), "
+        "com 12 segundos cravados (26 a 32 palavras). "
+        "Estrutura obrigatória: (1) GANCHO FORTE NA DOR real do cliente nos primeiros segundos, "
+        "(2) DESENVOLVIMENTO BATENDO NA DOR e na frustração do dia a dia até o alívio com o produto, "
+        "(3) citar 'Loja da Valentina' e fechar chamando para o 'carrinho laranja'. "
+        "Nada de linguagem robótica de anúncio genérico ('acabamento firme', 'solução funcional'). "
+        f"Estilo de fala: '{estilo_fala}'. "
         "NUNCA use as palavras 'kit', 'kits', 'conjunto', 'conjuntos', 'combo', promessas absolutas "
-        "ou menções a plataformas externas. "
-        "Inclua 'Loja da Valentina' e chame para o 'carrinho laranja'. Retorne APENAS a fala entre aspas duplas."
+        "ou menções a plataformas externas. Retorne APENAS a fala entre aspas duplas."
         f"{evitar_txt}"
     )
     payload = {
@@ -286,7 +299,7 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
                 "text": (
                     f"{instrucao_sistema}\n"
                     f"Produto: {sanitizar_copy_tiktok_shop(nome_produto)} | Categoria: {sanitizar_copy_tiktok_shop(categoria)} | "
-                    f"Estilo: {estilo_titulo} | Estilo de Fala: {estilo_fala} | Var #{variacao_num}\n"
+                    f"Estilo: {estilo_titulo} | Var #{variacao_num}\n"
                     f"Detalhes: {sanitizar_copy_tiktok_shop(descricao_completa)}"
                 )
             }]
@@ -311,43 +324,43 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
             raise ValueError("Resposta vazia.")
         return f'"{texto_limpo}"'
 
-# 8 PROMPTS 100% UNIVERSAIS (QUALQUER PRODUTO, ALTERNANDO STYLEFACE E UGC POV; ESTILO 8 FIXO DO PESCOÇO PARA BAIXO; 12s CRAVADOS)
+# 8 PROMPTS 100% UNIVERSAIS, SEM TEXTO FLUTUANTE, 12s CRAVADOS
 def obter_identidade_original(i):
     prompts_universais = {
         1: (
             "Estilo 1: StyleFace GC Revelação",
-            "12s GC StyleFace universal showcase for any product, steady eye-level framing with immediate PT-BR hook at 0.0s, exact 1:1 product lock, grounded physical contact from 0.0s, zero floating, zero warping, zero blur, no text overlays, no watermarks, no third-party logos, no mics."
+            f"12s GC StyleFace universal showcase for any product, steady eye-level framing with immediate PT-BR hook at 0.0s, exact 1:1 product lock, grounded physical contact from 0.0s, zero floating, zero warping, zero blur, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         2: (
-            "Estilo 2: UGC POV Mão & Revelação",
-            "12s UGC POV universal hands holding and presenting any product firmly from 0.0s, immediate PT-BR hook at 0.0s, natural handheld motion, faithful proportions, grounded contact, zero floating, zero distortion, no text overlays, no watermarks, no logos, no mics."
+            "Estilo 2: UGC POV Plongée & Esticamento Tátil",
+            f"12s first-person POV vertical 9:16 video in high-angle plongée and close detail perspective, natural hands handling and gently stretching the referenced product over a clean neutral surface with a quick gathering motion near the end, fluid camera following the action, soft natural lighting highlighting texture and elasticity, lively natural pacing, exact 1:1 product fidelity from 0.0s, grounded contact, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         3: (
             "Estilo 3: StyleFace GC Caimento",
-            "12s GC StyleFace universal fitting framing showing natural fit, drape, or placement of any product from 0.0s, PT-BR speech from 0.0s, calm camera, exact reference shape and texture, grounded contact, zero floating, zero stretching, no text overlays, no watermarks, no mics."
+            f"12s GC StyleFace universal fitting framing showing natural fit, drape, or placement of any product from 0.0s, PT-BR speech from 0.0s, calm camera, exact reference shape and texture, grounded contact, zero floating, zero stretching, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         4: (
             "Estilo 4: UGC POV Rotina Prática",
-            "12s UGC POV universal everyday routine shot demonstrating practical use of any product from 0.0s, PT-BR hook at 0.0s, natural movement, exact item dimensions and color, grounded contact, zero floating, zero warping, no text overlays, no watermarks, no mics."
+            f"12s UGC POV universal everyday routine shot demonstrating practical use of any product from 0.0s, PT-BR hook at 0.0s, natural movement, exact item dimensions and color, grounded contact, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         5: (
             "Estilo 5: StyleFace GC Sem Fala (Trilha Viral)",
-            "12s GC StyleFace universal silent visual rhythm for any product with zero dialogue, clean angle shifts showing true product form from 0.0s, steady motion, strict physical contact, zero floating, zero morphing, zero blur, no text overlays, no watermarks, no mics."
+            f"12s GC StyleFace universal silent visual rhythm for any product with zero dialogue, clean angle shifts showing true product form from 0.0s, steady motion, strict physical contact, zero floating, zero morphing, zero blur, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         6: (
             "Estilo 6: UGC POV Corpo Inteiro Urbano",
-            "12s UGC POV universal full-body street walk at an easy pace with any product anchored naturally from 0.0s, PT-BR speech from 0.0s, smooth tracking shot, locked product geometry, zero floating, zero warping, no text overlays, no watermarks, no mics."
+            f"12s UGC POV universal full-body street walk at an easy pace with any product anchored naturally from 0.0s, PT-BR speech from 0.0s, smooth tracking shot, locked product geometry, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         7: (
-            "Estilo 7: UGC 3 Cenas Universal",
-            "Estilo comercial UGC universal de criadora de conteúdo para qualquer produto, formato vertical 9:16, duração de 12s, iluminação natural e acabamento limpo. CENA 1 – ABERTURA E GANCHO: Criadora simpática apresenta o produto de referência de forma espontânea olhando para a câmera com gancho imediato em português brasileiro. CENA 2 – DEMONSTRAÇÃO NA PRÁTICA: Transição suave mostrando o produto em uso real e prático no dia a dia, preservando forma e detalhes. CENA 3 – RESULTADO: Close limpo e realista do produto e do resultado final. Sem legendas ou textos na tela."
+            "Estilo 7: UGC Criadora Natural Universal",
+            f"12s natural vertical 9:16 video of a friendly creator presenting the referenced product spontaneously in bright natural light, transitioning smoothly to practical hands-on demonstration and a clean close-up of the finished product in use, continuous person and product fidelity from first to last frame, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         8: (
             "Estilo 8: StyleFace GC Pescoço Para Baixo (Fixo)",
-            "12s GC StyleFace fixed framing strictly from the neck down (no face shown), showcasing any product naturally from 0.0s, PT-BR hook at 0.0s, steady camera, exact 1:1 product lock, grounded physical contact, zero floating, zero warping, zero blur, no text overlays, no watermarks, no third-party logos, no mics."
+            f"12s GC StyleFace fixed framing strictly from the neck down (no face shown), showcasing any product naturally from 0.0s, PT-BR hook at 0.0s, steady camera, exact 1:1 product lock, grounded physical contact, zero floating, zero warping, zero blur, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         )
     }
-    return prompts_universais.get(i, (f"Estilo {i}", f"12s universal GC showcase {i} for any product, exact 1:1 product lock, grounded contact from 0.0s, zero floating, zero warping, no text overlays, no watermarks, no mics."))
+    return prompts_universais.get(i, (f"Estilo {i}", f"12s universal GC showcase {i} for any product, exact 1:1 product lock, grounded contact from 0.0s, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"))
 
 # BANCO E CONFIG
 DB_FILE = "moldes_salvos.json"
@@ -543,7 +556,7 @@ if gerar_clicado:
                 take_num = st.session_state.contador_takes
                 horario = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
                 num_estilo = mapa_indice.get(est, idx + 1)
-                estilo_fala_base = ESTILOS_FALA_POR_INDICE.get(num_estilo, "fala_styleface_revelacao")
+                estilo_fala_base = ESTILOS_FALA_POR_INDICE.get(num_estilo, "fala_dor_revelacao_amigo")
                 if estilo_fala_base in estilos_fala_usados_lote:
                     restantes = [v_f for v_f in ESTILOS_FALA_POR_INDICE.values() if v_f not in estilos_fala_usados_lote]
                     estilo_fala = restantes[0] if restantes else estilo_fala_base
@@ -555,7 +568,7 @@ if gerar_clicado:
                 if proporcao_alvo != "9:16":
                     p_base = f"{p_base} Aspect: {proporcao_alvo}."
 
-                is_mudo = "Sem Fala" in est or estilo_fala == "fala_styleface_sem_fala"
+                is_mudo = "Sem Fala" in est or estilo_fala == "fala_visual_sem_audio"
                 if not is_mudo:
                     var_tom = VARIACOES_TOM[(take_num - 1) % len(VARIACOES_TOM)]
                     p_base = f"{p_base} Skin: {skin_sel} | Take #{take_num}: {var_tom}."
