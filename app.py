@@ -1,6 +1,7 @@
 import json
 import os
 import random
+import re
 import urllib.request
 import time
 import streamlit as st
@@ -153,26 +154,46 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
+# BLINDAGEM CONTRA "KIT/KITS" E "CONJUNTO/CONJUNTOS" (E DEMAIS TERMOS DE RISCO)
+SUBSTITUICOES_COMPLIANCE = [
+    (r"\bkits?\b", "combinação"),
+    (r"\bconjunto\b", "combinação"),
+    (r"\bconjuntos\b", "combinações"),
+    (r"\bcombo\b", "opção"),
+    (r"\bgarantia absoluta\b", "boa experiência"),
+    (r"\bresultado garantido\b", "uso prático"),
+    (r"\búltima unidade\b", "disponível no carrinho"),
+    (r"\bestoque acabando\b", "alta procura"),
+    (r"\bwhatsapp\b|\btelegram\b|\bshopee\b|\bmercado livre\b", "carrinho laranja")
+]
+
+def sanitizar_copy_tiktok_shop(texto):
+    limpo = texto or ""
+    for padrao, substituto in SUBSTITUICOES_COMPLIANCE:
+        limpo = re.sub(padrao, substituto, limpo, flags=re.IGNORECASE)
+    return " ".join(limpo.split())
+
 def _contar_palavras_reais(texto_sem_aspas):
     return len([p for p in texto_sem_aspas.strip().split() if p])
 
-# MOTOR LOCAL COM OS 10 GANCHOS EM TOM ESPONTÂNEO (11s / 22 A 28 PALAVRAS)
+# MOTOR LOCAL COM OS 10 GANCHOS EM TOM ESPONTÂNEO E BLINDADO (11s / 22 A 28 PALAVRAS)
 def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, historico_sessao):
-    prod_limpo = nome_produto.strip() if nome_produto and nome_produto.strip() else f"esse {categoria.lower()}"
+    prod_bruto = sanitizar_copy_tiktok_shop(nome_produto)
+    cat_bruta = sanitizar_copy_tiktok_shop(categoria).lower()
+    prod_limpo = prod_bruto if prod_bruto else f"esse item de {cat_bruta}"
     prod_curto = " ".join(prod_limpo.split()[:3])
-    cat = categoria.lower()
 
     ganchos_espontaneos = [
         f"Olha como esse {prod_curto} resolve já no primeiro segundo!",
         "Espera eu virar a câmera pra você ver como isso assenta!",
-        f"Se você pega {cat} na correria, dá uma olhada nisso aqui!",
+        f"Se você pega {cat_bruta} na correria, dá uma olhada nisso aqui!",
         f"Achei que precisava gastar bem mais, mas esse {prod_curto} surpreendeu!",
         f"Antes de pegar qualquer {prod_curto}, repare nesse detalhe de perto!",
         f"Depois de testar 7 opções, esse {prod_curto} foi o único que ficou!",
         f"A diferença na rotina de usar {prod_curto} é bem nítida!",
         f"POV: finalmente achei um {prod_curto} prático de verdade no dia a dia!",
-        f"Queria ter visto isso antes de gastar dinheiro com {cat}!",
-        "Peguei na promoção agora e já vi que vai sair rápido!"
+        f"Queria ter visto isso antes de gastar dinheiro com {cat_bruta}!",
+        "Peguei na promoção de agora e já vi que vale o clique!"
     ]
 
     corpo_necessidade = [
@@ -183,7 +204,7 @@ def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, hi
 
     fechamentos_cta = [
         "Clica aqui embaixo no carrinho laranja e garante o seu!",
-        "Dá uma olhada no carrinho laranja aqui embaixo antes que acabe!",
+        "Dá uma olhada no carrinho laranja aqui embaixo e aproveita!",
         "Abre o carrinho laranja aqui embaixo e pega o seu!"
     ]
 
@@ -191,7 +212,7 @@ def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, hi
         g = random.choice(ganchos_espontaneos)
         d = random.choice(corpo_necessidade)
         c = random.choice(fechamentos_cta)
-        frase = " ".join(f"{g} {d} {c}".split())
+        frase = sanitizar_copy_tiktok_shop(f"{g} {d} {c}")
         qtd = _contar_palavras_reais(frase)
         candidata = f'"{frase}"'
         if 22 <= qtd <= 28 and candidata not in historico_sessao:
@@ -200,7 +221,7 @@ def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, hi
 
     gancho_reserva = random.choice(ganchos_espontaneos)
     cta_reserva = random.choice(fechamentos_cta)
-    fallback_frase = " ".join(f"{gancho_reserva} Loja da Valentina: {cta_reserva}".split())
+    fallback_frase = sanitizar_copy_tiktok_shop(f"{gancho_reserva} Loja da Valentina: {cta_reserva}")
     fallback = f'"{fallback_frase}"'
     historico_sessao.add(fallback)
     return fallback
@@ -211,7 +232,9 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
         "Diretor de criação TikTok Shop Brasil. Escreva uma fala espontânea de 11s (24 a 28 palavras), "
         "abrindo com gancho viral de retenção nos primeiros segundos (resultado no 1º segundo, revelação, "
         "nicho da categoria, surpresa vs. preço alto, detalhe antes de comprar, teste de 7 opções, "
-        "antes/depois na rotina, POV achado, descoberta prévia ou urgência). "
+        "antes/depois na rotina, POV achado, descoberta prévia ou oferta do momento). "
+        "NUNCA use as palavras 'kit', 'kits', 'conjunto', 'conjuntos', 'combo', promessas absolutas "
+        "ou menções a plataformas externas. "
         "Inclua 'Loja da Valentina' e chame para o 'carrinho laranja'. Retorne APENAS a fala entre aspas duplas."
     )
     payload = {
@@ -219,8 +242,9 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
             "parts": [{
                 "text": (
                     f"{instrucao_sistema}\n"
-                    f"Produto: {nome_produto} | Categoria: {categoria} | Estilo: {estilo_titulo} | Var #{variacao_num}\n"
-                    f"Detalhes: {descricao_completa}"
+                    f"Produto: {sanitizar_copy_tiktok_shop(nome_produto)} | Categoria: {sanitizar_copy_tiktok_shop(categoria)} | "
+                    f"Estilo: {estilo_titulo} | Var #{variacao_num}\n"
+                    f"Detalhes: {sanitizar_copy_tiktok_shop(descricao_completa)}"
                 )
             }]
         }],
@@ -238,14 +262,11 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
         if not candidates:
             raise ValueError("Resposta sem candidatos.")
         partes = ((candidates[0].get("content") or {}).get("parts")) or []
-        texto = ((partes[0].get("text") if partes else "") or "").strip().replace("\n", " ")
-        if not texto:
+        texto_bruto = ((partes[0].get("text") if partes else "") or "").strip().replace("\n", " ")
+        texto_limpo = sanitizar_copy_tiktok_shop(texto_bruto.strip('"'))
+        if not texto_limpo:
             raise ValueError("Resposta vazia.")
-        if not texto.startswith('"'):
-            texto = f'"{texto}'
-        if not texto.endswith('"'):
-            texto = f'{texto}"'
-        return texto
+        return f'"{texto_limpo}"'
 
 # 20 PROMPTS VIRAIS ÚNICOS (SEM REPETIÇÃO ENTRE ESTILOS, 11s, ESTÁVEIS E SEM FLUTUAÇÃO)
 def obter_identidade_original(i):
@@ -514,7 +535,7 @@ if gerar_clicado:
     else:
         api_key = st.session_state.config_ia.get("api_key", "").strip()
         mapa = {st.session_state.db_estilos[i]["titulo"]: st.session_state.db_estilos[i]["prompt"] for i in st.session_state.db_estilos}
-        nome_exibicao = produto_nome.strip() if produto_nome and produto_nome.strip() else "Produto"
+        nome_exibicao = sanitizar_copy_tiktok_shop(produto_nome) or "Produto"
         proporcao_alvo = prop_sel.split(" ")[0]
 
         with st.spinner("🔥 Disparando Motor Viral (11s cravados)..."):
@@ -533,7 +554,7 @@ if gerar_clicado:
                     p_base = f"{p_base} Skin: {skin_sel} | Take #{take_num}: {var_tom}."
 
                 if is_mudo or ("Fixo" in copy_mode_sel and '"' in p_base):
-                    final_prompt, display_copy = p_base, "Fala fixa mantida."
+                    final_prompt, display_copy = sanitizar_copy_tiktok_shop(p_base), "Fala fixa mantida."
                 else:
                     fala = ""
                     if api_key:
@@ -543,6 +564,7 @@ if gerar_clicado:
                             st.caption(f"⚠️ Falha na API Gemini ({err}); usando motor local.")
                     if not fala:
                         fala = resumir_e_modelar_copy_local(produto_nome, descricao_fornecedor, tipo_produto, st.session_state.historico_copys)
+                    fala = f'"{sanitizar_copy_tiktok_shop(fala.strip(chr(34)))}"'
                     display_copy = fala
                     final_prompt = f"{p_base}\n\n{fala}"
 
