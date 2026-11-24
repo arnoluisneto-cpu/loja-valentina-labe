@@ -178,15 +178,16 @@ SUBSTITUICOES_UNIVERSAIS = [
     (r"\bsand[áa]lias?\b|\bt[êe]nis\b|\bpantalonas?\b|\brel[óo]gios?\b", "o produto selecionado")
 ]
 
+# OS 6 GANCHOS DO VÍDEO + VARIAÇÕES DE DOR/AMIGO (SEM REPETIR NA MESMA RODADA)
 ESTILOS_FALA_POR_INDICE = {
-    1: "fala_dor_revelacao_amigo",
-    2: "fala_dor_prejuizo_amigo",
-    3: "fala_dor_desconforto_amigo",
-    4: "fala_dor_correria_amigo",
-    5: "fala_visual_sem_audio",
-    6: "fala_dor_expectativa_real_amigo",
-    7: "fala_dor_detalhe_enganoso_amigo",
-    8: "fala_dor_caimento_amigo"
+    1: "gancho_1_promocao_intensa_amigo",
+    2: "gancho_2_preco_x_prejuizo_amigo",
+    3: "gancho_3_nao_espera_ficar_sem_amigo",
+    4: "gancho_4_todo_mundo_comprando_amigo",
+    5: "gancho_5_cara_de_luxo_preco_leve_amigo",
+    6: "gancho_6_nem_precisava_mas_pegou_amigo",
+    7: "fala_visual_sem_audio",
+    8: "gancho_3_nao_espera_ficar_sem_amigo"
 }
 
 TRAVA_ANTI_TEXTO_FLUTUANTE = (
@@ -204,6 +205,7 @@ def universalizar_prompt(texto):
     limpo = sanitizar_copy_tiktok_shop(texto)
     for padrao, substituto in SUBSTITUICOES_UNIVERSAIS:
         limpo = re.sub(padrao, substituto, limpo, flags=re.IGNORECASE)
+    limpo = re.sub(r"\b12s\b", "11s", limpo, flags=re.IGNORECASE)
     limpo = " ".join(limpo.split())
     if "no floating text" not in limpo.lower() and "no on-screen text" not in limpo.lower():
         limpo = f"{limpo} {TRAVA_ANTI_TEXTO_FLUTUANTE}"
@@ -212,7 +214,7 @@ def universalizar_prompt(texto):
 def _contar_palavras_reais(texto_sem_aspas):
     return len([p for p in texto_sem_aspas.strip().split() if p])
 
-# MOTOR LOCAL DE AMIGO PARA AMIGO: GANCHO FORTE NA DOR + DESENVOLVIMENTO NA DOR + CTA (12s / 24 A 34 PALAVRAS)
+# MOTOR LOCAL COM OS 6 GANCHOS DO VÍDEO EM TOM DE AMIGO BATENDO NA DOR (11s / 22 A 30 PALAVRAS)
 def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, estilo_fala, historico_sessao, falas_usadas_lote):
     prod_bruto = sanitizar_copy_tiktok_shop(nome_produto)
     cat_bruta = sanitizar_copy_tiktok_shop(categoria).lower()
@@ -220,45 +222,43 @@ def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, es
     prod_curto = " ".join(prod_limpo.split()[:3])
 
     banco_por_estilo = {
-        "fala_dor_revelacao_amigo": [
-            f"Amiga, chega de sofrer escolhendo {cat_bruta} que aperta ou decepciona! Eu tava cansada de errar até pegar esse {prod_curto} na Loja da Valentina: clica aqui no carrinho laranja e garante o seu!",
-            f"Cara, não compra mais {cat_bruta} no escuro sem ver isso! Eu já perdi dinheiro com coisa ruim até achar esse {prod_curto} na Loja da Valentina: clica aqui no carrinho laranja!"
+        "gancho_1_promocao_intensa_amigo": [
+            f"Amiga, acharam que a promoção virou o fim do mundo! Eu tava sofrendo com {cat_bruta} ruim até ver esse {prod_curto} na Loja da Valentina: clica no carrinho laranja!",
+            f"Cara, o pessoal surtou nessa oferta como se fosse o fim do mundo! Eu já errava muito até pegar esse {prod_curto} na Loja da Valentina: clica no carrinho laranja!"
         ],
-        "fala_dor_prejuizo_amigo": [
-            f"Sério, ninguém merece gastar dinheiro à toa com {cat_bruta} que não segura o tranco! Peguei esse {prod_curto} na Loja da Valentina e valeu cada centavo: abre o carrinho laranja aqui embaixo!",
-            f"Chega de jogar dinheiro fora com {cat_bruta} bonito na foto e ruim na mão! Indica de amigo da Loja da Valentina: clica aqui no carrinho laranja e garante o seu!"
+        "gancho_2_preco_x_prejuizo_amigo": [
+            f"Cara, nem sei como compensa esse preço depois de tanto prejuízo com {cat_bruta} fraco! Esse {prod_curto} da Loja da Valentina salvou: abre o carrinho laranja aqui embaixo!",
+            f"Amiga, juro que não sei como tá nesse valor após errar tanto com {cat_bruta} ruim! Esse {prod_curto} da Loja da Valentina valeu muito: clica no carrinho laranja!"
         ],
-        "fala_dor_desconforto_amigo": [
-            f"Amiga, dá uma raiva quando o item incomoda ou pesa no meio do dia, né? Esse {prod_curto} aliviou minha rotina na Loja da Valentina: dá uma olhada no carrinho laranja aqui embaixo!",
-            f"Cara, eu não aguentava mais sentir incômodo usando {cat_bruta} mal feito! Troquei por esse {prod_curto} da Loja da Valentina e mudou tudo: clica aqui no carrinho laranja e garante o seu!"
+        "gancho_3_nao_espera_ficar_sem_amigo": [
+            f"Sério, se esperar viralizar e deixar pra depois, vai ficar sem de novo! Peguei esse {prod_curto} na Loja da Valentina antes que acabasse: clica no carrinho laranja!",
+            f"Amiga, quem deixa pra depois sempre sofre ficando sem na hora que precisa! Garanti esse {prod_curto} na Loja da Valentina pra não passar vontade: abre o carrinho laranja!"
         ],
-        "fala_dor_correria_amigo": [
-            f"Na correria do dia a dia perder tempo com coisa que trava ou incomoda é péssimo! Esse {prod_curto} salvou meu tempo na Loja da Valentina: abre o carrinho laranja aqui embaixo!",
-            f"Quando a rotina aperta, você não pode depender de {cat_bruta} que atrapalha! Peguei esse {prod_curto} na Loja da Valentina e facilitou demais: clica aqui no carrinho laranja aqui embaixo!"
+        "gancho_4_todo_mundo_comprando_amigo": [
+            f"Amiga, eu via todo mundo pegando e tava cansada de sofrer com {cat_bruta} ruim! Fui testar esse {prod_curto} da Loja da Valentina e entendi: clica no carrinho laranja!",
+            f"Cara, vi geral comprando enquanto eu aguentava {cat_bruta} que incomodava! Peguei esse {prod_curto} na Loja da Valentina e mudou tudo: abre o carrinho laranja aqui embaixo!"
+        ],
+        "gancho_5_cara_de_luxo_preco_leve_amigo": [
+            f"Cara, parece item caro de luxo, mas sem o sufoco de estourar o bolso! Esse {prod_curto} da Loja da Valentina surpreendeu demais: clica no carrinho laranja e garante!",
+            f"Amiga, tem cara de peça cara de vitrine, mas sem dor de gastar demais! Esse {prod_curto} da Loja da Valentina é um achado: abre o carrinho laranja aqui embaixo!"
+        ],
+        "gancho_6_nem_precisava_mas_pegou_amigo": [
+            f"Amiga, eu nem tava pensando em pegar agora, mas pelo preço leve garanti mais de um! Achado da Loja da Valentina que resolve a dor: clica no carrinho laranja!",
+            f"Cara, juro que nem precisava naquele minuto, mas com esse valor peguei logo! Esse {prod_curto} da Loja da Valentina vale o clique: abre o carrinho laranja aqui embaixo!"
         ],
         "fala_visual_sem_audio": [
-            f"Sem legenda e sem enrolação: olha esse {prod_curto} resolvendo a dor na prática! Achado da Loja da Valentina direto no ponto: clica aqui no carrinho laranja e garante o seu!"
-        ],
-        "fala_dor_expectativa_real_amigo": [
-            f"Sabe aquela frustração de pedir {cat_bruta} e vir totalmente diferente do esperado? Esse {prod_curto} da Loja da Valentina me surpreendeu de verdade: abre o carrinho laranja aqui embaixo!",
-            f"Eu já tava desanimada de comprar {cat_bruta} online por causa de tanta decepção! Esse {prod_curto} da Loja da Valentina salvou: clica aqui no carrinho laranja e garante o seu!"
-        ],
-        "fala_dor_detalhe_enganoso_amigo": [
-            f"Amiga, presta atenção no acabamento antes de fechar qualquer compra de {cat_bruta}! Esse {prod_curto} da Loja da Valentina não me deixou na mão: clica aqui no carrinho laranja!"
-        ],
-        "fala_dor_caimento_amigo": [
-            f"Cara, nada pior do que {cat_bruta} que não assenta direito ou fica repuxando! Esse {prod_curto} da Loja da Valentina ficou super confortável: abre o carrinho laranja aqui embaixo!"
+            f"Sem legenda e sem enrolação: olha esse {prod_curto} resolvendo a dor na prática! Achado da Loja da Valentina direto no ponto: clica no carrinho laranja e garante!"
         ]
     }
 
-    opcoes = list(banco_por_estilo.get(estilo_fala, banco_por_estilo["fala_dor_revelacao_amigo"]))
+    opcoes = list(banco_por_estilo.get(estilo_fala, banco_por_estilo["gancho_1_promocao_intensa_amigo"]))
     random.shuffle(opcoes)
 
     for raw in opcoes:
         frase = sanitizar_copy_tiktok_shop(raw)
         qtd = _contar_palavras_reais(frase)
         candidata = f'"{frase}"'
-        if 24 <= qtd <= 34 and candidata not in historico_sessao and candidata not in falas_usadas_lote:
+        if 21 <= qtd <= 31 and candidata not in historico_sessao and candidata not in falas_usadas_lote:
             historico_sessao.add(candidata)
             falas_usadas_lote.add(candidata)
             return candidata
@@ -282,13 +282,14 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
     evitar_txt = f" NÃO repita nenhuma destas falas: {' | '.join(bloqueadas[-8:])}." if bloqueadas else ""
 
     instrucao_sistema = (
-        "Você escreve falas para TikTok Shop Brasil em tom de AMIGO INDICANDO PARA AMIGO (ex: 'Amiga...', 'Cara...', 'Sério...'), "
-        "com 12 segundos cravados (26 a 32 palavras). "
-        "Estrutura obrigatória: (1) GANCHO FORTE NA DOR real do cliente nos primeiros segundos, "
-        "(2) DESENVOLVIMENTO BATENDO NA DOR e na frustração do dia a dia até o alívio com o produto, "
-        "(3) citar 'Loja da Valentina' e fechar chamando para o 'carrinho laranja'. "
+        "Você escreve falas para TikTok Shop Brasil em tom de AMIGO INDICANDO PARA AMIGO ('Amiga...', 'Cara...', 'Sério...'), "
+        "com 11 segundos cravados (24 a 29 palavras). "
+        "Use a energia do gancho viral especificado (promoção intensa, dúvida de como compensa o preço, medo de ficar sem "
+        "se esperar viralizar, todo mundo pegando e ir ver por que, aparência de luxo com preço leve, ou nem precisava "
+        "mas pegou pelo preço), SEMPRE atingindo a dor real do cliente no gancho e no desenvolvimento, "
+        "citando 'Loja da Valentina' e chamando para o 'carrinho laranja'. "
         "Nada de linguagem robótica de anúncio genérico ('acabamento firme', 'solução funcional'). "
-        f"Estilo de fala: '{estilo_fala}'. "
+        f"Gancho/estilo de fala: '{estilo_fala}'. "
         "NUNCA use as palavras 'kit', 'kits', 'conjunto', 'conjuntos', 'combo', promessas absolutas "
         "ou menções a plataformas externas. Retorne APENAS a fala entre aspas duplas."
         f"{evitar_txt}"
@@ -304,7 +305,7 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
                 )
             }]
         }],
-        "generationConfig": {"temperature": 1.0, "maxOutputTokens": 105}
+        "generationConfig": {"temperature": 1.0, "maxOutputTokens": 95}
     }
     req = urllib.request.Request(
         url,
@@ -324,43 +325,43 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
             raise ValueError("Resposta vazia.")
         return f'"{texto_limpo}"'
 
-# 8 PROMPTS 100% UNIVERSAIS, SEM TEXTO FLUTUANTE, 12s CRAVADOS
+# 8 PROMPTS 100% UNIVERSAIS, SEM TEXTO FLUTUANTE, 11s CRAVADOS
 def obter_identidade_original(i):
     prompts_universais = {
         1: (
             "Estilo 1: StyleFace GC Revelação",
-            f"12s GC StyleFace universal showcase for any product, steady eye-level framing with immediate PT-BR hook at 0.0s, exact 1:1 product lock, grounded physical contact from 0.0s, zero floating, zero warping, zero blur, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
+            f"11s GC StyleFace universal showcase for any product, steady eye-level framing with immediate PT-BR hook at 0.0s, exact 1:1 product lock, grounded physical contact from 0.0s, zero floating, zero warping, zero blur, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         2: (
             "Estilo 2: UGC POV Plongée & Esticamento Tátil",
-            f"12s first-person POV vertical 9:16 video in high-angle plongée and close detail perspective, natural hands handling and gently stretching the referenced product over a clean neutral surface with a quick gathering motion near the end, fluid camera following the action, soft natural lighting highlighting texture and elasticity, lively natural pacing, exact 1:1 product fidelity from 0.0s, grounded contact, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
+            f"11s first-person POV vertical 9:16 video in high-angle plongée and close detail perspective, natural hands handling and gently stretching the referenced product over a clean neutral surface with a quick gathering motion near the end, fluid camera following the action, soft natural lighting highlighting texture and elasticity, lively natural pacing, exact 1:1 product fidelity from 0.0s, grounded contact, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         3: (
             "Estilo 3: StyleFace GC Caimento",
-            f"12s GC StyleFace universal fitting framing showing natural fit, drape, or placement of any product from 0.0s, PT-BR speech from 0.0s, calm camera, exact reference shape and texture, grounded contact, zero floating, zero stretching, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
+            f"11s GC StyleFace universal fitting framing showing natural fit, drape, or placement of any product from 0.0s, PT-BR speech from 0.0s, calm camera, exact reference shape and texture, grounded contact, zero floating, zero stretching, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         4: (
             "Estilo 4: UGC POV Rotina Prática",
-            f"12s UGC POV universal everyday routine shot demonstrating practical use of any product from 0.0s, PT-BR hook at 0.0s, natural movement, exact item dimensions and color, grounded contact, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
+            f"11s UGC POV universal everyday routine shot demonstrating practical use of any product from 0.0s, PT-BR hook at 0.0s, natural movement, exact item dimensions and color, grounded contact, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         5: (
             "Estilo 5: StyleFace GC Sem Fala (Trilha Viral)",
-            f"12s GC StyleFace universal silent visual rhythm for any product with zero dialogue, clean angle shifts showing true product form from 0.0s, steady motion, strict physical contact, zero floating, zero morphing, zero blur, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
+            f"11s GC StyleFace universal silent visual rhythm for any product with zero dialogue, clean angle shifts showing true product form from 0.0s, steady motion, strict physical contact, zero floating, zero morphing, zero blur, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         6: (
             "Estilo 6: UGC POV Corpo Inteiro Urbano",
-            f"12s UGC POV universal full-body street walk at an easy pace with any product anchored naturally from 0.0s, PT-BR speech from 0.0s, smooth tracking shot, locked product geometry, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
+            f"11s UGC POV universal full-body street walk at an easy pace with any product anchored naturally from 0.0s, PT-BR speech from 0.0s, smooth tracking shot, locked product geometry, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         7: (
             "Estilo 7: UGC Criadora Natural Universal",
-            f"12s natural vertical 9:16 video of a friendly creator presenting the referenced product spontaneously in bright natural light, transitioning smoothly to practical hands-on demonstration and a clean close-up of the finished product in use, continuous person and product fidelity from first to last frame, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
+            f"11s natural vertical 9:16 video of a friendly creator presenting the referenced product spontaneously in bright natural light, transitioning smoothly to practical hands-on demonstration and a clean close-up of the finished product in use, continuous person and product fidelity from first to last frame, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         ),
         8: (
             "Estilo 8: StyleFace GC Pescoço Para Baixo (Fixo)",
-            f"12s GC StyleFace fixed framing strictly from the neck down (no face shown), showcasing any product naturally from 0.0s, PT-BR hook at 0.0s, steady camera, exact 1:1 product lock, grounded physical contact, zero floating, zero warping, zero blur, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
+            f"11s GC StyleFace fixed framing strictly from the neck down (no face shown), showcasing any product naturally from 0.0s, PT-BR hook at 0.0s, steady camera, exact 1:1 product lock, grounded physical contact, zero floating, zero warping, zero blur, {TRAVA_ANTI_TEXTO_FLUTUANTE}"
         )
     }
-    return prompts_universais.get(i, (f"Estilo {i}", f"12s universal GC showcase {i} for any product, exact 1:1 product lock, grounded contact from 0.0s, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"))
+    return prompts_universais.get(i, (f"Estilo {i}", f"11s universal GC showcase {i} for any product, exact 1:1 product lock, grounded contact from 0.0s, zero floating, zero warping, {TRAVA_ANTI_TEXTO_FLUTUANTE}"))
 
 # BANCO E CONFIG
 DB_FILE = "moldes_salvos.json"
@@ -427,7 +428,7 @@ v = st.session_state.form_version
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
-        <p class="hero-subtitle">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (12s CRAVADOS)</p>
+        <p class="hero-subtitle">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (11s CRAVADOS)</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -517,7 +518,7 @@ st.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
 col_e, btn_g, btn_l, col_d = st.columns([1, 2, 2, 1])
 with btn_g:
-    gerar_clicado = st.button("🚀 GERAR PROMPTS VIRAIS (12s)", key=f"gen_{v}")
+    gerar_clicado = st.button("🚀 GERAR PROMPTS VIRAIS (11s)", key=f"gen_{v}")
 with btn_l:
     st.button("🔄 LIMPAR", on_click=limpar_formulario, key=f"clr_{v}")
 
@@ -549,14 +550,14 @@ if gerar_clicado:
         falas_usadas_lote = set()
         estilos_fala_usados_lote = set()
 
-        with st.spinner("🔥 Disparando Motor Viral (12s cravados)..."):
-            st.success(f"✅ Gerados {len(estilos_selecionados)} prompts universais para '{nome_exibicao}'.")
+        with st.spinner("🔥 Disparando Motor Viral (11s cravados)..."):
+            st.success(f"✅ Gerados {len(estilos_selecionados)} prompts universais de 11s para '{nome_exibicao}'.")
             for idx, est in enumerate(estilos_selecionados[:8]):
                 st.session_state.contador_takes += 1
                 take_num = st.session_state.contador_takes
                 horario = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
                 num_estilo = mapa_indice.get(est, idx + 1)
-                estilo_fala_base = ESTILOS_FALA_POR_INDICE.get(num_estilo, "fala_dor_revelacao_amigo")
+                estilo_fala_base = ESTILOS_FALA_POR_INDICE.get(num_estilo, "gancho_1_promocao_intensa_amigo")
                 if estilo_fala_base in estilos_fala_usados_lote:
                     restantes = [v_f for v_f in ESTILOS_FALA_POR_INDICE.values() if v_f not in estilos_fala_usados_lote]
                     estilo_fala = restantes[0] if restantes else estilo_fala_base
@@ -603,7 +604,7 @@ if gerar_clicado:
                 st.markdown(f"### 🎬 Prompt {idx+1} • {horario}")
                 st.markdown(
                     f'<div class="metric-card"><span class="tag-estilo">{est}</span><br>'
-                    f'<span style="color:#00FF66; font-size:11px;">🔥 <b>Copy Viral (12s):</b> {display_copy}</span></div>',
+                    f'<span style="color:#00FF66; font-size:11px;">🔥 <b>Copy Viral (11s):</b> {display_copy}</span></div>',
                     unsafe_allow_html=True
                 )
                 st.code(final_prompt, language="text")
