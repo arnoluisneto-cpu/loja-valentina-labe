@@ -167,75 +167,118 @@ SUBSTITUICOES_COMPLIANCE = [
     (r"\bwhatsapp\b|\btelegram\b|\bshopee\b|\bmercado livre\b", "carrinho laranja")
 ]
 
+# UNIVERSALIZAÇÃO AUTOMÁTICA DE QUALQUER PROMPT ENVIADO OU SALVO
+SUBSTITUICOES_UNIVERSAIS = [
+    (r"\bcanetas?\s+de\s+nail\s+art\b|\bnail\s+art\b|\bcanetas?\b", "o produto de referência"),
+    (r"\bunhas?\s+decoradas?\b|\bunhas?\b|\bmesa\s+de\s+manicure\b", "o produto em uso real"),
+    (r"\bsand[áa]lias?\b|\bt[êe]nis\b|\bpantalonas?\b|\bcamisolas?\b|\brel[óo]gios?\b", "o produto selecionado")
+]
+
+ESTILOS_FALA_POR_INDICE = {
+    1: "fala_styleface_revelacao",
+    2: "fala_ugc_pov_mao",
+    3: "fala_styleface_caimento",
+    4: "fala_ugc_pov_rotina",
+    5: "fala_styleface_sem_fala",
+    6: "fala_ugc_pov_rua",
+    7: "fala_ugc_3cenas_universal",
+    8: "fala_styleface_pescoco_baixo_fixo"
+}
+
 def sanitizar_copy_tiktok_shop(texto):
     limpo = texto or ""
     for padrao, substituto in SUBSTITUICOES_COMPLIANCE:
         limpo = re.sub(padrao, substituto, limpo, flags=re.IGNORECASE)
     return " ".join(limpo.split())
 
+def universalizar_prompt(texto):
+    limpo = sanitizar_copy_tiktok_shop(texto)
+    for padrao, substituto in SUBSTITUICOES_UNIVERSAIS:
+        limpo = re.sub(padrao, substituto, limpo, flags=re.IGNORECASE)
+    return " ".join(limpo.split())
+
 def _contar_palavras_reais(texto_sem_aspas):
     return len([p for p in texto_sem_aspas.strip().split() if p])
 
-# MOTOR LOCAL COM OS 10 GANCHOS EM TOM ESPONTÂNEO E BLINDADO (11s / 22 A 28 PALAVRAS)
-def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, historico_sessao):
+# MOTOR LOCAL UNIVERSAL COM ESTILO DE FALA DISTINTO POR ESTILO (12s CRAVADOS / 24 A 34 PALAVRAS)
+def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, estilo_fala, historico_sessao, falas_usadas_lote):
     prod_bruto = sanitizar_copy_tiktok_shop(nome_produto)
     cat_bruta = sanitizar_copy_tiktok_shop(categoria).lower()
     prod_limpo = prod_bruto if prod_bruto else f"esse item de {cat_bruta}"
     prod_curto = " ".join(prod_limpo.split()[:3])
 
-    ganchos_espontaneos = [
-        f"Olha como esse {prod_curto} resolve já no primeiro segundo!",
-        "Espera eu virar a câmera pra você ver como isso assenta!",
-        f"Se você pega {cat_bruta} na correria, dá uma olhada nisso aqui!",
-        f"Achei que precisava gastar bem mais, mas esse {prod_curto} surpreendeu!",
-        f"Antes de pegar qualquer {prod_curto}, repare nesse detalhe de perto!",
-        f"Depois de testar 7 opções, esse {prod_curto} foi o único que ficou!",
-        f"A diferença na rotina de usar {prod_curto} é bem nítida!",
-        f"POV: finalmente achei um {prod_curto} prático de verdade no dia a dia!",
-        f"Queria ter visto isso antes de gastar dinheiro com {cat_bruta}!",
-        "Peguei na promoção de agora e já vi que vale o clique!"
-    ]
+    banco_por_estilo = {
+        "fala_styleface_revelacao": [
+            f"Olha como esse {prod_curto} resolve já no primeiro segundo do vídeo! Entrega da Loja da Valentina com conforto real no dia a dia: clica aqui embaixo no carrinho laranja e garante o seu!",
+            f"Logo no primeiro segundo dá pra ver o diferencial desse {prod_curto}! Peça da Loja da Valentina com ótimo encaixe: clica aqui embaixo no carrinho laranja e garante o seu!"
+        ],
+        "fala_ugc_pov_mao": [
+            f"POV: pegando esse {prod_curto} na mão agora e já vendo a firmeza! Achado da Loja da Valentina feito pro dia a dia: dá uma olhada no carrinho laranja aqui embaixo!",
+            f"POV: testando esse {prod_curto} de perto na rotina de hoje! Qualidade da Loja da Valentina sem complicação: abre o carrinho laranja aqui embaixo e pega o seu!"
+        ],
+        "fala_styleface_caimento": [
+            f"Repara no caimento real desse {prod_curto} quando o corpo se movimenta! Estilo da Loja da Valentina super confortável: clica aqui embaixo no carrinho laranja e garante o seu!",
+            f"Veja como esse {prod_curto} assenta bem sem repuxar na rotina! Peça da Loja da Valentina com acabamento firme: dá uma olhada no carrinho laranja aqui embaixo!"
+        ],
+        "fala_ugc_pov_rotina": [
+            f"POV: finalmente achei um {prod_curto} prático de verdade pra minha rotina diária! Facilidade da Loja da Valentina que ajuda todo dia: abre o carrinho laranja aqui embaixo e pega o seu!",
+            f"POV: encaixando esse {prod_curto} na correria do dia sem perder tempo! Solução da Loja da Valentina simples e funcional: clica aqui embaixo no carrinho laranja e garante o seu!"
+        ],
+        "fala_styleface_sem_fala": [
+            f"Sem falar muito, esse {prod_curto} já mostra tudo no visual do take! Linha da Loja da Valentina pensada pro dia a dia: dá uma olhada no carrinho laranja aqui embaixo!"
+        ],
+        "fala_ugc_pov_rua": [
+            f"POV: andando na rua com {prod_curto} e sentindo a leveza no passo! Qualidade da Loja da Valentina feita pra acompanhar o dia: abre o carrinho laranja aqui embaixo e pega o seu!",
+            f"POV: saindo pro dia a dia com {prod_curto} bem firme e confortável! Achado da Loja da Valentina super prático: clica aqui embaixo no carrinho laranja e garante o seu!"
+        ],
+        "fala_ugc_3cenas_universal": [
+            f"Olha como esse {prod_curto} funciona na prática e entrega resultado limpo! Achado da Loja da Valentina com acabamento caprichado: clica aqui embaixo no carrinho laranja e garante o seu!",
+            f"Do primeiro olhar ao uso real, esse {prod_curto} surpreende no detalhe! Qualidade da Loja da Valentina pro dia a dia: abre o carrinho laranja aqui embaixo e pega o seu!"
+        ],
+        "fala_styleface_pescoco_baixo_fixo": [
+            f"Olha como esse {prod_curto} fica no corpo do pescoço pra baixo com caimento limpo! Loja da Valentina na prática: clica aqui embaixo no carrinho laranja e garante o seu!",
+            f"Veja o encaixe real desse {prod_curto} do pescoço pra baixo sem perder a forma! Achado da Loja da Valentina: dá uma olhada no carrinho laranja aqui embaixo!"
+        ]
+    }
 
-    corpo_necessidade = [
-        "Conforto real da Loja da Valentina sem pesar no bolso.",
-        "Acabamento firme da Loja da Valentina que funciona na prática.",
-        "Achado da Loja da Valentina que facilita o uso diário."
-    ]
+    opcoes = list(banco_por_estilo.get(estilo_fala, banco_por_estilo["fala_styleface_revelacao"]))
+    random.shuffle(opcoes)
 
-    fechamentos_cta = [
-        "Clica aqui embaixo no carrinho laranja e garante o seu!",
-        "Dá uma olhada no carrinho laranja aqui embaixo e aproveita!",
-        "Abre o carrinho laranja aqui embaixo e pega o seu!"
-    ]
-
-    for _ in range(180):
-        g = random.choice(ganchos_espontaneos)
-        d = random.choice(corpo_necessidade)
-        c = random.choice(fechamentos_cta)
-        frase = sanitizar_copy_tiktok_shop(f"{g} {d} {c}")
+    for raw in opcoes:
+        frase = sanitizar_copy_tiktok_shop(raw)
         qtd = _contar_palavras_reais(frase)
         candidata = f'"{frase}"'
-        if 22 <= qtd <= 28 and candidata not in historico_sessao:
+        if 24 <= qtd <= 34 and candidata not in historico_sessao and candidata not in falas_usadas_lote:
             historico_sessao.add(candidata)
+            falas_usadas_lote.add(candidata)
             return candidata
 
-    gancho_reserva = random.choice(ganchos_espontaneos)
-    cta_reserva = random.choice(fechamentos_cta)
-    fallback_frase = sanitizar_copy_tiktok_shop(f"{gancho_reserva} Loja da Valentina: {cta_reserva}")
-    fallback = f'"{fallback_frase}"'
+    for raw in opcoes:
+        frase = sanitizar_copy_tiktok_shop(f"{raw} ({cat_bruta})")
+        candidata = f'"{frase}"'
+        if candidata not in historico_sessao and candidata not in falas_usadas_lote:
+            historico_sessao.add(candidata)
+            falas_usadas_lote.add(candidata)
+            return candidata
+
+    base_fallback = sanitizar_copy_tiktok_shop(opcoes[0])
+    fallback = f'"{base_fallback}"'
     historico_sessao.add(fallback)
+    falas_usadas_lote.add(fallback)
     return fallback
 
-def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, estilo_titulo, variacao_num):
+def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, estilo_titulo, estilo_fala, variacao_num, historico_sessao, falas_usadas_lote):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key.strip()}"
+    bloqueadas = list(historico_sessao)[-6:] + list(falas_usadas_lote)
+    evitar_txt = f" NÃO repita nenhuma destas falas: {' | '.join(bloqueadas[-8:])}." if bloqueadas else ""
+
     instrucao_sistema = (
-        "Diretor de criação TikTok Shop Brasil. Escreva uma fala espontânea de 11s (24 a 28 palavras), "
-        "abrindo com gancho viral de retenção nos primeiros segundos (resultado no 1º segundo, revelação, "
-        "nicho da categoria, surpresa vs. preço alto, detalhe antes de comprar, teste de 7 opções, "
-        "antes/depois na rotina, POV achado, descoberta prévia ou oferta do momento). "
+        f"Diretor de criação TikTok Shop Brasil. Escreva uma fala espontânea de 12 segundos cravados (26 a 32 palavras) "
+        f"adaptada de forma universal ao produto informado, com o estilo de fala exclusivo '{estilo_fala}'. "
         "NUNCA use as palavras 'kit', 'kits', 'conjunto', 'conjuntos', 'combo', promessas absolutas "
         "ou menções a plataformas externas. "
         "Inclua 'Loja da Valentina' e chame para o 'carrinho laranja'. Retorne APENAS a fala entre aspas duplas."
+        f"{evitar_txt}"
     )
     payload = {
         "contents": [{
@@ -243,12 +286,12 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
                 "text": (
                     f"{instrucao_sistema}\n"
                     f"Produto: {sanitizar_copy_tiktok_shop(nome_produto)} | Categoria: {sanitizar_copy_tiktok_shop(categoria)} | "
-                    f"Estilo: {estilo_titulo} | Var #{variacao_num}\n"
+                    f"Estilo: {estilo_titulo} | Estilo de Fala: {estilo_fala} | Var #{variacao_num}\n"
                     f"Detalhes: {sanitizar_copy_tiktok_shop(descricao_completa)}"
                 )
             }]
         }],
-        "generationConfig": {"temperature": 1.0, "maxOutputTokens": 90}
+        "generationConfig": {"temperature": 1.0, "maxOutputTokens": 105}
     }
     req = urllib.request.Request(
         url,
@@ -268,95 +311,43 @@ def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, e
             raise ValueError("Resposta vazia.")
         return f'"{texto_limpo}"'
 
-# 20 PROMPTS VIRAIS ÚNICOS (SEM REPETIÇÃO ENTRE ESTILOS, 11s, ESTÁVEIS E SEM FLUTUAÇÃO)
+# 8 PROMPTS 100% UNIVERSAIS (QUALQUER PRODUTO, ALTERNANDO STYLEFACE E UGC POV; ESTILO 8 FIXO DO PESCOÇO PARA BAIXO; 12s CRAVADOS)
 def obter_identidade_original(i):
-    base_fisica = (
-        "11s viral video, exact 1:1 product lock, grounded physical contact from 0.0s (no floating, no warping, no blur), "
-        "no text overlays, no watermarks, no third-party logos, no mics."
-    )
-    prompts_unicos = {
+    prompts_universais = {
         1: (
-            "Estilo 1: POV Mão & Revelação Tátil",
-            f"Close POV hands holding the product firmly from 0.0s, immediate hook at 0.0s in PT-BR, tactile reveal with steady camera. {base_fisica}"
+            "Estilo 1: StyleFace GC Revelação",
+            "12s GC StyleFace universal showcase for any product, steady eye-level framing with immediate PT-BR hook at 0.0s, exact 1:1 product lock, grounded physical contact from 0.0s, zero floating, zero warping, zero blur, no text overlays, no watermarks, no third-party logos, no mics."
         ),
         2: (
-            "Estilo 2: POV Corpo Inteiro Urbano",
-            f"Full-body street walk at an easy pace, product anchored naturally on body/hand from 0.0s, hook at 0.0s in PT-BR, smooth tracking shot. {base_fisica}"
+            "Estilo 2: UGC POV Mão & Revelação",
+            "12s UGC POV universal hands holding and presenting any product firmly from 0.0s, immediate PT-BR hook at 0.0s, natural handheld motion, faithful proportions, grounded contact, zero floating, zero distortion, no text overlays, no watermarks, no logos, no mics."
         ),
         3: (
-            "Estilo 3: POV Provador de Luxo",
-            f"Warm boutique fitting room framing, creator shows fit and comfort from 0.0s, hook at 0.0s in PT-BR, steady angle. {base_fisica}"
+            "Estilo 3: StyleFace GC Caimento",
+            "12s GC StyleFace universal fitting framing showing natural fit, drape, or placement of any product from 0.0s, PT-BR speech from 0.0s, calm camera, exact reference shape and texture, grounded contact, zero floating, zero stretching, no text overlays, no watermarks, no mics."
         ),
         4: (
-            "Estilo 4: POV Giro 360 no Espelho",
-            f"Slow controlled half-turn in front of a mirror showing angles without losing product shape, hook at 0.0s in PT-BR. {base_fisica}"
+            "Estilo 4: UGC POV Rotina Prática",
+            "12s UGC POV universal everyday routine shot demonstrating practical use of any product from 0.0s, PT-BR hook at 0.0s, natural movement, exact item dimensions and color, grounded contact, zero floating, zero warping, no text overlays, no watermarks, no mics."
         ),
         5: (
-            "Estilo 5: POV Visual Sem Fala (Trilha Viral)",
-            f"Silent viral visual beat with crisp product angles, zero dialogue, steady motion and exact geometry for 11s. {base_fisica}"
+            "Estilo 5: StyleFace GC Sem Fala (Trilha Viral)",
+            "12s GC StyleFace universal silent visual rhythm for any product with zero dialogue, clean angle shifts showing true product form from 0.0s, steady motion, strict physical contact, zero floating, zero morphing, zero blur, no text overlays, no watermarks, no mics."
         ),
         6: (
-            "Estilo 6: POV Close Macro de Detalhes",
-            f"Tight macro focus on stitching, texture, and finish while keeping the item steady and sharp, hook at 0.0s in PT-BR. {base_fisica}"
+            "Estilo 6: UGC POV Corpo Inteiro Urbano",
+            "12s UGC POV universal full-body street walk at an easy pace with any product anchored naturally from 0.0s, PT-BR speech from 0.0s, smooth tracking shot, locked product geometry, zero floating, zero warping, no text overlays, no watermarks, no mics."
         ),
         7: (
-            "Estilo 7: Look do Dia Executivo",
-            f"Clean day-to-work framing with balanced daylight and sharp product structure, hook at 0.0s in PT-BR, calm camera. {base_fisica}"
+            "Estilo 7: UGC 3 Cenas Universal",
+            "Estilo comercial UGC universal de criadora de conteúdo para qualquer produto, formato vertical 9:16, duração de 12s, iluminação natural e acabamento limpo. CENA 1 – ABERTURA E GANCHO: Criadora simpática apresenta o produto de referência de forma espontânea olhando para a câmera com gancho imediato em português brasileiro. CENA 2 – DEMONSTRAÇÃO NA PRÁTICA: Transição suave mostrando o produto em uso real e prático no dia a dia, preservando forma e detalhes. CENA 3 – RESULTADO: Close limpo e realista do produto e do resultado final. Sem legendas ou textos na tela."
         ),
         8: (
-            "Estilo 8: Look Verão & Frescor",
-            f"Bright daytime outdoor light highlighting lightness and clean edges without overexposure, hook at 0.0s in PT-BR. {base_fisica}"
-        ),
-        9: (
-            "Estilo 9: Estudo Clássico em Estúdio",
-            f"Minimalist studio backdrop with soft directional light emphasizing true product volume, hook at 0.0s in PT-BR. {base_fisica}"
-        ),
-        10: (
-            "Estilo 10: Provador Relâmpago",
-            f"Brisk but controlled try-on pace keeping the product clear and steady on every move, hook at 0.0s in PT-BR. {base_fisica}"
-        ),
-        11: (
-            "Estilo 11: Destaque Dinâmico Urbano",
-            f"Everyday sidewalk movement showing practical use with zero camera shake or distortion, hook at 0.0s in PT-BR. {base_fisica}"
-        ),
-        12: (
-            "Estilo 12: Texturas Aconchegantes",
-            f"Cozy soft-touch showcase emphasizing fabric/material feel while keeping rigid shape intact, hook at 0.0s in PT-BR. {base_fisica}"
-        ),
-        13: (
-            "Estilo 13: Look Noite com Neon",
-            f"Nighttime city glow with subtle neon accents while keeping the product well-lit and undistorted, hook at 0.0s in PT-BR. {base_fisica}"
-        ),
-        14: (
-            "Estilo 14: Streetwear Autêntico",
-            f"Casual urban street style with natural posture and faithful proportions from 0.0s, hook at 0.0s in PT-BR. {base_fisica}"
-        ),
-        15: (
-            "Estilo 15: Peça Delicate",
-            f"Refined delicate details under soft light preserving fine lines without distortion, hook at 0.0s in PT-BR. {base_fisica}"
-        ),
-        16: (
-            "Estilo 16: Sobreposição Versátil",
-            f"Layered styling showing clean fit and natural movement from 0.0s, hook at 0.0s in PT-BR, steady framing. {base_fisica}"
-        ),
-        17: (
-            "Estilo 17: Movimento Fluido",
-            f"Smooth continuous motion demonstrating natural everyday use with zero warping, hook at 0.0s in PT-BR. {base_fisica}"
-        ),
-        18: (
-            "Estilo 18: Peça Premium de Alfaiataria",
-            f"Structured tailored look in a clean medium-wide shot keeping exact symmetry, hook at 0.0s in PT-BR. {base_fisica}"
-        ),
-        19: (
-            "Estilo 19: Praticidade Ágil",
-            f"Quick practical demonstration of ease of use with smooth transitions and firm product contact, hook at 0.0s in PT-BR. {base_fisica}"
-        ),
-        20: (
-            "Estilo 20: Caminhão Preto TikTok (Saída da Loja)",
-            f"Stepping out of store toward a black truck with product/box firmly held from 0.0s, hook at 0.0s in PT-BR, smooth 11s walk. {base_fisica}"
+            "Estilo 8: StyleFace GC Pescoço Para Baixo (Fixo)",
+            "12s GC StyleFace fixed framing strictly from the neck down (no face shown), showcasing any product naturally from 0.0s, PT-BR hook at 0.0s, steady camera, exact 1:1 product lock, grounded physical contact, zero floating, zero warping, zero blur, no text overlays, no watermarks, no third-party logos, no mics."
         )
     }
-    return prompts_unicos.get(i, (f"Estilo {i}", f"Custom viral 11s showcase for style {i}. {base_fisica}"))
+    return prompts_universais.get(i, (f"Estilo {i}", f"12s universal GC showcase {i} for any product, exact 1:1 product lock, grounded contact from 0.0s, zero floating, zero warping, no text overlays, no watermarks, no mics."))
 
 # BANCO E CONFIG
 DB_FILE = "moldes_salvos.json"
@@ -389,7 +380,7 @@ def carregar_db():
                     return {int(k) if str(k).isdigit() else k: v for k, v in d.items()}
         except Exception:
             pass
-    padrao = {i: dict(zip(["titulo", "prompt"], obter_identidade_original(i))) for i in range(1, 21)}
+    padrao = {i: dict(zip(["titulo", "prompt"], obter_identidade_original(i))) for i in range(1, 9)}
     salvar_db(padrao)
     return padrao
 
@@ -423,7 +414,7 @@ v = st.session_state.form_version
 st.markdown("""
     <div class="hero-banner">
         <h1 class="hero-title">LABORATÓRIOS VALENTINA</h1>
-        <p class="hero-subtitle">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (11s CRAVADOS)</p>
+        <p class="hero-subtitle">LOJA DA VALENTINA • TIKTOK SHOP AUTOMATION (12s CRAVADOS)</p>
     </div>
 """, unsafe_allow_html=True)
 
@@ -446,10 +437,10 @@ with c3:
         copy_mode_sel = st.selectbox("Motor Copy", ["IA Modeladora (Resumo Inteligente)", "Fixo (Do molde salvo)"], label_visibility="collapsed", key=f"sel_copy_mode_{v}")
 
 with st.container(border=True):
-    st.markdown("🎬 **SELECIONAR ESTILOS PARA GRADE DIÁRIA**")
-    chaves_ord = sorted(list(st.session_state.db_estilos.keys()), key=lambda x: (0, int(x)) if str(x).isdigit() else (1, str(x)))
+    st.markdown("🎬 **SELECIONAR ESTILOS PARA GRADE DIÁRIA (MÁX. 8)**")
+    chaves_ord = sorted(list(st.session_state.db_estilos.keys()), key=lambda x: (0, int(x)) if str(x).isdigit() else (1, str(x)))[:8]
     lista_titulos = [st.session_state.db_estilos[k]["titulo"] for k in chaves_ord]
-    estilos_selecionados = st.multiselect("Selecione", options=lista_titulos, default=lista_titulos[:1] if lista_titulos else [], label_visibility="collapsed", key=f"multi_estilos_{v}")
+    estilos_selecionados = st.multiselect("Selecione", options=lista_titulos, default=lista_titulos[:1] if lista_titulos else [], max_selections=8, label_visibility="collapsed", key=f"multi_estilos_{v}")
 
 # ÁREA RESTRITA
 with st.expander("⚙️ Gerenciar / Editar Prompts & Cérebro IA (Requer Senha)", expanded=False):
@@ -482,11 +473,11 @@ with st.expander("⚙️ Gerenciar / Editar Prompts & Cérebro IA (Requer Senha)
         if chaves_ord:
             slot_edit = st.selectbox("Estilo para Editar", options=chaves_ord, format_func=lambda x: f"Estilo {x} - {st.session_state.db_estilos[x]['titulo']}", key=f"edit_sel_{v}")
             t_edit = st.text_input("Título", value=st.session_state.db_estilos[slot_edit]["titulo"], key=f"t_edit_{slot_edit}_{v}")
-            p_edit = st.text_area("Prompt Enxuto", value=st.session_state.db_estilos[slot_edit]["prompt"], height=140, key=f"p_edit_{slot_edit}_{v}")
+            p_edit = st.text_area("Prompt Enxuto (Universal)", value=universalizar_prompt(st.session_state.db_estilos[slot_edit]["prompt"]), height=140, key=f"p_edit_{slot_edit}_{v}")
             if st.button("💾 SALVAR ALTERAÇÃO", key=f"btn_save_st_{slot_edit}_{v}"):
-                st.session_state.db_estilos[slot_edit] = {"titulo": t_edit, "prompt": p_edit}
+                st.session_state.db_estilos[slot_edit] = {"titulo": t_edit, "prompt": universalizar_prompt(p_edit)}
                 salvar_db(st.session_state.db_estilos)
-                st.success("Salvo com sucesso!")
+                st.success("Salvo com sucesso (universalizado)!")
                 time.sleep(0.5)
                 st.rerun()
 
@@ -495,7 +486,7 @@ st.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-s
 with st.container(border=True):
     p_n1, p_n2 = st.columns(2)
     with p_n1:
-        produto_nome = st.text_input("Nome", placeholder="Ex: Tênis Wayper...", label_visibility="collapsed", key=f"nom_{v}")
+        produto_nome = st.text_input("Nome", placeholder="Ex: Sandália, Relógio, Pantalona...", label_visibility="collapsed", key=f"nom_{v}")
     with p_n2:
         tipo_produto = st.selectbox("Categoria", ["Calçado", "Vestuário", "Acessório", "Bolsa", "Outros"], label_visibility="collapsed", key=f"cat_{v}")
 
@@ -513,7 +504,7 @@ st.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
 col_e, btn_g, btn_l, col_d = st.columns([1, 2, 2, 1])
 with btn_g:
-    gerar_clicado = st.button("🚀 GERAR PROMPTS VIRAIS (11s)", key=f"gen_{v}")
+    gerar_clicado = st.button("🚀 GERAR PROMPTS VIRAIS (12s)", key=f"gen_{v}")
 with btn_l:
     st.button("🔄 LIMPAR", on_click=limpar_formulario, key=f"clr_{v}")
 
@@ -522,7 +513,11 @@ VARIACOES_TOM = [
     "natural handheld angle",
     "soft side light shift",
     "subtle slow push-in",
-    "relaxed everyday energy"
+    "relaxed everyday energy",
+    "gentle pan follow",
+    "clean front lighting",
+    "calm outdoor breeze",
+    "steady eye-level framing"
 ]
 
 if gerar_clicado:
@@ -534,44 +529,68 @@ if gerar_clicado:
         st.warning("⚠️ Selecione ao menos 1 estilo.")
     else:
         api_key = st.session_state.config_ia.get("api_key", "").strip()
-        mapa = {st.session_state.db_estilos[i]["titulo"]: st.session_state.db_estilos[i]["prompt"] for i in st.session_state.db_estilos}
+        mapa_prompt = {st.session_state.db_estilos[i]["titulo"]: universalizar_prompt(st.session_state.db_estilos[i]["prompt"]) for i in chaves_ord}
+        mapa_indice = {st.session_state.db_estilos[i]["titulo"]: i for i in chaves_ord}
         nome_exibicao = sanitizar_copy_tiktok_shop(produto_nome) or "Produto"
         proporcao_alvo = prop_sel.split(" ")[0]
+        falas_usadas_lote = set()
+        estilos_fala_usados_lote = set()
 
-        with st.spinner("🔥 Disparando Motor Viral (11s cravados)..."):
-            st.success(f"✅ Gerados {len(estilos_selecionados)} prompts para '{nome_exibicao}'.")
-            for idx, est in enumerate(estilos_selecionados):
+        with st.spinner("🔥 Disparando Motor Viral (12s cravados)..."):
+            st.success(f"✅ Gerados {len(estilos_selecionados)} prompts universais para '{nome_exibicao}'.")
+            for idx, est in enumerate(estilos_selecionados[:8]):
                 st.session_state.contador_takes += 1
                 take_num = st.session_state.contador_takes
                 horario = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
-                p_base = mapa.get(est, "")
+                num_estilo = mapa_indice.get(est, idx + 1)
+                estilo_fala_base = ESTILOS_FALA_POR_INDICE.get(num_estilo, "fala_styleface_revelacao")
+                if estilo_fala_base in estilos_fala_usados_lote:
+                    restantes = [v_f for v_f in ESTILOS_FALA_POR_INDICE.values() if v_f not in estilos_fala_usados_lote]
+                    estilo_fala = restantes[0] if restantes else estilo_fala_base
+                else:
+                    estilo_fala = estilo_fala_base
+                estilos_fala_usados_lote.add(estilo_fala)
+
+                p_base = universalizar_prompt(mapa_prompt.get(est, ""))
                 if proporcao_alvo != "9:16":
                     p_base = f"{p_base} Aspect: {proporcao_alvo}."
 
-                is_mudo = "Sem Fala" in est or "SILENT" in p_base
+                is_mudo = "Sem Fala" in est or estilo_fala == "fala_styleface_sem_fala"
                 if not is_mudo:
                     var_tom = VARIACOES_TOM[(take_num - 1) % len(VARIACOES_TOM)]
                     p_base = f"{p_base} Skin: {skin_sel} | Take #{take_num}: {var_tom}."
 
                 if is_mudo or ("Fixo" in copy_mode_sel and '"' in p_base):
-                    final_prompt, display_copy = sanitizar_copy_tiktok_shop(p_base), "Fala fixa mantida."
+                    final_prompt, display_copy = universalizar_prompt(p_base), "Fala fixa mantida."
                 else:
                     fala = ""
                     if api_key:
                         try:
-                            fala = gerar_copy_ia_gemini(api_key, produto_nome, descricao_fornecedor, tipo_produto, est, take_num)
+                            for _ in range(3):
+                                candidata_ia = gerar_copy_ia_gemini(
+                                    api_key, produto_nome, descricao_fornecedor, tipo_produto, est, estilo_fala, take_num, st.session_state.historico_copys, falas_usadas_lote
+                                )
+                                if candidata_ia not in st.session_state.historico_copys and candidata_ia not in falas_usadas_lote:
+                                    fala = candidata_ia
+                                    st.session_state.historico_copys.add(fala)
+                                    falas_usadas_lote.add(fala)
+                                    break
                         except Exception as err:
                             st.caption(f"⚠️ Falha na API Gemini ({err}); usando motor local.")
                     if not fala:
-                        fala = resumir_e_modelar_copy_local(produto_nome, descricao_fornecedor, tipo_produto, st.session_state.historico_copys)
+                        fala = resumir_e_modelar_copy_local(
+                            produto_nome, descricao_fornecedor, tipo_produto, estilo_fala, st.session_state.historico_copys, falas_usadas_lote
+                        )
                     fala = f'"{sanitizar_copy_tiktok_shop(fala.strip(chr(34)))}"'
+                    st.session_state.historico_copys.add(fala)
+                    falas_usadas_lote.add(fala)
                     display_copy = fala
                     final_prompt = f"{p_base}\n\n{fala}"
 
                 st.markdown(f"### 🎬 Prompt {idx+1} • {horario}")
                 st.markdown(
                     f'<div class="metric-card"><span class="tag-estilo">{est}</span><br>'
-                    f'<span style="color:#00FF66; font-size:11px;">🔥 <b>Copy Viral (11s):</b> {display_copy}</span></div>',
+                    f'<span style="color:#00FF66; font-size:11px;">🔥 <b>Copy Viral (12s):</b> {display_copy}</span></div>',
                     unsafe_allow_html=True
                 )
                 st.code(final_prompt, language="text")
