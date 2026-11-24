@@ -3,9 +3,8 @@ import os
 import random
 import urllib.request
 import urllib.error
-import streamlit as st
-from datetime import datetime
 import time
+import streamlit as st
 
 st.set_page_config(
     page_title="Valentina Labs - TikTok Shop Automation",
@@ -155,65 +154,110 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# MOTOR LOCAL OTIMIZADO (11s / MÁX 28 PALAVRAS / FOCO EM DOR E SHOPPING)
-def resumir_e_modelar_copy_local(descricao_completa, categoria, historico_sessao):
-    desc_lower = descricao_completa.lower()
-    
-    ganchos_dor = [
-        "Chega de jogar dinheiro fora comprando coisa cara que machuca o pé!",
-        "Você não tem noção do absurdo que é o preço disso no shopping comparado com o que custa aqui!",
-        "Amiga, para tudo o que você está fazendo se o seu maior problema é achar um calçado que aguenta o dia todo!",
-        "Quem me indicou essa loja salvou minha vida, porque o conforto disso aqui é surreal de bom!"
+def _contar_palavras_reais(texto_sem_aspas):
+    return len([p for p in texto_sem_aspas.strip().split() if p])
+
+# MOTOR LOCAL COM OS 10 GANCHOS EM TOM ESPONTÂNEO (11s / 22 A 28 PALAVRAS)
+def resumir_e_modelar_copy_local(nome_produto, descricao_completa, categoria, historico_sessao):
+    prod_limpo = nome_produto.strip() if nome_produto and nome_produto.strip() else f"esse {categoria.lower()}"
+    prod_curto = " ".join(prod_limpo.split()[:3])
+    cat = categoria.lower()
+
+    ganchos_espontaneos = [
+        f"Olha como esse {prod_curto} resolve já no primeiro segundo!",
+        "Espera eu virar a câmera pra você ver como isso assenta!",
+        f"Se você pega {cat} na correria, dá uma olhada nisso aqui!",
+        f"Achei que precisava gastar bem mais, mas esse {prod_curto} surpreendeu!",
+        f"Antes de pegar qualquer {prod_curto}, repare nesse detalhe de perto!",
+        f"Depois de testar 7 opções, esse {prod_curto} foi o único que ficou!",
+        f"A diferença na rotina de usar {prod_curto} é bem nítida!",
+        f"POV: finalmente achei um {prod_curto} prático de verdade no dia a dia!",
+        f"Queria ter visto isso antes de gastar dinheiro com {cat}!",
+        "Peguei na promoção agora e já vi que vai sair rápido!"
     ]
-    
+
     corpo_necessidade = [
-        "A qualidade é idêntica àquelas marcas de grife, com acabamento impecável e palmilha super macia.",
-        "Ele é leve, não pesa nada no pé e resolve qualquer look corrido do dia a dia sem esforço.",
-        "É aquela peça coringa indispensável que todo mundo elogia e que esgota em minutos no estoque."
+        "Conforto real da Loja da Valentina sem pesar no bolso.",
+        "Acabamento firme da Loja da Valentina que funciona na prática.",
+        "Achado da Loja da Valentina que facilita o uso diário."
     ]
-    
+
     fechamentos_cta = [
-        "Clica no carrinho laranja aqui embaixo antes que acabe a numeração!",
-        "Corre no carrinho laranja no cantinho e aproveita o preço de lançamento!",
-        "Não fica de fora dessa, clica no carrinho laranja logo abaixo e garante o seu!"
+        "Clica aqui embaixo no carrinho laranja e garante o seu!",
+        "Dá uma olhada no carrinho laranja aqui embaixo antes que acabe!",
+        "Abre o carrinho laranja aqui embaixo e pega o seu!"
     ]
-    
-    for _ in range(50):
-        g = random.choice(ganchos_dor)
+
+    for _ in range(180):
+        g = random.choice(ganchos_espontaneos)
         d = random.choice(corpo_necessidade)
         c = random.choice(fechamentos_cta)
-        candidata = f'"{g} {d} {c}"'
-        if len(candidata.split()) <= 29 and candidata not in historico_sessao:
+        frase = " ".join(f"{g} {d} {c}".split())
+        qtd = _contar_palavras_reais(frase)
+        candidata = f'"{frase}"'
+        if 22 <= qtd <= 28 and candidata not in historico_sessao:
             historico_sessao.add(candidata)
             return candidata
-            
-    candidata = f'"{random.choice(ganchos_dor)} {random.choice(corpo_necessidade)} {random.choice(fechamentos_cta)}"'
-    historico_sessao.add(candidata)
-    return candidata
 
-def gerar_copy_ia_gemini(api_key, descricao_completa, categoria, estilo_titulo, variacao_num):
+    gancho_reserva = random.choice(ganchos_espontaneos)
+    cta_reserva = random.choice(fechamentos_cta)
+    fallback_frase = " ".join(f"{gancho_reserva} Loja da Valentina: {cta_reserva}".split())
+    fallback = f'"{fallback_frase}"'
+    historico_sessao.add(fallback)
+    return fallback
+
+def gerar_copy_ia_gemini(api_key, nome_produto, descricao_completa, categoria, estilo_titulo, variacao_num):
     url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={api_key.strip()}"
     instrucao_sistema = (
-        "Você é o Diretor de Crescimento e Copywriter Sênior mais agressivo do TikTok Shop Brasil (Loja da Valentina). "
-        "Sua missão é criar uma copy magnética, focada na dor do cliente (desconforto, preço abusivo de shopping) e transformar o produto em uma necessidade vital. "
-        "DIRETRIZES: 1. Linguagem coloquial, direta e natural de influenciadora de sucesso. "
-        "2. Duração rigorosa de 11 segundos (entre 24 e 28 palavras no máximo). "
-        "3. Inicie com um gancho forte de dor e termine obrigatoriamente chamando para o 'carrinho laranja' da Loja da Valentina. "
-        "4. Retorne APENAS a fala final entre aspas duplas."
+        "Você é o Diretor de Crescimento e Copywriter Sênior do TikTok Shop Brasil. "
+        "Crie um roteiro 100% autoral de 11 segundos cravados (24 a 28 palavras). "
+        "Escreva com tom espontâneo, natural e direto de quem acabou de testar ou descobrir o produto na prática, "
+        "evitando clichês artificiais de propaganda. "
+        "Abra com um dos 10 ganchos de retenção nos primeiros segundos: "
+        "vitrine de resultado no 1º segundo, revelação/caimento ao virar a câmera, chamada de quem usa a categoria na rotina, "
+        "surpresa por entregar mais gastando menos, detalhe prático antes de comprar, teste de 7 opções, "
+        "diferença antes/depois na rotina, 'POV: finalmente achei...', descoberta prévia da categoria ou oferta do momento. "
+        "Cite obrigatoriamente a 'Loja da Valentina' e encerre chamando para o 'carrinho laranja'. "
+        "Retorne APENAS a fala final em português do Brasil entre aspas duplas."
     )
     payload = {
-        "contents": [{"parts": [{"text": f"{instrucao_sistema}\n\nProduto: {descricao_completa}\nCategoria: {categoria}\nEstilo: {estilo_titulo}\nVariação #{variacao_num}\nCrie a copy viral de 11 segundos:"}]}],
+        "contents": [{
+            "parts": [{
+                "text": (
+                    f"{instrucao_sistema}\n\n"
+                    f"Nome do Produto: {nome_produto}\n"
+                    f"Descrição: {descricao_completa}\n"
+                    f"Categoria: {categoria}\n"
+                    f"Estilo: {estilo_titulo}\n"
+                    f"Variação #{variacao_num}:"
+                )
+            }]
+        }],
         "generationConfig": {"temperature": 1.0, "maxOutputTokens": 90}
     }
-    req = urllib.request.Request(url, data=json.dumps(payload).encode("utf-8"), headers={"Content-Type": "application/json"}, method="POST")
+    req = urllib.request.Request(
+        url,
+        data=json.dumps(payload).encode("utf-8"),
+        headers={"Content-Type": "application/json"},
+        method="POST"
+    )
     with urllib.request.urlopen(req, timeout=12) as response:
         res_data = json.loads(response.read().decode("utf-8"))
-        texto = res_data["candidates"][0]["content"]["parts"][0]["text"].strip().replace("\n", " ")
-        if not texto.startswith('"'): texto = f'"{texto}'
-        if not texto.endswith('"'): texto = f'{texto}"'
+        candidates = res_data.get("candidates") or []
+        if not candidates:
+            raise ValueError("Resposta da API sem candidatos válidos.")
+        partes = ((candidates[0].get("content") or {}).get("parts")) or []
+        texto_bruto = (partes[0].get("text") if partes else "") or ""
+        texto = texto_bruto.strip().replace("\n", " ")
+        if not texto:
+            raise ValueError("Resposta vazia da API.")
+        if not texto.startswith('"'):
+            texto = f'"{texto}'
+        if not texto.endswith('"'):
+            texto = f'{texto}"'
         return texto
 
-# FÁBRICA DE IDENTIDADE ORIGINAL (11s CRAVADOS - BLOQUEIO DE TELETRANSPORTE)
+# FÁBRICA DE IDENTIDADE ORIGINAL (11s CRAVADOS - COMPLIANCE TIKTOK SHOP)
 def obter_identidade_original(i):
     estilos = {
         1: ("Estilo 1: POV Mão & Revelação Tátil", "Foco tátil manuseando o produto com extrema nitidez e som imersivo."),
@@ -228,7 +272,7 @@ def obter_identidade_original(i):
         10: ("Estilo 10: Provador Relâmpago", "Ritmo ágil focado em conversão de estoque limitado."),
         11: ("Estilo 11: Destaque Dinâmico Urbano", "Utilidade e versatilidade em trânsito."),
         12: ("Estilo 12: Texturas Aconchegantes", "Foco em toque suave e flexível."),
-        13: ("Estilo 13: Look Noite com Neon", "Iluminação nocturna moderna e sofisticada."),
+        13: ("Estilo 13: Look Noite com Neon", "Iluminação noturna moderna e sofisticada."),
         14: ("Estilo 14: Streetwear Autêntico", "Estilo urbano jovem e moderno."),
         15: ("Estilo 15: Peça Delicate", "Detalhes refinados para ocasiões especiais."),
         16: ("Estilo 16: Sobreposição Versátil", "Composição moderna e encaixe perfeito."),
@@ -238,27 +282,29 @@ def obter_identidade_original(i):
         20: ("Estilo 20: Caminhão Preto TikTok (Saída da Loja)", "Cenário épico externo com caminhão e caixas da Loja da Valentina.")
     }
     titulo, desc = estilos.get(i, (f"Estilo {i}", "Estilo personalizado Valentina."))
-    
-    base_prompt = (
+
+    regras_base = (
         "Masterpiece 8K UHD UGC video, EXACT 11.0-SECOND DURATION, 9:16 vertical, RAW optical sensor. "
-        "STRICT PRODUCT LOCK: 1:1 fidelity on brand, logo and textures with zero blur. Zero mics, zero text overlays, zero watermarks. "
-        "PHYSICS & REALISM LOCK: The product/box must be physically stable and present in the model's hands or surface from second 0.0 with zero sudden pop-ins or teletransports. "
-        "TIMELINE LOCK (0-11s): Immediate speech start at second 0.0 with flawless Brazilian Portuguese lip-sync, max 28 words high-impact delivery, smooth conclusion at 11.0s."
+        "STRICT PRODUCT LOCK: 1:1 fidelity on product, exact textures with zero blur, unique lighting and camera angle. "
+        "Zero mics, zero text overlays, zero watermarks, zero third-party logos. "
+        "PHYSICS & REALISM LOCK: Product/box physically stable and present from second 0.0 with natural movement and zero sudden pop-ins. "
     )
     if i == 20:
-        base_prompt = (
-            "Masterpiece 8K UHD UGC video, EXACT 11.0-SECOND DURATION, 9:16 vertical. "
-            "STRICT PRODUCT LOCK: 1:1 brand fidelity, zero mics, zero overlays. "
-            "PHYSICS LOCK: Box and product are physically steady with zero sudden generation errors. "
-            "CHRONO-LOCK (0-11s): [0-2s] Creator speaks instantly at 0.0s while pushing boutique door open. [2-8s] Fluid walk. [8-11s] Reaches truck, clean finish at 11.0s."
+        foco_fluxo = (
+            f"{regras_base}"
+            "CHRONO-LOCK (0-11s): [0-2s] Speaks at 0.0s pushing boutique door open. [2-8s] Fluid walk. [8-11s] Reaches truck, clean finish at 11.0s."
         )
     elif i == 5:
-        base_prompt = (
-            "Masterpiece 8K UHD UGC video, EXACT 11.0-SECOND DURATION, 9:16 vertical. "
-            "STRICT PRODUCT LOCK: 1:1 brand fidelity, zero mics, zero overlays. "
-            "SILENT VISUAL SHOWCASE (11s): Upbeat dynamic visual rhythm with zero dialogue and absolute pixel stability."
+        foco_fluxo = (
+            f"{regras_base}"
+            "SILENT VISUAL SHOWCASE (11s): Upbeat dynamic visual rhythm with zero dialogue and pixel stability."
         )
-    return titulo, f"{base_prompt} ACTIVE STYLE: {i}. {titulo} - {desc}"
+    else:
+        foco_fluxo = (
+            f"{regras_base}"
+            "TIMELINE LOCK (0-11s): Immediate speech start at second 0.0 with Brazilian Portuguese lip-sync, max 28 words delivery, smooth finish at 11.0s."
+        )
+    return titulo, f"{foco_fluxo} ACTIVE STYLE: {i}. {titulo} - {desc}"
 
 # BANCO E CONFIG
 DB_FILE = "moldes_salvos.json"
@@ -267,37 +313,51 @@ CONFIG_FILE = "config_ia.json"
 def carregar_config():
     if os.path.exists(CONFIG_FILE):
         try:
-            with open(CONFIG_FILE, "r", encoding="utf-8") as f: return json.load(f)
-        except: pass
+            with open(CONFIG_FILE, "r", encoding="utf-8") as f:
+                data = json.load(f)
+                if isinstance(data, dict):
+                    return {"api_key": str(data.get("api_key", ""))}
+        except Exception:
+            pass
     return {"api_key": ""}
 
 def salvar_config(cfg):
     try:
-        with open(CONFIG_FILE, "w", encoding="utf-8") as f: json.dump(cfg, f, ensure_ascii=False, indent=4)
-    except: pass
+        with open(CONFIG_FILE, "w", encoding="utf-8") as f:
+            json.dump(cfg, f, ensure_ascii=False, indent=4)
+    except Exception:
+        pass
 
 def carregar_db():
     if os.path.exists(DB_FILE):
         try:
             with open(DB_FILE, "r", encoding="utf-8") as f:
                 d = json.load(f)
-                if isinstance(d, dict):
+                if isinstance(d, dict) and d:
                     return {int(k) if str(k).isdigit() else k: v for k, v in d.items()}
-        except: pass
+        except Exception:
+            pass
     padrao = {i: dict(zip(["titulo", "prompt"], obter_identidade_original(i))) for i in range(1, 21)}
     salvar_db(padrao)
     return padrao
 
 def salvar_db(db):
     try:
-        with open(DB_FILE, "w", encoding="utf-8") as f: json.dump(db, f, ensure_ascii=False, indent=4)
-    except: pass
+        with open(DB_FILE, "w", encoding="utf-8") as f:
+            json.dump(db, f, ensure_ascii=False, indent=4)
+    except Exception:
+        pass
 
-if "db_estilos" not in st.session_state: st.session_state.db_estilos = carregar_db()
-if "config_ia" not in st.session_state: st.session_state.config_ia = carregar_config()
-if "form_version" not in st.session_state: st.session_state.form_version = 0
-if "acesso_liberado" not in st.session_state: st.session_state.acesso_liberado = False
-if "historico_copys" not in st.session_state: st.session_state.historico_copys = set()
+if "db_estilos" not in st.session_state:
+    st.session_state.db_estilos = carregar_db()
+if "config_ia" not in st.session_state:
+    st.session_state.config_ia = carregar_config()
+if "form_version" not in st.session_state:
+    st.session_state.form_version = 0
+if "acesso_liberado" not in st.session_state:
+    st.session_state.acesso_liberado = False
+if "historico_copys" not in st.session_state:
+    st.session_state.historico_copys = set()
 
 def limpar_formulario():
     st.session_state.form_version += 1
@@ -321,15 +381,15 @@ c1, c2, c3 = st.columns(3)
 with c1:
     with st.container(border=True):
         st.markdown("🎬 **DIRETOR SKIN**")
-        st.selectbox("Skin", ["BOY (Elite Director)", "UGC LIFESTYLE"], label_visibility="collapsed", key=f"sel_skin_{v}")
+        skin_sel = st.selectbox("Skin", ["BOY (Elite Director)", "UGC LIFESTYLE"], label_visibility="collapsed", key=f"sel_skin_{v}")
 with c2:
     with st.container(border=True):
         st.markdown("📱 **PROPORÇÃO**")
-        st.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"], label_visibility="collapsed", key=f"sel_prop_{v}")
+        prop_sel = st.selectbox("Proporção", ["9:16 (TikTok / Reels)", "1:1 (Feed)"], label_visibility="collapsed", key=f"sel_prop_{v}")
 with c3:
     with st.container(border=True):
         st.markdown("🧠 **MOTOR DE COPY**")
-        st.selectbox("Motor Copy", ["IA Modeladora (Resumo Inteligente)", "Fixo (Do molde salvo)"], label_visibility="collapsed", key=f"sel_copy_mode_{v}")
+        copy_mode_sel = st.selectbox("Motor Copy", ["IA Modeladora (Resumo Inteligente)", "Fixo (Do molde salvo)"], label_visibility="collapsed", key=f"sel_copy_mode_{v}")
 
 with st.container(border=True):
     st.markdown("🎬 **SELECIONAR ESTILOS PARA GRADE DIÁRIA**")
@@ -345,21 +405,25 @@ with st.expander("⚙️ Gerenciar / Editar Prompts & Cérebro IA (Requer Senha)
     with col_s2:
         if st.button("🔓 VALIDAR", key=f"val_{v}"):
             st.session_state.acesso_liberado = (senha_dig == "vidalooka2")
-            if st.session_state.acesso_liberado: st.success("✅ Liberado!")
-            else: st.error("❌ Incorreta.")
+            if st.session_state.acesso_liberado:
+                st.success("✅ Liberado!")
+            else:
+                st.error("❌ Incorreta.")
 
     if st.session_state.acesso_liberado:
         st.markdown("<p style='color: #00FF66; font-weight: 700;'>🔓 MODO ADMINISTRADOR ATIVO</p>", unsafe_allow_html=True)
         with st.container(border=True):
             st.markdown("🧠 **API GEMINI**")
             k1, k2 = st.columns([3, 1])
-            with k1: nova_key = st.text_input("Key", value=st.session_state.config_ia.get("api_key", ""), type="password", label_visibility="collapsed", key=f"key_{v}")
+            with k1:
+                nova_key = st.text_input("Key", value=st.session_state.config_ia.get("api_key", ""), type="password", label_visibility="collapsed", key=f"key_{v}")
             with k2:
                 if st.button("💾 SALVAR", key=f"save_k_{v}"):
                     st.session_state.config_ia["api_key"] = nova_key.strip()
                     salvar_config(st.session_state.config_ia)
                     st.success("Salvo!")
-                    time.sleep(0.5); st.rerun()
+                    time.sleep(0.5)
+                    st.rerun()
 
         if chaves_ord:
             slot_edit = st.selectbox("Estilo para Editar", options=chaves_ord, format_func=lambda x: f"Estilo {x} - {st.session_state.db_estilos[x]['titulo']}", key=f"edit_sel_{v}")
@@ -369,27 +433,35 @@ with st.expander("⚙️ Gerenciar / Editar Prompts & Cérebro IA (Requer Senha)
                 st.session_state.db_estilos[slot_edit] = {"titulo": t_edit, "prompt": p_edit}
                 salvar_db(st.session_state.db_estilos)
                 st.success("Salvo com sucesso!")
-                time.sleep(0.5); st.rerun()
+                time.sleep(0.5)
+                st.rerun()
 
 # DADOS DO PRODUTO
 st.markdown("<p style='font-weight:700; color:#00FF66; margin-bottom:4px; font-size:11px;'>📦 DADOS DO PRODUTO & DESCRIÇÃO TÉCNICA</p>", unsafe_allow_html=True)
 with st.container(border=True):
     p_n1, p_n2 = st.columns(2)
-    with p_n1: produto_nome = st.text_input("Nome", placeholder="Ex: Tênis Wayper...", label_visibility="collapsed", key=f"nom_{v}")
-    with p_n2: tipo_produto = st.selectbox("Categoria", ["Calçado", "Vestuário", "Acessório", "Bolsa", "Outros"], label_visibility="collapsed", key=f"cat_{v}")
-    
+    with p_n1:
+        produto_nome = st.text_input("Nome", placeholder="Ex: Tênis Wayper...", label_visibility="collapsed", key=f"nom_{v}")
+    with p_n2:
+        tipo_produto = st.selectbox("Categoria", ["Calçado", "Vestuário", "Acessório", "Bolsa", "Outros"], label_visibility="collapsed", key=f"cat_{v}")
+
     descricao_fornecedor = st.text_area("Descrição", placeholder="Cole a descrição completa do fornecedor aqui...", height=90, label_visibility="collapsed", key=f"desc_{v}")
-    
+
     f1, f2, f3 = st.columns(3)
-    with f1: foto_modelo = st.file_uploader("Modelo", type=["jpg", "png"], key=f"m_{v}", label_visibility="collapsed")
-    with f2: foto_produto_analise = st.file_uploader("Produto", type=["jpg", "png"], key=f"p_{v}", label_visibility="collapsed")
-    with f3: foto_peca = st.file_uploader("Zoom", type=["jpg", "png"], key=f"z_{v}", label_visibility="collapsed")
+    with f1:
+        foto_modelo = st.file_uploader("Modelo", type=["jpg", "png"], key=f"m_{v}", label_visibility="collapsed")
+    with f2:
+        foto_produto_analise = st.file_uploader("Produto", type=["jpg", "png"], key=f"p_{v}", label_visibility="collapsed")
+    with f3:
+        foto_peca = st.file_uploader("Zoom", type=["jpg", "png"], key=f"z_{v}", label_visibility="collapsed")
 
 st.markdown("<div style='margin: 8px 0;'></div>", unsafe_allow_html=True)
 
 col_e, btn_g, btn_l, col_d = st.columns([1, 2, 2, 1])
-with btn_g: gerar_clicado = st.button("🚀 GERAR PROMPTS VIRAIS (11s)", key=f"gen_{v}")
-with btn_l: st.button("🔄 LIMPAR", on_click=limpar_formulario, key=f"clr_{v}")
+with btn_g:
+    gerar_clicado = st.button("🚀 GERAR PROMPTS VIRAIS (11s)", key=f"gen_{v}")
+with btn_l:
+    st.button("🔄 LIMPAR", on_click=limpar_formulario, key=f"clr_{v}")
 
 GRADE_HORARIOS = ["09:00", "11:00", "13:00", "15:00", "17:00", "19:00", "21:00", "23:00"]
 
@@ -402,30 +474,37 @@ if gerar_clicado:
         st.warning("⚠️ Selecione ao menos 1 estilo.")
     else:
         api_key = st.session_state.config_ia.get("api_key", "").strip()
-        texto_base = f"{produto_nome} - {descricao_fornecedor}"
         mapa = {st.session_state.db_estilos[i]["titulo"]: st.session_state.db_estilos[i]["prompt"] for i in st.session_state.db_estilos}
-        
+        nome_exibicao = produto_nome.strip() if produto_nome and produto_nome.strip() else "Produto"
+        proporcao_alvo = prop_sel.split(" ")[0]
+
         with st.spinner("🔥 Disparando Motor Viral (11s cravados)..."):
-            st.success(f"✅ Gerados {len(estilos_selecionados)} prompts para '{produto_nome}'.")
+            st.success(f"✅ Gerados {len(estilos_selecionados)} prompts para '{nome_exibicao}'.")
             for idx, est in enumerate(estilos_selecionados):
                 horario = GRADE_HORARIOS[idx % len(GRADE_HORARIOS)]
-                p_base = mapa.get(est, "")
+                p_base = mapa.get(est, "").replace("9:16 vertical", f"{proporcao_alvo} framing")
                 is_mudo = "Sem Fala" in est or "SILENT" in p_base
-                
-                if is_mudo or ("Fixo" in st.session_state.get(f"sel_copy_mode_{v}", "") and '"' in p_base):
+                if not is_mudo:
+                    p_base = f"{p_base} DIRECTOR MODE: {skin_sel}."
+
+                if is_mudo or ("Fixo" in copy_mode_sel and '"' in p_base):
                     final_prompt, display_copy = p_base, "Fala fixa mantida."
                 else:
                     fala = ""
                     if api_key:
                         try:
-                            fala = gerar_copy_ia_gemini(api_key, texto_base, tipo_produto, est, idx + 400)
-                        except: pass
+                            fala = gerar_copy_ia_gemini(api_key, produto_nome, descricao_fornecedor, tipo_produto, est, idx + 400)
+                        except Exception as err:
+                            st.caption(f"⚠️ Falha na API Gemini ({err}); usando motor local.")
                     if not fala:
-                        fala = resumir_e_modelar_copy_local(texto_base, tipo_produto, st.session_state.historico_copys)
+                        fala = resumir_e_modelar_copy_local(produto_nome, descricao_fornecedor, tipo_produto, st.session_state.historico_copys)
                     display_copy = fala
                     final_prompt = f"{p_base}\n\n{fala}"
 
                 st.markdown(f"### 🎬 Prompt {idx+1} • {horario}")
-                st.markdown(f'<div class="metric-card"><span class="tag-estilo">{est}</span><br><span style="color:#00FF66; font-size:11px;">🔥 <b>Copy Viral (11s):</b> {display_copy}</span>', unsafe_allow_html=True)
+                st.markdown(
+                    f'<div class="metric-card"><span class="tag-estilo">{est}</span><br>'
+                    f'<span style="color:#00FF66; font-size:11px;">🔥 <b>Copy Viral (11s):</b> {display_copy}</span></div>',
+                    unsafe_allow_html=True
+                )
                 st.code(final_prompt, language="text")
-                st.markdown('</div>', unsafe_allow_html=True)
